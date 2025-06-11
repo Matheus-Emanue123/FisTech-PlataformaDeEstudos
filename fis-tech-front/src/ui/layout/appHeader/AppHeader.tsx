@@ -24,12 +24,7 @@ export const AppHeader: React.FC = () => {
               </IconButton>
             </Styles.ContainerMenuIconHeader>
           )}
-          <Box
-            component="img"
-            src="/assets/imgs/logoGodzinyApp.png"
-            alt="logoApp"
-            sx={appHeaderStyles.imgLogo(isMobile)}
-          />
+          <Box component="p">LOGO</Box>
         </Styles.HeaderTitle>
         <Styles.HeaderRoutes>
           {!isMobile && <BasicTabs />}

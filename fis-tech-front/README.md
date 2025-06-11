@@ -1,46 +1,85 @@
-# Getting Started with Create React App
+# FISTECH PLATAFORMA DE ESTUDOS
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## INTRODUÇÃO FRONT-END
 
-## Available Scripts
+Para o desenvolvimento do **FISTECH** no front-end, foi escolhido três ferramentas fundamentais e metodos que garantem performance, escalabilidade e uma experiência de usuário consistente:
 
-In the project directory, you can run:
+- **React com TypeScript:** React é uma biblioteca JavaScript para construção de interfaces de usuário declarativas e componentizadas. Ao integrá-lo com TypeScript, ganhamos tipagem estática, autocompletar e detecção de erros em tempo de compilação, o que aumenta a robustez do código e facilita a manutenção em projetos de maior porte. Saiba mais em: <https://reactjs.org/> <https://www.typescriptlang.org/>
 
-### `npm start`
+- **Axios**: Axios é uma biblioteca leve para fazer requisições HTTP a partir do navegador (ou Node.js), com suporte a Promises e interceptors para tratamento centralizado de erros e autenticação. Escolhemos Axios pela sua simplicidade de uso, configurabilidade e por facilitar a realização de requisições a APIs. Saiba mais em: <https://axios-http.com/ptbr/docs/intro>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **Material UI (MUI)**  
+  Material UI é um conjunto de componentes React prontos, baseados no Material Design da Google. Ele oferece temas personalizáveis, componentes acessíveis e uma vasta coleção de elementos (botões, tabelas, formulários, etc.), acelerando o desenvolvimento de uma interface moderna e responsiva.  
+  Saiba mais em: <https://mui.com/>
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Estas ferramentas trabalham em conjunto para tornar o front-end do FISTECH ágil, seguro e agradável tanto para desenvolvedores quanto para usuários finais. Dentre os benefícios de adotá-las no desenvolvimento nós podemos destacar o conhecimento prévio das ferramentas pelos alunos, agilidade e facilidade no desenvolvimento de páginas completas proporcionadas pelas bibliotecas.
 
-### `npm test`
+## ESTRUTURA DE PASTA
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Para otimizar o desenvolvimento e a manutenção do front-end do **FISTECH**, adotamos uma estrutura de pastas clara e modular. Cada diretório possui uma responsabilidade bem definida, facilitando a navegação pelo projeto, a colaboração entre a equipe e a escalabilidade conforme novas funcionalidades são adicionadas:
 
-### `npm run build`
+**node_modules:** Pasta com as dependencias do produto.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**public:** Arquivos públicos de coonfiguração e disponíveis durante o acesso dos usuários: imagens, fontes, etc.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**src:** Pasta que contém os principais arquivos do produto. Esta pasta está organizada com as seguintes pastas:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+<pre markdown>
+┌──
+├── app/ ---> Abriga as estruras inicias para a inicialização do produto.
+│ ├── App.tsx --> Componente principal montado na index.html.
+│ ├── AppRouterSwitch.tsx --> Gerencia as rotas da aplicação.
+│ ├── AppLayout/ --> Conjunto de componentes globais (diálogos, modais, etc.).
+│ └── AppStyle.tsx --> Estilo dos componentes gerais.
+│
+├── api/ --> Contém os arquivos/classes bases para comunicação com o banco de dados.
+│
+├── libs/ --> Estruturas auxiliares utilizadas em todo o produto.
+│
+├── modules/ --> Módulos do sistema com api, schema e páginas de CRUD (Cadastro/Visualização/Edição/Deleção).
+│
+├── ui/ --> Componentes e páginas da aplicação.
+│ ├── sysComponents/ --> Componentes utilizados por toda a aplicação.
+│ ├── sysForm/ --> Campos personalizados para formulários.
+│ ├── SimpleFormFields/ --> Campos de formulário simples.
+│ ├── SimpleLabelView/ --> Label customizado e estilos.
+│ ├── SimpleTable/ --> Tabela customizada e estilos.
+│ └── InterfaceBaseSimpleFormComponent.ts --> Interface do simpleForm.
+│
+├── sysMaterialUi/ --> Configuração de tema e customização do Material UI.
+│
+├── layouts/ --> Layouts usados por menus, rotas e navbar.
+│
+├── pages/ --> Páginas gerais da aplicação:
+│ └── Example/ --> Página de exemplo para desenvolvedores.
+│ └── EmailVerify/ --> Página de verificação de email.
+│ └── Home/ --> Página home e estilos.
+│ └── NotFound/ --> Página de rota não encontrada.
+│ └── RecoveryPassword/ --> Página de recuperação de senha e estilos.
+│ └── ResetPassword/ --> Página de nova senha e estilos.
+│ └── SignIn/ --> Página de login e estilos.
+│ └── SignOut/ --> Página de logout e estilos.
+│ └── SignUp/ --> Página de cadastro e estilos.
+└── 
+</pre>
 
-### `npm run eject`
+## PRIMEIROS PASSOS
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Para começar a trabalhar com o MeteorReactBaseMUI faça um clone do repositório:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    git clone https://github.com/Matheus-Emanue123/FisTech-PlataformaDeEstudos.git
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Em seguida, instale as dependências:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+    npm install
 
-## Learn More
+E depois, execute a aplicação:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+    npm start
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Acesse o sistema através do seu browser no endereço "http://localhost:3000" com as credenciais do administrador do sistema:
+
+    login: admin@fistech.com
+    password: admin@fistech.com
+
+**Observação**: os dados do usuário "admin" foram inseridos através do banco de dados de forma manual;
