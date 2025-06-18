@@ -65,13 +65,13 @@ Para otimizar o desenvolvimento e a manutenção do front-end do **FISTECH**, ad
 
 ## PRIMEIROS PASSOS
 
-Para começar a trabalhar com o MeteorReactBaseMUI faça um clone do repositório:
+Para executar o front-end do FisTech faça um clone do repositório:
 
     git clone https://github.com/Matheus-Emanue123/FisTech-PlataformaDeEstudos.git
 
-Em seguida, instale as dependências:
+Em seguida, abre um terminar na pasta `fis-tech-front` e instale as dependências:
 
-    npm install
+    npm install @emotion/styled@11.14.0 @material-ui/icons@4.11.3 react-router-dom
 
 E depois, execute a aplicação:
 
