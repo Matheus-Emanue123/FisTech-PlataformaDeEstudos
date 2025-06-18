@@ -78,12 +78,7 @@ export const DrawerHeader: React.FC<IDrawerHeaderProps> = ({ control }) => {
             />
           </IconButton>
         </Styles.ContainerMenuIconDrawerAppBar>
-        <Box
-          component="img"
-          src="/assets/imgs/logoGodzinyApp.png"
-          alt="logoApp"
-          sx={drawerAppBarStyles.imgLogo}
-        />
+        <Box component="p">LOGO</Box>
       </Styles.DrawerAppBarTitle>
       {DrawerListAdminUser}
       <Styles.DividerDrawerAppBar />
