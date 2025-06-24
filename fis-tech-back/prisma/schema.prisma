@@ -151,9 +151,10 @@ model Topico {
 }
 
 model UserType {
-  id      Int           @id @default(autoincrement())
-  tipo    UserType_tipo
-  Usuario Usuario[]
+  id         Int       @id @default(autoincrement())
+  tipo       String    @unique
+  permissoes Json
+  usuarios   Usuario[]
 }
 
 model UserXP {
@@ -189,3 +190,5 @@ enum UserType_tipo {
   moderador
   usuario_padrao
 }
+
+
