@@ -1,8 +1,8 @@
 import app from './app';
 import { PrismaClient } from './generated/prisma/client.js';
+import { config } from './config/environment';
 
 const prisma = new PrismaClient();
-const PORT = process.env.PORT || 3000;
 
 process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception:', err);
@@ -14,8 +14,8 @@ process.on('unhandledRejection', (err) => {
   process.exit(1);
 });
 
-const server = app.listen(PORT, async () => {
-  console.log(`Server running on port ${PORT}`);
+const server = app.listen(config.port, async () => {
+  console.log(`Server running on port ${config.port} in ${config.nodeEnv} mode`);
   try {
     await prisma.$connect();
     console.log('Connected to database');
@@ -26,6 +26,17 @@ const server = app.listen(PORT, async () => {
 });
 
 process.on('SIGTERM', () => {
+  console.log('SIGTERM received, shutting down gracefully');
+  server.close(() => {
+    prisma.$disconnect().then(() => {
+      console.log('Server and database connection closed');
+      process.exit(0);
+    });
+  });
+});
+
+process.on('SIGINT', () => {
+  console.log('SIGINT received, shutting down gracefully');
   server.close(() => {
     prisma.$disconnect().then(() => {
       console.log('Server and database connection closed');
