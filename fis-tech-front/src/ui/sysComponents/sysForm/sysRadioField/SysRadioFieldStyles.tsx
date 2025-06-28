@@ -2,7 +2,7 @@ import { ElementType } from "react";
 import RadioGroup, { RadioGroupProps } from "@mui/material/RadioGroup";
 import FormControlLabel, { FormControlLabelProps } from "@mui/material/FormControlLabel";
 import Radio, { RadioProps } from "@mui/material/Radio";
-import styled from "@mui/material/styles/styled";
+import { styled } from "@mui/material/styles";
 import sysSizing from "../../../sysMaterialUi/sizing/sysSizes";
 
 interface IStyles {

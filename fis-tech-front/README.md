@@ -71,7 +71,7 @@ Para executar o front-end do FisTech faça um clone do repositório:
 
 Em seguida, abre um terminar na pasta `fis-tech-front` e instale as dependências:
 
-    npm install @emotion/styled@11.14.0 @material-ui/icons@4.11.3 react-router-dom
+    npm install
 
 E depois, execute a aplicação:
 
