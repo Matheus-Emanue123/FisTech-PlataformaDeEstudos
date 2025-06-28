@@ -13,6 +13,8 @@ import {
   IOptionToSysRadioField,
   SysRadioField,
 } from "../../sysComponents/sysForm/sysRadioField/SysRadioField";
+import { UsuarioSch } from "../../../modules/usuario/api/UsuarioSch";
+import { usuarioApi } from "../../../modules/usuario/api/UsuarioApi";
 
 type Form = {
   toggleInput: boolean;
@@ -27,7 +29,22 @@ export const Example = () => {
     radioInput: "",
   });
 
+  const [usuario, setUsuario] = useState<UsuarioSch | null>(null);
+
+  React.useEffect(() => {
+    usuarioApi
+      .getById("56")
+      .then((res: any) => {
+        console.log(res);
+        setUsuario(res.data);
+      })
+      .catch((err: any) => {
+        console.error(err);
+      });
+  }, []);
+
   console.log("FORMULÁRIO = ", valueForm);
+  console.log("USUÁRIO = ", usuario);
 
   const handleChange = (event: any) => {
     setValueForm({
