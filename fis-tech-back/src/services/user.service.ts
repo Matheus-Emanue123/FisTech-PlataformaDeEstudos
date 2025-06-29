@@ -1,6 +1,9 @@
 import * as userModel from '../models/user.model';
 import { validateData } from '../utils/validation';
 import { BusinessLogicError, NotFoundError, ErrorCode } from '../utils/errors';
+import { hashPassword } from 'jwt.security/jwt.passwordProvider';
+
+
 
 export const createUser = async (userData: unknown) => {
   try {
@@ -14,6 +17,9 @@ export const createUser = async (userData: unknown) => {
       );
     }
 
+    const hashedPassword = await hashPassword(validatedData.senha_hash);
+    validatedData.senha_hash = hashedPassword;
+
     return userModel.createUser(validatedData);
   } catch (error) {
     if (error instanceof BusinessLogicError || error instanceof NotFoundError) {
@@ -25,6 +31,7 @@ export const createUser = async (userData: unknown) => {
     );
   }
 };
+
 
 export const updateUser = async (id: number, userData: unknown) => {
   try {
