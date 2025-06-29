@@ -47,7 +47,7 @@ export const AppSidebar: React.FC<IAppSideBar> = () => {
 
   return (
     <>
-      <Box
+      {/* <Box
         sx={{
           zIndex: 5,
           height: "100%",
@@ -55,7 +55,7 @@ export const AppSidebar: React.FC<IAppSideBar> = () => {
         }}
       >
         opatudobem
-      </Box>
+      </Box> */}
     </>
   );
 };
