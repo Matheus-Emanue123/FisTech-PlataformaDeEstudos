@@ -1,15 +1,15 @@
 import * as userModel from '../models/user.model';
 import { validateData } from '../utils/validation';
-import { BusinessLogicError, NotFoundError, ErrorCode } from '../utils/errors';
-import { hashPassword } from 'jwt.security/jwt.passwordProvider';
-
+import { BusinessLogicError, NotFoundError, ValidationError, ErrorCode } from '../utils/errors';
+import { hashPassword } from '../utils/jwt.utils';
+import { UserCreateSchema, UserUpdateSchema, UserIdSchema } from '../DTO/user.dto';
 
 
 export const createUser = async (userData: unknown) => {
   try {
-    const validatedData = validateData(userModel.UserDataSchema, userData);
-    
+    const validatedData = validateData(UserCreateSchema, userData);
     const existingUser = await userModel.getUserByEmail(validatedData.email);
+
     if (existingUser) {
       throw new BusinessLogicError(
         'User with this email already exists',
@@ -17,12 +17,16 @@ export const createUser = async (userData: unknown) => {
       );
     }
 
+    // Hash the password before passing to model
     const hashedPassword = await hashPassword(validatedData.senha_hash);
-    validatedData.senha_hash = hashedPassword;
 
-    return userModel.createUser(validatedData);
+    return userModel.createUser({
+      ...validatedData,
+      senha_hash: hashedPassword
+    });
+
   } catch (error) {
-    if (error instanceof BusinessLogicError || error instanceof NotFoundError) {
+    if (error instanceof BusinessLogicError || error instanceof NotFoundError || error instanceof ValidationError) {
       throw error;
     }
     throw new BusinessLogicError(
@@ -35,8 +39,8 @@ export const createUser = async (userData: unknown) => {
 
 export const updateUser = async (id: number, userData: unknown) => {
   try {
-    const validatedId = validateData(userModel.UserIdSchema, { id });
-    const validatedData = validateData(userModel.UserUpdateSchema, userData);
+    const validatedId = validateData(UserIdSchema, { id });
+    const validatedData = validateData(UserUpdateSchema, userData);
     
     const existingUser = await userModel.getUserById(validatedId.id);
     if (!existingUser) {
@@ -50,9 +54,20 @@ export const updateUser = async (id: number, userData: unknown) => {
       }
     }
 
-    return userModel.updateUser(validatedId.id, validatedData);
+    // Hash password if provided
+    let userDataToUpdate = { ...validatedData };
+    if (validatedData.senha_hash) {
+      const hashedPassword = await hashPassword(validatedData.senha_hash);
+      userDataToUpdate = {
+        ...validatedData,
+        senha_hash: hashedPassword
+      };
+    }
+
+    return userModel.updateUser(validatedId.id, userDataToUpdate);
+
   } catch (error) {
-    if (error instanceof BusinessLogicError || error instanceof NotFoundError) {
+    if (error instanceof BusinessLogicError || error instanceof NotFoundError || error instanceof ValidationError) {
       throw error;
     }
     throw new BusinessLogicError(
@@ -64,7 +79,7 @@ export const updateUser = async (id: number, userData: unknown) => {
 
 export const getUserById = async (id: number) => {
   try {
-    const validatedId = validateData(userModel.UserIdSchema, { id });
+    const validatedId = validateData(UserIdSchema, { id });
     const user = await userModel.getUserById(validatedId.id);
     
     if (!user) {
@@ -73,7 +88,7 @@ export const getUserById = async (id: number) => {
     
     return user;
   } catch (error) {
-    if (error instanceof NotFoundError) {
+    if (error instanceof NotFoundError || error instanceof ValidationError) {
       throw error;
     }
     throw new BusinessLogicError(
@@ -85,7 +100,7 @@ export const getUserById = async (id: number) => {
 
 export const deleteUser = async (id: number) => {
   try {
-    const validatedId = validateData(userModel.UserIdSchema, { id });
+    const validatedId = validateData(UserIdSchema, { id });
     
     const existingUser = await userModel.getUserById(validatedId.id);
     if (!existingUser) {
@@ -94,7 +109,7 @@ export const deleteUser = async (id: number) => {
 
     return userModel.deleteUser(validatedId.id);
   } catch (error) {
-    if (error instanceof NotFoundError) {
+    if (error instanceof NotFoundError || error instanceof ValidationError) {
       throw error;
     }
     throw new BusinessLogicError(

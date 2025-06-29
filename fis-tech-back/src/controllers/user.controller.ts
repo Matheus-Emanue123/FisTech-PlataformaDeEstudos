@@ -12,10 +12,6 @@ export const getUserById = async (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
   const user = await userService.getUserById(id);
   
-  if (!user) {
-    throw new NotFoundError('User not found');
-  }
-  
   apiResponse(res, 200, user, 'User retrieved successfully');
 };
 

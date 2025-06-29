@@ -13,8 +13,47 @@ export const validateData = <T>(schema: z.ZodSchema<T>, data: unknown): T => {
     return schema.parse(data);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      const errorMessages = error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', ');
-      throw new ValidationError(`Validation error: ${errorMessages}`, ErrorCode.BAD_REQUEST);
+      const errorDetails = error.errors.map(e => {
+        const field = e.path.join('.');
+        const message = e.message;
+        
+        // Provide more specific error messages based on the field
+        switch (field) {
+          case 'nome':
+            if (message.includes('at least 3 characters')) {
+              return `${field}: Name must be at least 3 characters long`;
+            }
+            if (message.includes('only letters and spaces')) {
+              return `${field}: Name can only contain letters and spaces`;
+            }
+            break;
+          case 'email':
+            if (message.includes('Invalid email format')) {
+              return `${field}: Please provide a valid email address`;
+            }
+            break;
+          case 'password':
+            if (message.includes('at least 6 characters')) {
+              return `${field}: Password must be at least 6 characters long`;
+            }
+            break;
+          case 'user_type_id':
+            if (message.includes('positive integer')) {
+              return `${field}: User type ID must be a valid positive number`;
+            }
+            break;
+          case 'senha_hash':
+            if (message.includes('at least 6 characters')) {
+              return `${field}: Password must be at least 6 characters long`;
+            }
+            break;
+          default:
+            return `${field}: ${message}`;
+        }
+        return `${field}: ${message}`;
+      }).join(', ');
+      
+      throw new ValidationError(`Validation failed: ${errorDetails}`, ErrorCode.BAD_REQUEST);
     }
     throw new ValidationError('Unknown validation error', ErrorCode.BAD_REQUEST);
   }

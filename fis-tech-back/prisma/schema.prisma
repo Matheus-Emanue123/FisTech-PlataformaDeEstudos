@@ -171,7 +171,7 @@ model Usuario {
   senha_hash       String             @db.VarChar(255)
   data_criacao     DateTime?          @default(now()) @db.DateTime(0)
   ultimo_login     DateTime?          @db.DateTime(0)
-  user_type_id     Int?
+  user_type_id     Int
   Anotacao         Anotacao[]
   Comentario       Comentario[]
   Conteudo         Conteudo[]
@@ -180,7 +180,7 @@ model Usuario {
   QuestaoResolvida QuestaoResolvida[]
   Resumo           Resumo[]
   UserXP           UserXP?
-  UserType         UserType?          @relation(fields: [user_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Usuario_ibfk_1")
+  UserType         UserType           @relation(fields: [user_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Usuario_ibfk_1")
 
   @@index([user_type_id], map: "user_type_id")
 }
