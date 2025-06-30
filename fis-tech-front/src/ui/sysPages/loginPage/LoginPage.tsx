@@ -34,7 +34,6 @@ export const LoginPage: React.FC<ILoginPageProps> = ({ redirectionPath }) => {
   const handleLogin = async () => {
     if (loginForm.email && loginForm.password) {
       const isLogged = await signIn(loginForm.email, loginForm.password);
-      console.log("isLogged = ", isLogged);
       if (isLogged) {
         navigate(redirectionPath);
       } else {
@@ -51,23 +50,25 @@ export const LoginPage: React.FC<ILoginPageProps> = ({ redirectionPath }) => {
       >
         Acesso ao Sistema
       </Typography>
-      <SysTextField
-        label="Email"
-        name="email"
-        placeholder="Digite seu e-mail de acesso"
-        value={loginForm.email}
-        changeValue={handleChange}
-        maxWidth="100%"
-      />
-      <SysTextField
-        label="Senha"
-        name="password"
-        placeholder="Digite sua senha de acesso"
-        value={loginForm.password}
-        changeValue={handleChange}
-        maxWidth="100%"
-        type="password"
-      />
+      <form>
+        <SysTextField
+          label="Email"
+          name="email"
+          placeholder="Digite seu e-mail de acesso"
+          value={loginForm.email}
+          changeValue={handleChange}
+          maxWidth="100%"
+        />
+        <SysTextField
+          label="Senha"
+          name="password"
+          placeholder="Digite sua senha de acesso"
+          value={loginForm.password}
+          changeValue={handleChange}
+          maxWidth="100%"
+          type="password"
+        />
+      </form>
       <Box sx={{ marginBottom: "12px", textAlign: "center" }}>
         <SysButton
           mode="primary"
