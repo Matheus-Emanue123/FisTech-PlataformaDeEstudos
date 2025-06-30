@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { verifyToken, extractTokenFromHeader } from '../utils/jwt.utils';
 import { apiResponse } from '../utils/apiResponse';
+import { hasPermission, UserPermissions } from '../utils/permissions';
 
 export interface AuthenticatedRequest extends Request {
   user?: {
@@ -33,8 +34,8 @@ export const authenticateToken = async (
   }
 };
 
-// Role-based authorization middleware
-export const requireRole = (allowedRoles: string[]) => {
+// Permission-based authorization middleware (inclui ownership)
+export const requirePermission = (permission: keyof UserPermissions) => {
   return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     if (!req.user) {
       return apiResponse(res, 401, null, 'Authentication required');
@@ -44,15 +45,23 @@ export const requireRole = (allowedRoles: string[]) => {
       return apiResponse(res, 403, null, 'User type not found');
     }
 
-    if (!allowedRoles.includes(req.user.userType)) {
-      return apiResponse(res, 403, null, `Access denied. Required roles: ${allowedRoles.join(', ')}`);
+    // Verificar se tem permissão geral
+    if (hasPermission(req.user.userType, permission)) {
+      return next();
     }
 
-    next();
+    // Verificar se é dono do recurso (userId na URL deve ser igual ao userId do token)
+    const resourceUserId = parseInt(req.params.userId || req.params.id);
+    if (resourceUserId === req.user.userId) {
+      return next();
+    }
+
+    return apiResponse(res, 403, null, `Access denied. Required permission: ${permission} or resource ownership`);
   };
 };
 
-// Convenience functions for specific roles
-export const requireAdmin = requireRole(['administrador']);
-export const requireModerator = requireRole(['moderador', 'administrador']);
-export const requireUser = requireRole(['usuario_padrao', 'moderador', 'administrador']);
+// Convenience functions for specific permissions
+export const requireManageUsers = requirePermission('canManageUsers');
+export const requireManageContent = requirePermission('canManageContent');
+export const requireManageComments = requirePermission('canManageComments');
+export const requireViewAnalytics = requirePermission('canViewAnalytics');

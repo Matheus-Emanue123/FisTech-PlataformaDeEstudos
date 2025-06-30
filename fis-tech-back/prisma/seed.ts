@@ -5,14 +5,14 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('🌱 Starting database seeding...');
 
-  // Create UserType records
+  // Create UserType records with simple, non-overlapping permissions
   const userTypes = [
     {
       tipo: 'administrador',
       permissoes: {
         canManageUsers: true,
         canManageContent: true,
-        canManageSystem: true,
+        canManageComments: true,
         canViewAnalytics: true
       }
     },
@@ -20,9 +20,9 @@ async function main() {
       tipo: 'moderador',
       permissoes: {
         canManageUsers: false,
-        canManageContent: true,
-        canManageSystem: false,
-        canViewAnalytics: true
+        canManageContent: false,
+        canManageComments: true,
+        canViewAnalytics: false
       }
     },
     {
@@ -30,7 +30,7 @@ async function main() {
       permissoes: {
         canManageUsers: false,
         canManageContent: false,
-        canManageSystem: false,
+        canManageComments: false,
         canViewAnalytics: false
       }
     }
@@ -47,7 +47,12 @@ async function main() {
       });
       console.log(`✅ Created UserType: ${userType.tipo}`);
     } else {
-      console.log(`⏭️  UserType already exists: ${userType.tipo}`);
+      // Update existing user type with new permissions
+      await prisma.userType.update({
+        where: { tipo: userType.tipo },
+        data: { permissoes: userType.permissoes }
+      });
+      console.log(`🔄 Updated UserType: ${userType.tipo}`);
     }
   }
 

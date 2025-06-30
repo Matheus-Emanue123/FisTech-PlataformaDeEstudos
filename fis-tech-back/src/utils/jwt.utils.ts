@@ -5,7 +5,7 @@ import { JWT_SECRET, JWT_EXPIRATION } from '../config/auth.config';
 export interface JWTPayload {
   userId: number;
   email: string;
-  userType?: string;
+  userType: string;
 }
 
 export const extractTokenFromHeader = (authHeader: string | undefined): string => {

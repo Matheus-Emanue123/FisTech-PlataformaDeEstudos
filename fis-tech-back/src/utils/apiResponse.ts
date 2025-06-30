@@ -8,18 +8,58 @@ import { Response } from 'express';
  * @param data Dados a serem enviados (opcional)
  * @param message Mensagem descritiva (opcional)
  */
-
 export const apiResponse = (
   res: Response,
   status: number,
   data: any = null,
-  message: string = ''
+  message: string = '',
+  meta?: Record<string, any>
 ) => {
   const success = status >= 200 && status < 300;
   
-  res.status(status).json({
+  const response: any = {
     success,
     message: message || (success ? 'Operação bem-sucedida' : 'Erro na operação'),
-    data
-  });
+    timestamp: new Date().toISOString()
+  };
+
+  if (data !== null) {
+    response.data = data;
+  }
+
+  if (meta) {
+    response.meta = meta;
+  }
+
+  res.status(status).json(response);
+};
+
+
+/**
+ * Envia uma resposta de lista paginada
+ */
+export const paginatedResponse = (
+  res: Response,
+  data: any[],
+  page: number,
+  limit: number,
+  total: number,
+  message: string = 'Dados recuperados com sucesso'
+) => {
+  const totalPages = Math.ceil(total / limit);
+  const hasNext = page < totalPages;
+  const hasPrev = page > 1;
+
+  const meta = {
+    pagination: {
+      page,
+      limit,
+      total,
+      totalPages,
+      hasNext,
+      hasPrev
+    }
+  };
+
+  apiResponse(res, 200, data, message, meta);
 };

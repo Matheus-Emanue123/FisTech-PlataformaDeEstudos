@@ -1,6 +1,7 @@
 import app from './app';
 import { PrismaClient } from './generated/prisma/client.js';
 import { config } from './config/environment';
+import { loadPermissionsFromDB } from './utils/permissions';
 
 const prisma = new PrismaClient();
 
@@ -19,6 +20,9 @@ const server = app.listen(config.port, async () => {
   try {
     await prisma.$connect();
     console.log('Connected to database');
+    
+    // Carregar permissões do banco de dados
+    await loadPermissionsFromDB();
   } catch (error) {
     console.error('Database connection error:', error);
     process.exit(1);

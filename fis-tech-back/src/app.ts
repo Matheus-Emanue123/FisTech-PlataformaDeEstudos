@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import userRoutes from './routes/user.routes';
 import authRoutes from './routes/auth.routes';
-import { errorHandler } from './middlewares/errorHandler';
+import { errorHandler, notFoundHandler, methodNotAllowedHandler } from './middlewares/errorHandler';
 
 const app = express();
 
@@ -17,6 +17,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 
+// Handle 404 errors
+app.use(notFoundHandler);
+
+// Handle unsupported methods
+app.use(methodNotAllowedHandler);
+
+// Global error handler (must be last)
 app.use(errorHandler);
 
 export default app;
