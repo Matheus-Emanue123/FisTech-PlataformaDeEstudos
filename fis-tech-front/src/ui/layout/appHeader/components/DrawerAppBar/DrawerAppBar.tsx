@@ -6,7 +6,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { sysAppBarOptions } from "../../../appModuleManeger/AppModuleManeger";
-import Styles, { drawerAppBarStyles } from "./DrawerAppBarStyles";
+import Styles from "./DrawerAppBarStyles";
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
 
