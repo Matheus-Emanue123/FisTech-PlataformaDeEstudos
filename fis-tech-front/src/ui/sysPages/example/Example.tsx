@@ -13,8 +13,6 @@ import {
   IOptionToSysRadioField,
   SysRadioField,
 } from "../../sysComponents/sysForm/sysRadioField/SysRadioField";
-import { UsuarioSch } from "../../../modules/usuario/api/UsuarioSch";
-import { usuarioApi } from "../../../modules/usuario/api/UsuarioApi";
 
 type Form = {
   toggleInput: boolean;
