@@ -43,6 +43,14 @@ export const ShowNotification: React.FC<IShowNotificationProps> = ({
     if (open && onOpen) {
       onOpen();
     }
+
+    if (open && onClose) {
+      const timer = setTimeout(() => {
+        onClose();
+      }, duration);
+
+      return () => clearTimeout(timer);
+    }
   }, [open, onOpen, onClose, duration]);
 
   const handleClose = (
