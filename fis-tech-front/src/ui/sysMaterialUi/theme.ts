@@ -1,7 +1,6 @@
 import { createTheme } from "@mui/material";
 import sysFonts from "./fonts/sysFonts";
 import sysPalette from "./colors/sysColors";
-import { TypographyStyleOptions } from "@mui/material/styles/createTypography";
 
 const typography = sysFonts.getTypography() as any;
 
