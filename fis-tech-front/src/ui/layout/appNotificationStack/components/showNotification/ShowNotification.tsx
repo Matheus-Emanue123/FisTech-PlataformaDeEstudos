@@ -19,7 +19,7 @@ import { MyTooltip } from "../../../../sysComponents/myTooltip/MyTooltip";
 import SysAppContext from "../../../../../app/AppContext";
 
 export interface IShowNotificationProps {
-  position: number;
+  position?: number;
   open?: boolean;
   onOpen?: () => void;
   onClose?: () => void;
@@ -29,7 +29,7 @@ export interface IShowNotificationProps {
 }
 
 export const ShowNotification: React.FC<IShowNotificationProps> = ({
-  position,
+  position = 0,
   open = false,
   onOpen,
   onClose,
@@ -43,15 +43,7 @@ export const ShowNotification: React.FC<IShowNotificationProps> = ({
     if (open && onOpen) {
       onOpen();
     }
-
-    if (open && onClose) {
-      const timer = setTimeout(() => {
-        onClose();
-      }, duration);
-
-      return () => clearTimeout(timer);
-    }
-  }, [open, onOpen, onClose, duration]);
+  }, [open, onOpen]);
 
   const handleClose = (
     event: React.SyntheticEvent | Event,

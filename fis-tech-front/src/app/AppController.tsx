@@ -1,44 +1,48 @@
 import React, { useCallback, useState } from "react";
 import { useTheme, useMediaQuery } from "@mui/material";
-import { AppLayoutRefatorado } from "../ui/layout/appLayout/AppLayoutRefatorado";
+import { AppLayout } from "../ui/layout/appLayout/AppLayout";
 import Context, { IAppContext } from "./AppContext";
-import { IShowNotificationProps } from "../ui/layout/appNotificationStack/components/showNotification/ShowNotification";
-import { AppNotificationStack } from "../ui/layout/appNotificationStack/AppNotificationStack";
+import {
+  AppNotificationStack,
+  IAppNotification,
+} from "../ui/layout/appNotificationStack/AppNotificationStack";
+import { MAX_NOTIFICATIONS } from "../typings/ConfigEnvironment";
 
 export const UseAppController: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const [listShowNotifications, setListShowNotifications] = useState<
-    Omit<IShowNotificationProps, "position">[]
-  >([]);
+  const [notifications, setNotifications] = useState<IAppNotification[]>([]);
 
-  console.log("listShowNotifications = ", listShowNotifications);
+  const addNotification = useCallback(
+  (notif: Omit<IAppNotification, "id">) => {
+    const next = { ...notif, id: crypto.randomUUID() };
 
-  const addShowNotification = useCallback(
-    (options: Omit<IShowNotificationProps, "position">) => {
-      setListShowNotifications((prevNotifications) => {
-        const updatedNotifications = [...prevNotifications, options];
-        if (updatedNotifications.length > 4) {
-          updatedNotifications.shift();
-        }
+    setNotifications((prev) => {
+      const oldNotifications =
+        prev.length >= Number(MAX_NOTIFICATIONS || 0)
+          ? prev.slice(0, Number(MAX_NOTIFICATIONS) - 1)
+          : prev;
+      return [next, ...oldNotifications];
+    });
+  },
+  []
+);
 
-        return updatedNotifications;
-      });
-    },
-    []
-  );
+  const removeNotification = useCallback((id: string) => {
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
+  }, []);
 
   const providerValue: IAppContext = {
-    showNotification: addShowNotification,
+    showNotification: addNotification,
     isMobile: isMobile,
   };
 
   return (
     <Context.Provider value={providerValue}>
-      <AppLayoutRefatorado />
+      <AppLayout />
       <AppNotificationStack
-        listShowNotifications={listShowNotifications}
-        setListShowNotifications={setListShowNotifications}
+        notifications={notifications}
+        removeNotification={removeNotification}
       />
     </Context.Provider>
   );

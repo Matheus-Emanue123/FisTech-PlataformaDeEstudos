@@ -159,6 +159,12 @@ export const Example = () => {
             onClick={(
               event: React.MouseEvent<HTMLButtonElement, MouseEvent>
             ) => {
+              showNotification({
+                open: true,
+                duration: 6000,
+                type: "error",
+                message: "Teste número 2",
+              });
               console.log("Clicou no secondary button!", event);
             }}
           />

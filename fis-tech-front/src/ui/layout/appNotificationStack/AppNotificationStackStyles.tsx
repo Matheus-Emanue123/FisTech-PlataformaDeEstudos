@@ -7,7 +7,7 @@ interface IStyles {
 }
 
 const AppNotificationStackStyles: IStyles = {
-  StackOfCards: styled(Box)(({}) => ({
+  StackOfCards: styled(Box)(() => ({
     display: "flex",
     flexDirection: "column",
     gap: sysSizing.spacingFixedMd,

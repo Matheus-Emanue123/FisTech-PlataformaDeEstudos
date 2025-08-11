@@ -1,45 +1,34 @@
-import React, { use, useState } from "react";
+import React from "react";
 import {
   IShowNotificationProps,
   ShowNotification,
 } from "./components/showNotification/ShowNotification";
 import Styles from "./AppNotificationStackStyles";
 
+export interface IAppNotification extends IShowNotificationProps {
+  id: string;
+}
+
 interface IAppNotificationStackProps {
-  listShowNotifications: Omit<IShowNotificationProps, "position">[];
-  setListShowNotifications: React.Dispatch<
-    React.SetStateAction<Omit<IShowNotificationProps, "position">[]>
-  >;
+  notifications: IAppNotification[];
+  removeNotification: (id: string) => void;
 }
 
 export const AppNotificationStack: React.FC<IAppNotificationStackProps> = ({
-  listShowNotifications,
-  setListShowNotifications,
+  notifications,
+  removeNotification,
 }) => {
-  const isEmpty = listShowNotifications.length === 0;
-
-  const removeNotification = () => {
-    setListShowNotifications((prevNotifications) => {
-      const updatedNotifications = prevNotifications.slice(1);
-      return updatedNotifications;
-    });
-  };
-
-  if (isEmpty) {
-    return null;
-  }
-
   return (
     <Styles.StackOfCards>
-      {listShowNotifications.map((notification, index) => (
+      {notifications.map((notif, index) => (
         <ShowNotification
-          {...notification}
+          key={notif.id}
           position={index + 1}
-          key={`notification${index}`}
-          onClose={() => {
-            removeNotification();
-            notification?.onClose && notification?.onClose();
-          }}
+          open={true}
+          type={notif.type}
+          message={notif.message}
+          duration={notif.duration}
+          onClose={() => removeNotification(notif.id)}
         />
       ))}
     </Styles.StackOfCards>
