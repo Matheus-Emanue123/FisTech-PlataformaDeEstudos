@@ -1,59 +1,48 @@
-import React, { createContext, useCallback, useMemo, useState } from "react";
-import {
-  ISysAppLayoutContext,
-  ISysGeneralComponentsCommon,
-} from "../typings/DefaultTypings";
-import {
-  IShowNotificationProps,
-  ShowNotification,
-} from "../ui/sysComponents/showNotification/ShowNotification";
+import React, { useCallback, useState } from "react";
 import { useTheme, useMediaQuery } from "@mui/material";
-import { AppLayoutRefatorado } from "../ui/layout/appLayout/AppLayoutRefatorado";
-
-export const SysAppLayoutContext = createContext<ISysAppLayoutContext>(
-  {} as ISysAppLayoutContext
-);
-
-const defaultState: ISysGeneralComponentsCommon = { open: false };
+import { AppLayout } from "../ui/layout/appLayout/AppLayout";
+import Context, { IAppContext } from "./AppContext";
+import {
+  AppNotificationStack,
+  IAppNotification,
+} from "../ui/layout/appNotificationStack/AppNotificationStack";
+import { MAX_NOTIFICATIONS } from "../typings/ConfigEnvironment";
 
 export const UseAppController: React.FC = () => {
-  const [showNotification, setShowNotification] =
-    useState<IShowNotificationProps>(defaultState);
-
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const [notifications, setNotifications] = useState<IAppNotification[]>([]);
 
-  const handleCloseNotification = useCallback((callBack?: () => void) => {
-    setShowNotification(defaultState);
-    callBack?.();
+  const addNotification = useCallback((notif: Omit<IAppNotification, "id">) => {
+    const next = { ...notif, id: crypto.randomUUID() };
+
+    setNotifications((prev) => {
+      const oldNotifications =
+        prev.length >= Number(MAX_NOTIFICATIONS || 0)
+          ? prev.slice(0, Number(MAX_NOTIFICATIONS) - 1)
+          : prev;
+      return [next, ...oldNotifications];
+    });
   }, []);
 
-  const showNotificationHandler = useCallback(
-    (props?: IShowNotificationProps) => {
-      props?.onOpen?.();
-      setShowNotification({
-        ...showNotification,
-        ...props,
-        onClose: () => handleCloseNotification(props?.onClose),
-        open: true,
-      });
-    },
-    [handleCloseNotification, showNotification]
-  );
+  const removeNotification = useCallback((id: string) => {
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
+  }, []);
 
-  const providerValue: ISysAppLayoutContext = useMemo(
-    () => ({
-      showNotification: showNotificationHandler,
-      closeNotification: handleCloseNotification,
-      isMobile: isMobile,
-    }),
-    [handleCloseNotification, showNotificationHandler, isMobile]
-  );
+  const providerValue: IAppContext = {
+    showNotification: addNotification,
+    isMobile: isMobile,
+  };
 
   return (
-    <SysAppLayoutContext.Provider value={providerValue}>
-      <AppLayoutRefatorado />
-      <ShowNotification {...showNotification} />
-    </SysAppLayoutContext.Provider>
+    <Context.Provider value={providerValue}>
+      <AppLayout />
+      <AppNotificationStack
+        notifications={notifications}
+        removeNotification={removeNotification}
+      />
+    </Context.Provider>
   );
 };
+
+export default UseAppController;

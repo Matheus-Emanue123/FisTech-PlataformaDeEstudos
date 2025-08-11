@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Box } from "@mui/material";
 import { IconTooltip } from "../../sysComponents/iconTooltip/IconTooltip";
 import TuneIcon from "@mui/icons-material/Tune";
@@ -13,7 +13,7 @@ import {
   IOptionToSysRadioField,
   SysRadioField,
 } from "../../sysComponents/sysForm/sysRadioField/SysRadioField";
-
+import SysAppContext from "../../../app/AppContext";
 type Form = {
   toggleInput: boolean;
   textInput: string;
@@ -21,13 +21,13 @@ type Form = {
 };
 
 export const Example = () => {
+  const { showNotification } = useContext(SysAppContext);
+
   const [valueForm, setValueForm] = useState<Form>({
     toggleInput: false,
     textInput: "",
     radioInput: "",
   });
-
-  console.log("FORMULÁRIO = ", valueForm);
 
   const handleChange = (event: any) => {
     setValueForm({
@@ -132,6 +132,12 @@ export const Example = () => {
             onClick={(
               event: React.MouseEvent<HTMLButtonElement, MouseEvent>
             ) => {
+              showNotification({
+                open: true,
+                duration: 6000,
+                type: "default",
+                message: "Teste número 1",
+              });
               console.log("Clicou no primary button!", event);
             }}
           />
@@ -153,6 +159,12 @@ export const Example = () => {
             onClick={(
               event: React.MouseEvent<HTMLButtonElement, MouseEvent>
             ) => {
+              showNotification({
+                open: true,
+                duration: 6000,
+                type: "error",
+                message: "Teste número 2",
+              });
               console.log("Clicou no secondary button!", event);
             }}
           />

@@ -1,12 +1,12 @@
 import React, { useContext, useState } from "react";
 import { Box, IconButton, Drawer } from "@mui/material";
 import Styles, { appHeaderStyles } from "./AppHeaderStyles";
-import { SysAppLayoutContext } from "../../../app/AppController";
+import SysAppContext from "../../../app/AppContext";
 import { DrawerHeader } from "./components//DrawerAppBar/DrawerAppBar";
 import BasicTabs from "./components/BasicTabs/BasicTabs";
 
 export const AppHeader: React.FC = () => {
-  const { isMobile } = useContext(SysAppLayoutContext);
+  const { isMobile } = useContext(SysAppContext);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const toggleDrawer = (open: boolean) => () => {
