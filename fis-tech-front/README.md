@@ -4,13 +4,11 @@
 
 Para o desenvolvimento do **FISTECH** no front-end, foi escolhido três ferramentas fundamentais e metodos que garantem performance, escalabilidade e uma experiência de usuário consistente:
 
-- **React com TypeScript:** React é uma biblioteca JavaScript para construção de interfaces de usuário declarativas e componentizadas. Ao integrá-lo com TypeScript, ganhamos tipagem estática, autocompletar e detecção de erros em tempo de compilação, o que aumenta a robustez do código e facilita a manutenção em projetos de maior porte. Saiba mais em: <https://reactjs.org/> <https://www.typescriptlang.org/>
+- **React com TypeScript (19.1.0):** React é uma biblioteca JavaScript para construção de interfaces de usuário declarativas e componentizadas. Ao integrá-lo com TypeScript, ganhamos tipagem estática, autocompletar e detecção de erros em tempo de compilação, o que aumenta a robustez do código e facilita a manutenção em projetos de maior porte. Saiba mais em: <https://reactjs.org/> <https://www.typescriptlang.org/>
 
-- **Axios**: Axios é uma biblioteca leve para fazer requisições HTTP a partir do navegador (ou Node.js), com suporte a Promises e interceptors para tratamento centralizado de erros e autenticação. Escolhemos Axios pela sua simplicidade de uso, configurabilidade e por facilitar a realização de requisições a APIs. Saiba mais em: <https://axios-http.com/ptbr/docs/intro>
+- **Axios (1.11.0):** Axios é uma biblioteca leve para fazer requisições HTTP a partir do navegador (ou Node.js), com suporte a Promises e interceptors para tratamento centralizado de erros e autenticação. Escolhemos Axios pela sua simplicidade de uso, configurabilidade e por facilitar a realização de requisições a APIs. Saiba mais em: <https://axios-http.com/ptbr/docs/intro>
 
-- **Material UI (MUI)**  
-  Material UI é um conjunto de componentes React prontos, baseados no Material Design da Google. Ele oferece temas personalizáveis, componentes acessíveis e uma vasta coleção de elementos (botões, tabelas, formulários, etc.), acelerando o desenvolvimento de uma interface moderna e responsiva.  
-  Saiba mais em: <https://mui.com/>
+- **Material UI (7.1.2):** Material UI é um conjunto de componentes React prontos, baseados no Material Design da Google. Ele oferece temas personalizáveis, componentes acessíveis e uma vasta coleção de elementos (botões, tabelas, formulários, etc.), acelerando o desenvolvimento de uma interface moderna e responsiva. Saiba mais em: <https://mui.com>
 
 Estas ferramentas trabalham em conjunto para tornar o front-end do FISTECH ágil, seguro e agradável tanto para desenvolvedores quanto para usuários finais. Dentre os benefícios de adotá-las no desenvolvimento nós podemos destacar o conhecimento prévio das ferramentas pelos alunos, agilidade e facilidade no desenvolvimento de páginas completas proporcionadas pelas bibliotecas.
 
@@ -28,9 +26,10 @@ Para otimizar o desenvolvimento e a manutenção do front-end do **FISTECH**, ad
 ┌──
 ├── app/ ---> Abriga as estruras inicias para a inicialização do produto.
 │ ├── App.tsx --> Componente principal montado na index.html.
+│ ├── AppContext.tsx --> Contexto empregado para gerenciar os componentes do sistema.
+│ ├── AppController/ --> Conjunto de componentes globais do sistema (diálogos, modais, etc.).
 │ ├── AppRouterSwitch.tsx --> Gerencia as rotas da aplicação.
-│ ├── AppLayout/ --> Conjunto de componentes globais (diálogos, modais, etc.).
-│ └── AppStyle.tsx --> Estilo dos componentes gerais.
+│ └── AppStyles.tsx --> Estilo dos componentes gerais.
 │
 ├── api/ --> Contém os arquivos/classes bases para comunicação com o banco de dados.
 │
