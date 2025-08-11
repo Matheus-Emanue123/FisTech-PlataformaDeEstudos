@@ -13,8 +13,7 @@ export const UseAppController: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [notifications, setNotifications] = useState<IAppNotification[]>([]);
 
-  const addNotification = useCallback(
-  (notif: Omit<IAppNotification, "id">) => {
+  const addNotification = useCallback((notif: Omit<IAppNotification, "id">) => {
     const next = { ...notif, id: crypto.randomUUID() };
 
     setNotifications((prev) => {
@@ -24,9 +23,7 @@ export const UseAppController: React.FC = () => {
           : prev;
       return [next, ...oldNotifications];
     });
-  },
-  []
-);
+  }, []);
 
   const removeNotification = useCallback((id: string) => {
     setNotifications((prev) => prev.filter((n) => n.id !== id));

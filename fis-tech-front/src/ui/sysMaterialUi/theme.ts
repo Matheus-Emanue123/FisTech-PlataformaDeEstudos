@@ -8,7 +8,6 @@ export const MaterialUiTheme = createTheme({
   palette: {
     ...sysPalette,
   },
-  // Ensure that typography values (like fontSize) are numbers, not strings
   typography,
   breakpoints: {
     values: {
