@@ -11,7 +11,7 @@ import {
   ShowNotificationStyles,
 } from "./ShowNotificationStyles";
 import { MyTooltip } from "../myTooltip/MyTooltip";
-import { SysAppLayoutContext } from "../../../app/AppLayout";
+import { SysAppLayoutContext } from "../../../app/AppController";
 
 export interface IShowNotificationProps {
   open?: boolean;

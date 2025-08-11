@@ -9,7 +9,6 @@ import {
 } from "../ui/sysComponents/showNotification/ShowNotification";
 import { useTheme, useMediaQuery } from "@mui/material";
 import { AppLayoutRefatorado } from "../ui/layout/appLayout/AppLayoutRefatorado";
-import UseAuthController from "../utils/hooks/useAuth/UseAuthController";
 
 export const SysAppLayoutContext = createContext<ISysAppLayoutContext>(
   {} as ISysAppLayoutContext
@@ -17,7 +16,7 @@ export const SysAppLayoutContext = createContext<ISysAppLayoutContext>(
 
 const defaultState: ISysGeneralComponentsCommon = { open: false };
 
-export const AppLayout: React.FC = () => {
+export const UseAppController: React.FC = () => {
   const [showNotification, setShowNotification] =
     useState<IShowNotificationProps>(defaultState);
 
@@ -53,10 +52,8 @@ export const AppLayout: React.FC = () => {
 
   return (
     <SysAppLayoutContext.Provider value={providerValue}>
-      <UseAuthController>
-        <AppLayoutRefatorado />
-        <ShowNotification {...showNotification} />
-      </UseAuthController>
+      <AppLayoutRefatorado />
+      <ShowNotification {...showNotification} />
     </SysAppLayoutContext.Provider>
   );
 };
