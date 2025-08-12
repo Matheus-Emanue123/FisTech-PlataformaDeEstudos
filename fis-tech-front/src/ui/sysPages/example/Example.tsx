@@ -13,11 +13,13 @@ import {
   IOptionToSysRadioField,
   SysRadioField,
 } from "../../sysComponents/sysForm/sysRadioField/SysRadioField";
+import { SysDatePicker } from "../../sysComponents/sysForm/sysDatePicker/SysDatePicker";
 import SysAppContext from "../../../app/AppContext";
 type Form = {
   toggleInput: boolean;
   textInput: string;
   radioInput: string;
+  dateInput: Date | null;
 };
 
 export const Example = () => {
@@ -27,6 +29,7 @@ export const Example = () => {
     toggleInput: false,
     textInput: "",
     radioInput: "",
+    dateInput: null,
   });
 
   const handleChange = (event: any) => {
@@ -40,6 +43,13 @@ export const Example = () => {
     setValueForm({
       ...valueForm,
       [event.target.name]: event.target.checked,
+    });
+  };
+
+  const handleDateChange = (date: Date | null) => {
+    setValueForm({
+      ...valueForm,
+      dateInput: date,
     });
   };
 
@@ -298,6 +308,46 @@ export const Example = () => {
             options={optionsToRadioField}
             changeValue={handleChange}
             maxWidth="420px"
+            disabled
+          />
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          gap: "30px",
+          flexWrap: "wrap",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+            width: "300px",
+          }}
+        >
+          <SysDatePicker
+            label="Data de nascimento"
+            value={valueForm.dateInput}
+            changeValue={handleDateChange}
+            maxWidth="300px"
+            placeholder="Selecione uma data"
+          />
+          <SysDatePicker
+            label="Data com erro"
+            value={valueForm.dateInput}
+            changeValue={handleDateChange}
+            maxWidth="300px"
+            error
+            msgError="É necessário selecionar uma data válida"
+          />
+          <SysDatePicker
+            label="Data desabilitada"
+            value={valueForm.dateInput}
+            changeValue={handleDateChange}
+            maxWidth="300px"
             disabled
           />
         </Box>
