@@ -21,7 +21,7 @@ type Form = {
 };
 
 export const Example = () => {
-  const { showNotification } = useContext(SysAppContext);
+  const { showNotification, showLoading } = useContext(SysAppContext);
 
   const [valueForm, setValueForm] = useState<Form>({
     toggleInput: false,
@@ -187,7 +187,11 @@ export const Example = () => {
             onClick={(
               event: React.MouseEvent<HTMLButtonElement, MouseEvent>
             ) => {
+              showLoading(true);
               console.log("Clicou no secondary button com icon!", event);
+              setTimeout(() => {
+                showLoading(false);
+              }, 10000);
             }}
           />
           <SysButton

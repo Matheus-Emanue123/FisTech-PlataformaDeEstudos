@@ -3,6 +3,7 @@ import { IShowNotificationProps } from "../ui/layout/appNotificationStack/compon
 
 interface IAppContext {
   showNotification: (options: Omit<IShowNotificationProps, "position">) => void;
+  showLoading: (status: boolean) => void;
   isMobile: boolean;
 }
 
