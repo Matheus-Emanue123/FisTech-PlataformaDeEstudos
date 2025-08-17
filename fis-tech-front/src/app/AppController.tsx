@@ -7,11 +7,13 @@ import {
   IAppNotification,
 } from "../ui/layout/appNotificationStack/AppNotificationStack";
 import { MAX_NOTIFICATIONS } from "../typings/ConfigEnvironment";
+import { AppLoading } from "../ui/layout/appLoading/AppLoaging";
 
 export const UseAppController: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [notifications, setNotifications] = useState<IAppNotification[]>([]);
+  const [loadingSystem, setLoadingSystem] = useState<boolean>(false);
 
   const addNotification = useCallback((notif: Omit<IAppNotification, "id">) => {
     const next = { ...notif, id: crypto.randomUUID() };
@@ -31,11 +33,13 @@ export const UseAppController: React.FC = () => {
 
   const providerValue: IAppContext = {
     showNotification: addNotification,
+    showLoading: setLoadingSystem,
     isMobile: isMobile,
   };
 
   return (
     <Context.Provider value={providerValue}>
+      {loadingSystem && <AppLoading />}
       <AppLayout />
       <AppNotificationStack
         notifications={notifications}
