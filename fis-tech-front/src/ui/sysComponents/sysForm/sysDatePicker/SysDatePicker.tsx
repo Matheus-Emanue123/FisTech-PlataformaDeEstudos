@@ -1,10 +1,8 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
-import { DatePickerProps } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ptBR } from "date-fns/locale";
-import { MyDatePicker, SysDatePickerStyles } from "./SysDatePickerStyles";
+import Styles from "./SysDatePickerStyles";
 import { SysSimpleLabel } from "../sysSimpleLabel/SysSimpleLabel";
 
 type ISysDatePicker = {
@@ -36,12 +34,12 @@ export const SysDatePicker: React.FC<ISysDatePicker> = ({
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ptBR}>
-      <Box sx={SysDatePickerStyles.container}>
+      <Styles.Container>
         <SysSimpleLabel
           label={label ?? "Selecione uma data"}
           disabled={disabled}
         />
-        <MyDatePicker
+        <Styles.MyDatePicker
           value={value}
           onChange={handleChange}
           format={format}
@@ -56,18 +54,14 @@ export const SysDatePicker: React.FC<ISysDatePicker> = ({
           }}
           disabled={disabled}
         />
-        <Box sx={[SysDatePickerStyles.errorMessageBody, { maxWidth: maxWidth }]}>
+        <Styles.ErrorMessageBody sx={{ maxWidth: maxWidth }}>
           {error && (
-            <Typography
-              variant="caption"
-              color="error"
-              sx={SysDatePickerStyles.errorMessageText}
-            >
+            <Styles.ErrorMessageText variant="caption" color="error">
               {msgError}
-            </Typography>
+            </Styles.ErrorMessageText>
           )}
-        </Box>
-      </Box>
+        </Styles.ErrorMessageBody>
+      </Styles.Container>
     </LocalizationProvider>
   );
 };
