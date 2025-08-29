@@ -51,6 +51,19 @@ export const SysDatePicker: React.FC<ISysDatePicker> = ({
                 maxWidth: maxWidth,
               },
             },
+            field: { 
+              clearable: true,
+            },
+            popper: {
+              sx: {
+                "& .MuiPaper-root": {
+                  backgroundColor: "white",
+                },
+                "& .MuiDateCalendar-root": {
+                  backgroundColor: "white",
+                },
+              },
+            },
           }}
           disabled={disabled}
         />
