@@ -30,6 +30,9 @@ const SysDatePickerStyles: IStyles = {
       maxHeight: "40px",
       border: "none",
     },
+    "& .MuiInputBase-root.Mui-disabled": {
+      backgroundColor: theme.palette.action.disabledBackground,
+    },
     "& .MuiOutlinedInput-root": {
       "&:hover fieldset": {
         borderColor: theme.palette.info.light,
@@ -64,13 +67,23 @@ const SysDatePickerStyles: IStyles = {
       WebkitTextFillColor: theme.palette.text.disabled,
     },
     "& .MuiSvgIcon-root": {
-      color: theme.palette.info.light,
+      color: theme.palette.common.black,
     },
     "&:hover .MuiSvgIcon-root": {
       color: theme.palette.common.black,
     },
     "& .MuiInputBase-root.Mui-disabled .MuiSvgIcon-root": {
       color: theme.palette.text.disabled,
+    },
+    // Estilos para o popup/modal do calendário
+    "& .MuiPickersPopper-root": {
+      "& .MuiPaper-root": {
+        backgroundColor: theme.palette.common.white,
+        boxShadow: theme.shadows[3],
+      },
+    },
+    "& .MuiDateCalendar-root": {
+      backgroundColor: theme.palette.common.white,
     },
   })),
   ErrorMessageBody: styled(Box)(() => ({
