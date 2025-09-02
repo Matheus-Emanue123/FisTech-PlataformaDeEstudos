@@ -2,6 +2,7 @@ import React from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ptBR } from "date-fns/locale";
+import { Theme } from "@mui/material/styles";
 import Styles from "./SysDatePickerStyles";
 import { SysSimpleLabel } from "../sysSimpleLabel/SysSimpleLabel";
 
@@ -57,10 +58,10 @@ export const SysDatePicker: React.FC<ISysDatePicker> = ({
             popper: {
               sx: {
                 "& .MuiPaper-root": {
-                  backgroundColor: "white",
+                  backgroundColor: (theme: Theme) => theme.palette.common.white,
                 },
                 "& .MuiDateCalendar-root": {
-                  backgroundColor: "white",
+                  backgroundColor: (theme: Theme) => theme.palette.common.white,
                 },
               },
             },
