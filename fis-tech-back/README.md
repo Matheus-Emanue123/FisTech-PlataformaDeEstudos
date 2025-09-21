@@ -1,20 +1,70 @@
-Inicializar o banco:
+# FisTech - Plataforma de Estudos
 
-```npx prisma migrate dev --name init```
+Este projeto é uma plataforma de estudos.
 
-Gerar o prisma client:
+## Setup
 
-```npx prisma generate```
+1.  **Instale as dependências do backend:**
+    Navegue até o diretório `fis-tech-back` e execute:
+    ```bash
+    cd fis-tech-back
+    npm install
+    ```
 
-Fazer uma migration (sempre que modificar o schema):
+2.  **Configure as variáveis de ambiente do backend:**
+    Crie um arquivo `.env` na raiz do diretório `fis-tech-back` com a seguinte variável:
+    ```
+    DATABASE_URL="postgresql://user:password@localhost:5432/fistech?schema=public"
+    ```
+    Substitua `user`, `password`, `localhost:5432` e `fistech` pelos dados do seu banco de dados PostgreSQL.
 
-```npx prisma migrate dev```
+3.  **Instale as dependências do test client:**
+    Navegue até o diretório `fis-tech-back/test-client` e execute:
+    ```bash
+    cd fis-tech-back/test-client
+    npm install
+    ```
 
-ou
+## Banco de Dados
 
-```npx prisma migrate dev --name <migration_name>```
+*   **Inicializar o banco (so pela primeira vez):**
+    ```bash
+    cd fis-tech-back
+    npx prisma migrate dev --name init
+    ```
 
-Gere o cliente após cada migration
+*   **Popule o banco de dados com dados iniciais (seed):**
+    ```bash
+    cd fis-tech-back
+    npm run db:seed
+    ```
+
+*   **Tem q fazer uma migration (sempre que modificar o schema):**
+    ```bash
+    cd fis-tech-back
+    npx prisma migrate dev --name <migration_name>
+    ```
+*   **Gere o cliente após cada migration**:
+    ```bash
+    cd fis-tech-back
+    npx prisma generate
+    ```
+
+## Rodar o Backend
+
+Para iniciar o servidor de desenvolvimento do backend:
+```bash
+cd fis-tech-back
+npm run dev
+```
+
+## Rodar o Test Client
+
+Para executar o cliente de testes:
+```bash
+cd fis-tech-back/test-client
+npm start
+```
 
 ## Fluxo
 

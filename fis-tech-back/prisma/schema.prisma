@@ -1,10 +1,11 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  provider      = "prisma-client-js"
+  output        = "../src/generated/prisma"
+  binaryTargets = ["native"]
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -13,12 +14,12 @@ model Anotacao {
   texto        String    @db.Text
   user_id      Int?
   topico_id    Int?
-  data_criacao DateTime? @default(now()) @db.DateTime(0)
+  data_criacao DateTime? @default(now())
   Usuario      Usuario?  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Anotacao_ibfk_1")
   Topico       Topico?   @relation(fields: [topico_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Anotacao_ibfk_2")
 
-  @@index([topico_id], map: "topico_id")
-  @@index([user_id], map: "user_id")
+  @@index([topico_id], map: "Anotacao_topico_id")
+  @@index([user_id], map: "Anotacao_user_id")
 }
 
 model Assunto {
@@ -31,15 +32,15 @@ model Assunto {
 model Comentario {
   id           Int       @id @default(autoincrement())
   texto        String    @db.Text
-  data_criacao DateTime? @default(now()) @db.DateTime(0)
+  data_criacao DateTime? @default(now())
   removido     Boolean?  @default(false)
   user_id      Int?
   conteudo_id  Int?
   Usuario      Usuario?  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Comentario_ibfk_1")
   Conteudo     Conteudo? @relation(fields: [conteudo_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Comentario_ibfk_2")
 
-  @@index([conteudo_id], map: "conteudo_id")
-  @@index([user_id], map: "user_id")
+  @@index([conteudo_id], map: "Comentario_conteudo_id")
+  @@index([user_id], map: "Comentario_user_id")
 }
 
 model Conteudo {
@@ -48,7 +49,7 @@ model Conteudo {
   descricao        String?           @db.Text
   url_video        String?           @db.VarChar(255)
   tipo             String?           @db.VarChar(50)
-  data_criacao     DateTime?         @default(now()) @db.DateTime(0)
+  data_criacao     DateTime?         @default(now())
   topico_id        Int?
   nivel_id         Int?
   criado_por       Int?
@@ -59,29 +60,29 @@ model Conteudo {
   Usuario          Usuario?          @relation(fields: [criado_por], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Conteudo_ibfk_3")
   Questao          Questao?          @relation(fields: [questao_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Conteudo_ibfk_4")
 
-  @@index([criado_por], map: "criado_por")
-  @@index([nivel_id], map: "nivel_id")
-  @@index([questao_id], map: "questao_id")
-  @@index([topico_id], map: "topico_id")
+  @@index([criado_por], map: "Conteudo_criado_por")
+  @@index([nivel_id], map: "Conteudo_nivel_id")
+  @@index([questao_id], map: "Conteudo_questao_id")
+  @@index([topico_id], map: "Conteudo_topico_id")
 }
 
 model MapaMental {
   id           Int       @id @default(autoincrement())
   arquivo_url  String?   @db.VarChar(255)
-  data_criacao DateTime? @default(now()) @db.DateTime(0)
+  data_criacao DateTime? @default(now())
   user_id      Int?
   topico_id    Int?
   Usuario      Usuario?  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "MapaMental_ibfk_1")
   Topico       Topico?   @relation(fields: [topico_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "MapaMental_ibfk_2")
 
-  @@index([topico_id], map: "topico_id")
-  @@index([user_id], map: "user_id")
+  @@index([topico_id], map: "MapaMental_topico_id")
+  @@index([user_id], map: "MapaMental_user_id")
 }
 
 model NivelDificuldade {
   id               Int                @id @default(autoincrement())
   xp               Int
-  nome             String             @db.VarChar(50)
+  nome             String             @unique @db.VarChar(50)
   Conteudo         Conteudo[]
   Questao          Questao[]
   QuestaoResolvida QuestaoResolvida[]
@@ -94,7 +95,7 @@ model Questao {
   origem           String?            @db.VarChar(100)
   fase             String?            @db.VarChar(50)
   alternativas     Json?
-  data_criacao     DateTime?          @default(now()) @db.DateTime(0)
+  data_criacao     DateTime?          @default(now())
   resolvido        Boolean?
   nivel_id         Int?
   criado_por       Int?
@@ -103,13 +104,13 @@ model Questao {
   Usuario          Usuario?           @relation(fields: [criado_por], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Questao_ibfk_2")
   QuestaoResolvida QuestaoResolvida[]
 
-  @@index([criado_por], map: "criado_por")
-  @@index([nivel_id], map: "nivel_id")
+  @@index([criado_por], map: "Questao_criado_por")
+  @@index([nivel_id], map: "Questao_nivel_id")
 }
 
 model QuestaoResolvida {
   id               Int               @id @default(autoincrement())
-  data_resolucao   DateTime?         @default(now()) @db.DateTime(0)
+  data_resolucao   DateTime?         @default(now())
   acerto           Boolean?
   id_user          Int?
   id_questao       Int?
@@ -118,22 +119,22 @@ model QuestaoResolvida {
   Questao          Questao?          @relation(fields: [id_questao], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "QuestaoResolvida_ibfk_2")
   NivelDificuldade NivelDificuldade? @relation(fields: [nivel_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "QuestaoResolvida_ibfk_3")
 
-  @@index([id_questao], map: "id_questao")
-  @@index([id_user], map: "id_user")
-  @@index([nivel_id], map: "nivel_id")
+  @@index([id_questao], map: "QuestaoResolvida_id_questao")
+  @@index([id_user], map: "QuestaoResolvida_id_user")
+  @@index([nivel_id], map: "QuestaoResolvida_nivel_id")
 }
 
 model Resumo {
   id           Int       @id @default(autoincrement())
   texto        String    @db.Text
-  data_criacao DateTime? @default(now()) @db.DateTime(0)
+  data_criacao DateTime? @default(now())
   user_id      Int?
   topico_id    Int?
   Usuario      Usuario?  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Resumo_ibfk_1")
   Topico       Topico?   @relation(fields: [topico_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Resumo_ibfk_2")
 
-  @@index([topico_id], map: "topico_id")
-  @@index([user_id], map: "user_id")
+  @@index([topico_id], map: "Resumo_topico_id")
+  @@index([user_id], map: "Resumo_user_id")
 }
 
 model Topico {
@@ -147,7 +148,7 @@ model Topico {
   Resumo     Resumo[]
   Assunto    Assunto?     @relation(fields: [assunto_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Topico_ibfk_1")
 
-  @@index([assunto_id], map: "assunto_id")
+  @@index([assunto_id], map: "Topico_assunto_id")
 }
 
 model UserType {
@@ -160,7 +161,7 @@ model UserType {
 model UserXP {
   user_id       Int       @id
   xp_total      Int
-  atualizado_em DateTime? @default(now()) @db.DateTime(0)
+  atualizado_em DateTime? @default(now())
   Usuario       Usuario   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "UserXP_ibfk_1")
 }
 
@@ -169,8 +170,8 @@ model Usuario {
   nome             String             @db.VarChar(100)
   email            String             @db.VarChar(100)
   senha_hash       String             @db.VarChar(255)
-  data_criacao     DateTime?          @default(now()) @db.DateTime(0)
-  ultimo_login     DateTime?          @db.DateTime(0)
+  data_criacao     DateTime?          @default(now())
+  ultimo_login     DateTime?
   user_type_id     Int
   Anotacao         Anotacao[]
   Comentario       Comentario[]
@@ -181,8 +182,20 @@ model Usuario {
   Resumo           Resumo[]
   UserXP           UserXP?
   UserType         UserType           @relation(fields: [user_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Usuario_ibfk_1")
+  refreshTokens    RefreshToken[]
 
-  @@index([user_type_id], map: "user_type_id")
+  @@index([user_type_id], map: "Usuario_user_type_id")
+}
+
+model RefreshToken {
+  id         Int      @id @default(autoincrement())
+  token_hash String   @unique
+  usuarioId  Int
+  usuario    Usuario  @relation(fields: [usuarioId], references: [id])
+  expiresAt  DateTime
+  isRevoked  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 enum UserType_tipo {
@@ -190,5 +203,3 @@ enum UserType_tipo {
   moderador
   usuario_padrao
 }
-
-

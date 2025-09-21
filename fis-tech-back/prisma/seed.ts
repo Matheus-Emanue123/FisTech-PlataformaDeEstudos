@@ -1,4 +1,4 @@
-import { PrismaClient } from '../src/generated/prisma/client.js';
+import { PrismaClient } from '../src/generated/prisma';
 
 const prisma = new PrismaClient();
 
@@ -65,18 +65,12 @@ async function main() {
   ];
 
   for (const nivel of niveis) {
-    const existingNivel = await prisma.nivelDificuldade.findFirst({
-      where: { nome: nivel.nome }
+    await prisma.nivelDificuldade.upsert({
+      where: { nome: nivel.nome },
+      update: { xp: nivel.xp },
+      create: nivel
     });
-
-    if (!existingNivel) {
-      await prisma.nivelDificuldade.create({
-        data: nivel
-      });
-      console.log(`✅ Created NivelDificuldade: ${nivel.nome}`);
-    } else {
-      console.log(`⏭️  NivelDificuldade already exists: ${nivel.nome}`);
-    }
+    console.log(`✅ Upserted NivelDificuldade: ${nivel.nome}`);
   }
 
   console.log('🎉 Database seeding completed!');
@@ -89,4 +83,4 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
-  }); 
+  });
