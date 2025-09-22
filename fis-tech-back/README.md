@@ -1,7 +1,5 @@
 # FisTech - Plataforma de Estudos
 
-Este projeto é uma plataforma de estudos.
-
 ## Setup
 
 1.  **Instale as dependências do backend:**
@@ -79,3 +77,4 @@ Usuário faz login -> Se o login for certo -> Recebe Token -> Front end salva o 
 Usuário passa a senha para o registro -> Servidor faz a hash da senha  e armazena o hash (e não a senha)
 
 Usuário passa a senha no login -> Servidor faz a hash da senha e compara com o hash que ele tem
+
