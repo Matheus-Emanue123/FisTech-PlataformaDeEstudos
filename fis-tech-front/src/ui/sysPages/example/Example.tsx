@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Box } from "@mui/material";
+import { AppSideHeader } from "../../layout/appSideHeader/AppSideHeader";
 import { IconTooltip } from "../../sysComponents/iconTooltip/IconTooltip";
 import TuneIcon from "@mui/icons-material/Tune";
 import {
@@ -102,14 +103,21 @@ export const Example = () => {
   ];
 
   return (
-    <Box
-      sx={{
-        padding: "40px 20px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "30px",
-      }}
-    >
+    <Box sx={{ display: "flex", height: "100vh" }}>
+      {/* Nossa nova sidebar */}
+      <AppSideHeader />
+      
+      {/* Conteúdo original do Example */}
+      <Box
+        sx={{
+          flex: 1,
+          padding: "40px 20px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "30px",
+          overflow: "auto",
+        }}
+      >
       <Box
         sx={{
           display: "flex",
@@ -352,6 +360,7 @@ export const Example = () => {
           />
         </Box>
       </Box>
+    </Box>
     </Box>
   );
 };

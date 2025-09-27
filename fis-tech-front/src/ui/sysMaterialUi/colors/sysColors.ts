@@ -1,7 +1,7 @@
 import { PaletteOptions } from "@mui/material";
 
 const blueScale = {
-  escuro: "#001f5C",
+  escuro: "#090F17",
   claro: "#c9d4df",
   normal: "#003399",
   fundo: "#bac3dd",
