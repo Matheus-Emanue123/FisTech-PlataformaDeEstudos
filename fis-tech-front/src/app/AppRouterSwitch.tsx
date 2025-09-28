@@ -28,14 +28,6 @@ export const AppRouterSwitch = () => {
         }
       />
       <Route
-        path="/cursos/:screenState?/:id?"
-        element={
-          <Box>
-            <Typography>cursos</Typography>
-          </Box>
-        }
-      />
-      <Route
         path="/usuarios/:screenState?/:id?"
         element={
           <RequireAuth level={UserType.ADMINISTRATOR} path="/usuarios">
