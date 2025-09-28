@@ -1,5 +1,6 @@
-import FolderZipIcon from "@mui/icons-material/FolderZip";
-import BadgeIcon from "@mui/icons-material/Badge";
+import ContentPasteGoIcon from "@mui/icons-material/ContentPasteGo";
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import { SvgIconProps } from "@mui/material/SvgIcon/SvgIcon";
 
 export interface IAppHeaderButton {
@@ -9,39 +10,89 @@ export interface IAppHeaderButton {
   isProtected: boolean;
   icon: React.ReactElement<SvgIconProps>;
   action: () => void;
-  resources?: any[];
 }
 
-export interface IAppSideBarButton {
-  label: string;
-  path: string;
-  active: boolean;
-  isProtected: boolean;
-  icon: React.ReactElement<SvgIconProps>;
-  action: () => void;
-  resources?: any[];
-}
+const widthIcons = "24px";
+const heightIcons = "24px";
 
-export const sysAppBarOptions: IAppHeaderButton[] = [
+export const sysAppHeaderOptions: IAppHeaderButton[] = [
   {
     label: "Exemplo",
     path: "/example",
-    icon: <FolderZipIcon sx={{ width: 23, height: 23 }} />,
+    icon: (
+      <DescriptionOutlinedIcon
+        sx={{ width: widthIcons, height: heightIcons }}
+      />
+    ),
     active: true,
     isProtected: false,
-    action: () => {},
+    action: () => console.log("Clicou em Exemplo"),
   },
   {
     label: "Usuários",
     path: "/usuarios",
-    icon: <BadgeIcon sx={{ width: 23, height: 23 }} />,
+    icon: (
+      <PersonOutlineOutlinedIcon
+        sx={{ width: widthIcons, height: heightIcons }}
+      />
+    ),
     active: true,
     isProtected: false,
-    action: () => {},
+    action: () => console.log("Clicou em Usuários"),
   },
+  // {
+  //   label: "Home",
+  //   path: "/home",
+  //   icon: ,
+  //   active: true,
+  //   isProtected: false,
+  //   action: () => console.log("Clicou em Home"),
+  // },
+  // {
+  //   label: "Estatísticas",
+  //   path: "/estatiscas",
+  //   icon: ,
+  //   active: true,
+  //   isProtected: false,
+  //   action: () => console.log("Clicou em Estatisticas"),
+  // },
+  // {
+  //   label: "Conquistas",
+  //   path: "/conquistas",
+  //   icon: ,
+  //   active: true,
+  //   isProtected: false,
+  //   action: () => console.log("Clicou em Conquistas"),
+  // },
+  {
+    label: "Atividades",
+    path: "/atividades",
+    icon: (
+      <ContentPasteGoIcon sx={{ width: widthIcons, height: heightIcons }} />
+    ),
+    active: true,
+    isProtected: true,
+    action: () => console.log("Clicou em Atividades"),
+  },
+  // {
+  //   label: "Idioma",
+  //   path: "/idioma",
+  //   icon: ,
+  //   active: true,
+  //   isProtected: false,
+  //   action: () => console.log("Clicou em Idioma"),
+  // },
+  // {
+  //   label: "Configurações",
+  //   path: "configuracoes",
+  //   icon: ,
+  //   active: true,
+  //   isProtected: false,
+  //   action: () => console.log("Clicou em Configurações"),
+  // },
 ];
 
 export const getValueAppHeader = (path: string): number => {
   const suffix = path.split("/")[1];
-  return sysAppBarOptions.findIndex((route) => route.path.includes(suffix));
+  return sysAppHeaderOptions.findIndex((route) => route.path.includes(suffix));
 };
