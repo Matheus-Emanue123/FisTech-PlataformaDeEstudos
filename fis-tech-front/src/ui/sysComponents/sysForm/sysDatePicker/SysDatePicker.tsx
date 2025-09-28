@@ -2,7 +2,10 @@ import React from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ptBR } from "date-fns/locale";
-import Styles from "./SysDatePickerStyles";
+import Styles, {
+  datePickerInputPropsSx,
+  datePickerPopperSx,
+} from "./SysDatePickerStyles";
 import { SysSimpleLabel } from "../sysSimpleLabel/SysSimpleLabel";
 
 type ISysDatePicker = {
@@ -45,25 +48,12 @@ export const SysDatePicker: React.FC<ISysDatePicker> = ({
           format={format}
           slotProps={{
             textField: {
-              placeholder: placeholder,
-              error: error,
-              sx: {
-                maxWidth: maxWidth,
-              },
+              placeholder,
+              error,
+              InputProps: { sx: datePickerInputPropsSx },
             },
-            field: { 
-              clearable: true,
-            },
-            popper: {
-              sx: {
-                "& .MuiPaper-root": {
-                  backgroundColor: "white",
-                },
-                "& .MuiDateCalendar-root": {
-                  backgroundColor: "white",
-                },
-              },
-            },
+            field: { clearable: true },
+            popper: { sx: datePickerPopperSx },
           }}
           disabled={disabled}
         />

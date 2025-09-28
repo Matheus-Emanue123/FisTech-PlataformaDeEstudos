@@ -16,6 +16,8 @@ import {
 } from "../../sysComponents/sysForm/sysRadioField/SysRadioField";
 import { SysDatePicker } from "../../sysComponents/sysForm/sysDatePicker/SysDatePicker";
 import SysAppContext from "../../../app/AppContext";
+import DeleteDialog from "../../sysComponents/showDialog/custom/deleteDialog/DeleteDialog";
+import ConfirmDialog from "../../sysComponents/showDialog/custom/confirmDialog/ConfirmDialog";
 type Form = {
   toggleInput: boolean;
   textInput: string;
@@ -24,7 +26,8 @@ type Form = {
 };
 
 export const Example = () => {
-  const { showNotification } = useContext(SysAppContext);
+  const { showNotification, showDialog, closeDialog } =
+    useContext(SysAppContext);
 
   const [valueForm, setValueForm] = useState<Form>({
     toggleInput: false,
@@ -101,6 +104,8 @@ export const Example = () => {
       value: "option3",
     },
   ];
+
+  console.log(valueForm);
 
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
@@ -195,6 +200,43 @@ export const Example = () => {
             ) => {
               console.log("Clicou no secondary button desabilitado!", event);
             }}
+          />
+        </Box>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          <SysButton
+            onClick={() => {
+              DeleteDialog({
+                showDialog,
+                closeDialog,
+                title: "Tem certeza que deseja excluir?",
+                message: "Esta ação não poderá ser desfeita.",
+                onDeleteConfirm: () => {
+                  showNotification({
+                    message: "Excluído com sucesso!",
+                  });
+                },
+              });
+            }}
+            mode={"primary"}
+            label={"Exibir diálogo de exclusão"}
+          />
+          <SysButton
+            onClick={() => {
+              ConfirmDialog({
+                showDialog,
+                closeDialog,
+                title: "Confirmar cadastro",
+                message:
+                  "Tem certeza que deseja confirmar o cadastro dos dados preenchidos?",
+                onConfirm: () => {
+                  showNotification({
+                    message: "Dados salvos!",
+                  });
+                },
+              });
+            }}
+            label={"Exibir diálogo de confirmação"}
+            mode={"primary"}
           />
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
