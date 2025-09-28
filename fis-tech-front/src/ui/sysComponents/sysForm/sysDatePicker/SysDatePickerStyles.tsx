@@ -2,6 +2,7 @@ import {
   Box,
   BoxProps,
   styled,
+  Theme,
   Typography,
   TypographyProps,
 } from "@mui/material";
@@ -23,68 +24,8 @@ const SysDatePickerStyles: IStyles = {
     alignItems: "flex-start",
     padding: sysSizing.base.baseFixed075,
   })),
-  MyDatePicker: styled(DatePicker)(({ theme }) => ({
+  MyDatePicker: styled(DatePicker)(() => ({
     width: "100%",
-    "& .MuiInputBase-root": {
-      borderRadius: sysSizing.radiusXs,
-      maxHeight: "40px",
-      border: "none",
-    },
-    "& .MuiInputBase-root.Mui-disabled": {
-      backgroundColor: theme.palette.action.disabledBackground,
-    },
-    "& .MuiOutlinedInput-root": {
-      "&:hover fieldset": {
-        borderColor: theme.palette.info.light,
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: theme.palette.primary.main,
-      },
-      "&.Mui-error fieldset": {
-        borderColor: theme.palette.error.main,
-      },
-      "&.Mui-error:hover fieldset": {
-        borderColor: theme.palette.error.main,
-      },
-      "&.Mui-error.Mui-focused fieldset": {
-        borderColor: theme.palette.error.main,
-      },
-      "&.Mui-disabled fieldset": {
-        border: "none",
-      },
-      "&.Mui-disabled": {
-        backgroundColor: theme.palette.action.disabledBackground,
-      },
-    },
-    "& .MuiInputBase-input::placeholder": {
-      color: theme.palette.info.light,
-    },
-    "&:hover .MuiInputBase-input::placeholder": {
-      color: theme.palette.common.black,
-    },
-    "& .MuiInputBase-input.Mui-disabled": {
-      color: theme.palette.text.disabled,
-      WebkitTextFillColor: theme.palette.text.disabled,
-    },
-    "& .MuiSvgIcon-root": {
-      color: theme.palette.common.black,
-    },
-    "&:hover .MuiSvgIcon-root": {
-      color: theme.palette.common.black,
-    },
-    "& .MuiInputBase-root.Mui-disabled .MuiSvgIcon-root": {
-      color: theme.palette.text.disabled,
-    },
-    // Estilos para o popup/modal do calendário
-    "& .MuiPickersPopper-root": {
-      "& .MuiPaper-root": {
-        backgroundColor: theme.palette.common.white,
-        boxShadow: theme.shadows[3],
-      },
-    },
-    "& .MuiDateCalendar-root": {
-      backgroundColor: theme.palette.common.white,
-    },
   })),
   ErrorMessageBody: styled(Box)(() => ({
     marginTop: sysSizing.spacingFixedXs,
@@ -104,4 +45,49 @@ const SysDatePickerStyles: IStyles = {
   })),
 };
 
+const datePickerInputPropsSx = (theme: Theme) => ({
+  borderRadius: sysSizing.radiusXs,
+  maxHeight: "40px",
+  maxWidth: "100%",
+  border: "none",
+  color: theme.palette.info.light,
+  "&:hover": {
+    color: theme.palette.common.black,
+  },
+  "&:not(.Mui-disabled):not(.Mui-error):not(.Mui-focused):hover fieldset": {
+    borderColor: theme.palette.info.light,
+  },
+  "&.Mui-focused:not(.Mui-error) fieldset": {
+    borderColor: theme.palette.primary.main,
+  },
+  "&.Mui-error fieldset": {
+    borderColor: theme.palette.error.main,
+  },
+  "&.Mui-error:hover fieldset": {
+    borderColor: theme.palette.error.main,
+  },
+  "&.Mui-error.Mui-focused fieldset": {
+    borderColor: theme.palette.error.main,
+  },
+  "&.Mui-disabled": {
+    backgroundColor: theme.palette.action.disabledBackground,
+  },
+  "&.Mui-disabled fieldset": {
+    border: "none",
+  },
+  "&.Mui-disabled .MuiSvgIcon-root": {
+    color: theme.palette.text.disabled,
+  },
+});
+
+const datePickerPopperSx = (theme: Theme) => ({
+  "& .MuiPaper-root": {
+    backgroundColor: theme.palette.common.white,
+  },
+  "& .MuiDateCalendar-root": {
+    backgroundColor: theme.palette.common.white,
+  },
+});
+
 export default SysDatePickerStyles;
+export { datePickerInputPropsSx, datePickerPopperSx };

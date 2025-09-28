@@ -15,6 +15,8 @@ import {
 } from "../../sysComponents/sysForm/sysRadioField/SysRadioField";
 import { SysDatePicker } from "../../sysComponents/sysForm/sysDatePicker/SysDatePicker";
 import SysAppContext from "../../../app/AppContext";
+import DeleteDialog from "../../sysComponents/showDialog/custom/deleteDialog/DeleteDialog";
+import ConfirmDialog from "../../sysComponents/showDialog/custom/confirmDialog/ConfirmDialog";
 type Form = {
   toggleInput: boolean;
   textInput: string;
@@ -23,7 +25,8 @@ type Form = {
 };
 
 export const Example = () => {
-  const { showNotification } = useContext(SysAppContext);
+  const { showNotification, showDialog, closeDialog } =
+    useContext(SysAppContext);
 
   const [valueForm, setValueForm] = useState<Form>({
     toggleInput: false,
@@ -100,6 +103,8 @@ export const Example = () => {
       value: "option3",
     },
   ];
+
+  console.log(valueForm);
 
   return (
     <Box
