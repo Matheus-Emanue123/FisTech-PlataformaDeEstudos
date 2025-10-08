@@ -1,29 +1,19 @@
-import ContentPasteGoIcon from "@mui/icons-material/ContentPasteGo";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import { SvgIconProps } from "@mui/material/SvgIcon/SvgIcon";
+import { HeaderSvgs } from "../../../utils/svg/headerSvgs";
 
 export interface IAppHeaderButton {
   label: string;
   path: string;
   active: boolean;
   isProtected: boolean;
-  icon: React.ReactElement<SvgIconProps>;
+  icon: string[];
   action: () => void;
 }
-
-const widthIcons = "24px";
-const heightIcons = "24px";
 
 export const sysAppHeaderOptions: IAppHeaderButton[] = [
   {
     label: "Exemplo",
     path: "/example",
-    icon: (
-      <DescriptionOutlinedIcon
-        sx={{ width: widthIcons, height: heightIcons }}
-      />
-    ),
+    icon: HeaderSvgs["homeOutlined"],
     active: true,
     isProtected: false,
     action: () => console.log("Clicou em Exemplo"),
@@ -31,11 +21,7 @@ export const sysAppHeaderOptions: IAppHeaderButton[] = [
   {
     label: "Usuários",
     path: "/usuarios",
-    icon: (
-      <PersonOutlineOutlinedIcon
-        sx={{ width: widthIcons, height: heightIcons }}
-      />
-    ),
+    icon: HeaderSvgs["userOutlined"],
     active: true,
     isProtected: false,
     action: () => console.log("Clicou em Usuários"),
@@ -43,7 +29,7 @@ export const sysAppHeaderOptions: IAppHeaderButton[] = [
   // {
   //   label: "Home",
   //   path: "/home",
-  //   icon: ,
+  //   icon: [],
   //   active: true,
   //   isProtected: false,
   //   action: () => console.log("Clicou em Home"),
@@ -51,7 +37,7 @@ export const sysAppHeaderOptions: IAppHeaderButton[] = [
   // {
   //   label: "Estatísticas",
   //   path: "/estatiscas",
-  //   icon: ,
+  //   icon: [],
   //   active: true,
   //   isProtected: false,
   //   action: () => console.log("Clicou em Estatisticas"),
@@ -59,7 +45,7 @@ export const sysAppHeaderOptions: IAppHeaderButton[] = [
   // {
   //   label: "Conquistas",
   //   path: "/conquistas",
-  //   icon: ,
+  //   icon: [],
   //   active: true,
   //   isProtected: false,
   //   action: () => console.log("Clicou em Conquistas"),
@@ -67,9 +53,7 @@ export const sysAppHeaderOptions: IAppHeaderButton[] = [
   {
     label: "Atividades",
     path: "/atividades",
-    icon: (
-      <ContentPasteGoIcon sx={{ width: widthIcons, height: heightIcons }} />
-    ),
+    icon: HeaderSvgs["editOutlined"],
     active: true,
     isProtected: true,
     action: () => console.log("Clicou em Atividades"),
@@ -77,7 +61,7 @@ export const sysAppHeaderOptions: IAppHeaderButton[] = [
   // {
   //   label: "Idioma",
   //   path: "/idioma",
-  //   icon: ,
+  //   icon: [],
   //   active: true,
   //   isProtected: false,
   //   action: () => console.log("Clicou em Idioma"),
@@ -85,7 +69,7 @@ export const sysAppHeaderOptions: IAppHeaderButton[] = [
   // {
   //   label: "Configurações",
   //   path: "configuracoes",
-  //   icon: ,
+  //   icon: [],
   //   active: true,
   //   isProtected: false,
   //   action: () => console.log("Clicou em Configurações"),

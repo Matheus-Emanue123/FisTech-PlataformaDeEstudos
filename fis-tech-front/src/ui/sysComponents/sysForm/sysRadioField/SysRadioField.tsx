@@ -1,13 +1,11 @@
 import React, { ChangeEvent } from "react";
-import { FormControl, FormLabel, RadioProps } from "@mui/material";
+import { Box, FormControl, FormLabel, RadioProps } from "@mui/material";
 import Styles from "./SysRadioFieldStyles";
 import { SysSimpleLabel } from "../sysSimpleLabel/SysSimpleLabel";
 import sysSizing from "../../../sysMaterialUi/sizing/sysSizes";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
-
-import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
-import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
+import CheckIcon from "@mui/icons-material/Check";
 
 export type IOptionToSysRadioField = {
   value: string;
@@ -66,16 +64,24 @@ export const SysRadioField: React.FC<ISysRadioField> = ({
                 {...props}
                 checkedIcon={
                   useCheckedIcon ? (
-                    <CheckBoxOutlinedIcon />
+                    <CheckIcon fontSize="small" sx={{ borderRadius: "3px" }} />
                   ) : (
-                    <RadioButtonCheckedIcon />
+                    <RadioButtonCheckedIcon sx={{ borderRadius: "50%" }} />
                   )
                 }
                 icon={
                   useCheckedIcon ? (
-                    <CheckBoxOutlineBlankOutlinedIcon />
+                    <Box
+                      sx={{
+                        borderRadius: "3px",
+                        border: (theme) =>
+                          `2px solid ${theme.palette.secondary.main}`,
+                        height: "20px",
+                        width: "20px",
+                      }}
+                    />
                   ) : (
-                    <RadioButtonUncheckedIcon />
+                    <RadioButtonUncheckedIcon sx={{ borderRadius: "50%" }} />
                   )
                 }
               />

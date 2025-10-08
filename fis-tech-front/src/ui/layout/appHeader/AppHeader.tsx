@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { Box } from "@mui/material";
+import { Box, Icon } from "@mui/material";
 import Styles from "./AppHeaderStyles";
 import { sysAppHeaderOptions } from "../appModuleManeger/AppModuleManeger";
 import KeyboardArrowLeftOutlinedIcon from "@mui/icons-material/KeyboardArrowLeftOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRightOutlined";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Theme, useTheme } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
+import { SysSvg } from "../../sysComponents/SysSvg/SysSvg";
+import { HeaderSvgs } from "../../../utils/svg/headerSvgs";
 
 interface IAppHeader {}
 
@@ -48,13 +50,12 @@ export const AppHeader: React.FC<IAppHeader> = () => {
               key={`appHeaderOption${index}`}
               onClick={() => navigate(item.path)}
               isCollapsed={!isExpanded}
+              sx={isActive ? { background: "#1d1d1d" } : {}}
             >
-              <Styles.MenuIcon isCollapsed={!isExpanded}>
-                {React.cloneElement(
-                  item.icon,
-                  isActive ? { sx: { color: theme.palette.common.white } } : {}
-                )}
-              </Styles.MenuIcon>
+              <SysSvg
+                paths={item.icon}
+                sx={isActive ? { color: theme.palette.common.white } : {}}
+              />
               {isExpanded && (
                 <Styles.MenuText
                   sx={isActive ? { color: theme.palette.common.white } : {}}
@@ -68,8 +69,8 @@ export const AppHeader: React.FC<IAppHeader> = () => {
       </Styles.MenuContainer>
       <Styles.LogoutContainer onClick={() => console.log("Clicou no Logout")}>
         <Styles.LogoutIconCircle>
-          <LogoutOutlinedIcon
-            sx={{ color: (theme) => theme.palette.common.white }}
+          <SysSvg
+            paths={HeaderSvgs["userLogoutOutlined"]}
           />
         </Styles.LogoutIconCircle>
       </Styles.LogoutContainer>
