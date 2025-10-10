@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Icon } from "@mui/material";
+import { Box } from "@mui/material";
 import Styles from "./AppHeaderStyles";
 import { sysAppHeaderOptions } from "../appModuleManeger/AppModuleManeger";
 import KeyboardArrowLeftOutlinedIcon from "@mui/icons-material/KeyboardArrowLeftOutlined";
@@ -28,15 +28,12 @@ export const AppHeader: React.FC<IAppHeader> = () => {
             color: theme.palette.common.white,
             cursor: "pointer",
           }}
+          onClick={() => setIsExpanded((prev) => !prev)}
         >
           {isExpanded ? (
-            <KeyboardArrowLeftOutlinedIcon
-              onClick={() => setIsExpanded(!isExpanded)}
-            />
+            <KeyboardArrowLeftOutlinedIcon />
           ) : (
-            <KeyboardArrowRightOutlinedIcon
-              onClick={() => setIsExpanded(!isExpanded)}
-            />
+            <KeyboardArrowRightOutlinedIcon />
           )}
         </Box>
       </Styles.LogoContainer>
