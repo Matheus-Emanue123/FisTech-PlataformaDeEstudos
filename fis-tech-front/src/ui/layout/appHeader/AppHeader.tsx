@@ -12,13 +12,13 @@ import { HeaderSvgs } from "../../../utils/svg/headerSvgs";
 interface IAppHeader {}
 
 export const AppHeader: React.FC<IAppHeader> = () => {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const theme = useTheme();
 
   return (
-    <Styles.HeaderContainer isExpanded={isExpanded}>
+    <Styles.HeaderContainer isExpanded={isExpanded.toString()}>
       <Styles.LogoContainer>
         {isExpanded && (
           <Box component="img" src="/assets/svgs/logo.svg" alt="FisTech Logo" />
@@ -45,7 +45,7 @@ export const AppHeader: React.FC<IAppHeader> = () => {
             <Styles.MenuItem
               key={`appHeaderOption${index}`}
               onClick={() => navigate(item.path)}
-              isCollapsed={!isExpanded}
+              isCollapsed={(!isExpanded).toString()}
               sx={isActive ? { background: "#1d1d1d" } : {}}
             >
               <SysSvg
