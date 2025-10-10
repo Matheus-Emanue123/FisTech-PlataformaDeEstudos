@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Box, Icon } from "@mui/material";
+import { Box } from "@mui/material";
 import Styles from "./AppHeaderStyles";
 import { sysAppHeaderOptions } from "../appModuleManeger/AppModuleManeger";
 import KeyboardArrowLeftOutlinedIcon from "@mui/icons-material/KeyboardArrowLeftOutlined";
-import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRightOutlined";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
@@ -29,15 +28,12 @@ export const AppHeader: React.FC<IAppHeader> = () => {
             color: theme.palette.common.white,
             cursor: "pointer",
           }}
+          onClick={() => setIsExpanded((prev) => !prev)}
         >
           {isExpanded ? (
-            <KeyboardArrowLeftOutlinedIcon
-              onClick={() => setIsExpanded(!isExpanded)}
-            />
+            <KeyboardArrowLeftOutlinedIcon />
           ) : (
-            <KeyboardArrowRightOutlinedIcon
-              onClick={() => setIsExpanded(!isExpanded)}
-            />
+            <KeyboardArrowRightOutlinedIcon />
           )}
         </Box>
       </Styles.LogoContainer>
@@ -69,9 +65,7 @@ export const AppHeader: React.FC<IAppHeader> = () => {
       </Styles.MenuContainer>
       <Styles.LogoutContainer onClick={() => console.log("Clicou no Logout")}>
         <Styles.LogoutIconCircle>
-          <SysSvg
-            paths={HeaderSvgs["userLogoutOutlined"]}
-          />
+          <SysSvg paths={HeaderSvgs["userLogoutOutlined"]} />
         </Styles.LogoutIconCircle>
       </Styles.LogoutContainer>
     </Styles.HeaderContainer>
