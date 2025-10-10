@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useCallback, useState } from "react";
 import { useTheme, useMediaQuery } from "@mui/material";
 import { AppLayout } from "../ui/layout/appLayout/AppLayout";
@@ -8,12 +9,20 @@ import {
 } from "../ui/layout/appNotificationStack/AppNotificationStack";
 import { MAX_NOTIFICATIONS } from "../typings/ConfigEnvironment";
 import { AppLoading } from "../ui/layout/appLoading/AppLoaging";
+import { ISysGeneralComponentsCommon } from "../typings/DefaultTypings";
+import {
+  IShowDialogProps,
+  ShowDialog,
+} from "../ui/sysComponents/showDialog/ShowDialog";
+
+const defaultState: ISysGeneralComponentsCommon = { open: false };
 
 export const UseAppController: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [notifications, setNotifications] = useState<IAppNotification[]>([]);
   const [loadingSystem, setLoadingSystem] = useState<boolean>(false);
+  const [showDialog, setShowDialog] = useState<IShowDialogProps>(defaultState);
 
   const addNotification = useCallback((notif: Omit<IAppNotification, "id">) => {
     const next = { ...notif, id: crypto.randomUUID() };
@@ -31,9 +40,37 @@ export const UseAppController: React.FC = () => {
     setNotifications((prev) => prev.filter((n) => n.id !== id));
   }, []);
 
+  const showDialogHandler = useCallback((props?: IShowDialogProps) => {
+    props?.onOpen?.();
+    setShowDialog({
+      ...showDialog,
+      ...props,
+      close: (event?: {}, reason?: "backdropClick" | "escapeKeyDown") =>
+        handleCloseDialog(event, reason, props?.onClose),
+      open: true,
+    });
+  }, []);
+
+  const handleCloseDialog = useCallback(
+    (
+      event?: {},
+      reason?: "backdropClick" | "escapeKeyDown",
+      callBack?: (
+        event?: {},
+        reason?: "backdropClick" | "escapeKeyDown"
+      ) => void
+    ) => {
+      setShowDialog(defaultState);
+      callBack?.(event, reason);
+    },
+    []
+  );
+
   const providerValue: IAppContext = {
     showNotification: addNotification,
     showLoading: setLoadingSystem,
+    showDialog: showDialogHandler,
+    closeDialog: handleCloseDialog,
     isMobile: isMobile,
   };
 
@@ -45,6 +82,7 @@ export const UseAppController: React.FC = () => {
         notifications={notifications}
         removeNotification={removeNotification}
       />
+      <ShowDialog {...showDialog} />
     </Context.Provider>
   );
 };

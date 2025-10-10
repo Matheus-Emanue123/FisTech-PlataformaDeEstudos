@@ -1,53 +1,79 @@
-import React, { useContext, useState } from "react";
-import { Box, IconButton, Drawer } from "@mui/material";
-import Styles, { appHeaderStyles } from "./AppHeaderStyles";
-import SysAppContext from "../../../app/AppContext";
-import { DrawerHeader } from "./components//DrawerAppBar/DrawerAppBar";
-import BasicTabs from "./components/BasicTabs/BasicTabs";
+import React, { useState } from "react";
+import { Box, Icon } from "@mui/material";
+import Styles from "./AppHeaderStyles";
+import { sysAppHeaderOptions } from "../appModuleManeger/AppModuleManeger";
+import KeyboardArrowLeftOutlinedIcon from "@mui/icons-material/KeyboardArrowLeftOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRightOutlined";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
+import { SysSvg } from "../../sysComponents/SysSvg/SysSvg";
+import { HeaderSvgs } from "../../../utils/svg/headerSvgs";
 
-export const AppHeader: React.FC = () => {
-  const { isMobile } = useContext(SysAppContext);
-  const [drawerOpen, setDrawerOpen] = useState(false);
+interface IAppHeader {}
 
-  const toggleDrawer = (open: boolean) => () => {
-    setDrawerOpen(open);
-  };
+export const AppHeader: React.FC<IAppHeader> = () => {
+  const [isExpanded, setIsExpanded] = useState(true);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const theme = useTheme();
 
   return (
-    <>
-      <Styles.HeaderBody>
-        <Styles.HeaderTitle>
-          {isMobile && (
-            <Styles.ContainerMenuIconHeader>
-              <IconButton onClick={toggleDrawer(true)}>
-                <Styles.MenuIconHeader />
-              </IconButton>
-            </Styles.ContainerMenuIconHeader>
-          )}
-          <Box component="p">LOGO</Box>
-        </Styles.HeaderTitle>
-        <Styles.HeaderRoutes>
-          {!isMobile && <BasicTabs />}
-          <Styles.HeaderOptions>
-            <IconButton action={() => {}}>
-              <Styles.NotificationsIcon />
-            </IconButton>
-            <Box
-              component="img"
-              src="/assets/imgs/avatar.png"
-              alt="avatarApp"
-              sx={appHeaderStyles.imgAvatar(isMobile)}
+    <Styles.HeaderContainer isExpanded={isExpanded}>
+      <Styles.LogoContainer>
+        {isExpanded && (
+          <Box component="img" src="/assets/svgs/logo.svg" alt="FisTech Logo" />
+        )}
+        <Box
+          sx={{
+            color: theme.palette.common.white,
+            cursor: "pointer",
+          }}
+        >
+          {isExpanded ? (
+            <KeyboardArrowLeftOutlinedIcon
+              onClick={() => setIsExpanded(!isExpanded)}
             />
-          </Styles.HeaderOptions>
-        </Styles.HeaderRoutes>
-      </Styles.HeaderBody>
-      <Drawer
-        anchor="left"
-        open={isMobile ? drawerOpen : false}
-        onClose={toggleDrawer(false)}
-      >
-        <DrawerHeader control={toggleDrawer} />
-      </Drawer>
-    </>
+          ) : (
+            <KeyboardArrowRightOutlinedIcon
+              onClick={() => setIsExpanded(!isExpanded)}
+            />
+          )}
+        </Box>
+      </Styles.LogoContainer>
+
+      <Styles.MenuContainer>
+        {sysAppHeaderOptions.map((item, index) => {
+          const isActive = pathname.startsWith(item.path);
+          return (
+            <Styles.MenuItem
+              key={`appHeaderOption${index}`}
+              onClick={() => navigate(item.path)}
+              isCollapsed={!isExpanded}
+              sx={isActive ? { background: "#1d1d1d" } : {}}
+            >
+              <SysSvg
+                paths={item.icon}
+                sx={isActive ? { color: theme.palette.common.white } : {}}
+              />
+              {isExpanded && (
+                <Styles.MenuText
+                  sx={isActive ? { color: theme.palette.common.white } : {}}
+                >
+                  {item.label}
+                </Styles.MenuText>
+              )}
+            </Styles.MenuItem>
+          );
+        })}
+      </Styles.MenuContainer>
+      <Styles.LogoutContainer onClick={() => console.log("Clicou no Logout")}>
+        <Styles.LogoutIconCircle>
+          <SysSvg
+            paths={HeaderSvgs["userLogoutOutlined"]}
+          />
+        </Styles.LogoutIconCircle>
+      </Styles.LogoutContainer>
+    </Styles.HeaderContainer>
   );
 };
