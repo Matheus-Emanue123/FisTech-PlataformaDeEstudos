@@ -26,7 +26,7 @@ const AppHeaderStyles: IStyles = {
       width: isExpanded ? "240px" : "72px",
       display: "flex",
       flexDirection: "column",
-      alignItems: isExpanded ? "flex-start" : "center",
+      alignItems: "flex-start",
       padding: `0 ${sysSizing.spacingFixedSm}`,
       justifyContent: "center",
       transition: "width .2s linear",
@@ -35,7 +35,7 @@ const AppHeaderStyles: IStyles = {
   LogoContainer: styled(Box)(() => ({
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     position: "relative",
     gap: sysSizing.spacingRemSm,
     transition: "all 0.2s linear",
@@ -54,7 +54,6 @@ const AppHeaderStyles: IStyles = {
     ({ theme, isCollapsed = false }) => ({
       display: "flex",
       color: "#84878b",
-
       alignItems: "center",
       justifyContent: isCollapsed ? "center" : "flex-start",
       cursor: "pointer",
@@ -73,14 +72,14 @@ const AppHeaderStyles: IStyles = {
     fontSize: "13px",
     letterSpacing: "0.15px",
     fontWeight: 700,
-    transition: "color 0.3s ease",
+    transition: "color 0.2s linear",
     userSelect: "none",
   })),
   LogoutContainer: styled(Box)(() => ({
     display: "flex",
     alignItems: "center",
     cursor: "pointer",
-    transition: "all 0.3s ease",
+    transition: "all 0.2s linear",
   })),
   LogoutIconCircle: styled(Box)(({ theme }) => ({
     marginBottom: sysSizing.spacingFixedXl,

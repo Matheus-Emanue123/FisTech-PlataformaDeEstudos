@@ -23,7 +23,7 @@ type Form = {
 };
 
 export const Example = () => {
-  const { showNotification, showLoading } = useContext(SysAppContext);
+  const { showNotification } = useContext(SysAppContext);
 
   const [valueForm, setValueForm] = useState<Form>({
     toggleInput: false,

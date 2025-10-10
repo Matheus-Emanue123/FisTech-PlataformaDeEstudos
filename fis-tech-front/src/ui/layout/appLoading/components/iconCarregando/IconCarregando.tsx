@@ -16,9 +16,7 @@ export const IconCarregando: React.FC<IIconCarregandoProps> = () => {
           />
           <CircularProgress
             size={70}
-            sx={{
-              color: (theme) => theme.palette.primary.main,
-            }}
+            sx={{ color: (theme) => theme.palette.primary.main }}
           />
         </Styles.LoadingArea>
         <Styles.LoadingText>
