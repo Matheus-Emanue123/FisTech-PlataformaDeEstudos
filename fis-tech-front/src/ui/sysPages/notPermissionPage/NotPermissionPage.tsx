@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Styles from "./NotPermissionPageStyles";
 import ReplyAllIcon from '@mui/icons-material/ReplyAll';
 
-export const NotFoundPage: React.FC = () => {
+export const NotPermissionPage: React.FC = () => {
     const navigate = useNavigate();
 
     return (
