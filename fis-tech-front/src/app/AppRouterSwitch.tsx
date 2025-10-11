@@ -6,6 +6,7 @@ import { useContext } from "react";
 import UseAuthContext from "../utils/hooks/useAuth/UseAuthContext";
 import { SysButton } from "../ui/sysComponents/sysForm/sysButton/SysButton";
 import { UserType } from "../modules/user/config/EnumUserType";
+import { NotFoundPage } from "../ui/sysPages/notFoundPage/NotFoundPage";
 
 export const AppRouterSwitch = () => {
   const { isLogged, signOut } = useContext(UseAuthContext);
@@ -40,7 +41,7 @@ export const AppRouterSwitch = () => {
           </RequireAuth>
         }
       />
-      <Route path="*" element={<Navigate to="/example" />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 };
