@@ -78,7 +78,7 @@ E depois, execute a aplicação:
 
 Acesse o sistema através do seu browser no endereço "http://localhost:3000" com as credenciais do administrador do sistema:
 
-    login: admin@fistech.com
-    password: admin@fistech.com
+    login: admin@example.com
+    password: 123456
 
 **Observação**: os dados do usuário "admin" foram inseridos através do banco de dados de forma manual;

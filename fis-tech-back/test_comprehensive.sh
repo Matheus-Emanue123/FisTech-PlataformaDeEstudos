@@ -4,7 +4,7 @@
 # This script consolidates all testing functionality and adds comprehensive tests
 
 # Configuration
-BASE_URL="http://localhost:3000"
+BASE_URL="http://localhost:8080"
 AUTH_TOKEN=""
 ADMIN_TOKEN=""
 MODERATOR_TOKEN=""
@@ -397,7 +397,7 @@ print_warning "Notes:"
 echo "- Make sure to run 'npm run seed' before testing to populate the database"
 echo "- UserType IDs: 1=administrador, 2=moderador, 3=usuario_padrao"
 echo "- Some tests may fail if the database is not properly seeded"
-echo "- The server must be running on http://localhost:3000"
+echo "- The server must be running on http://localhost:8080"
 
 echo ""
 print_header "Testing completed!" 

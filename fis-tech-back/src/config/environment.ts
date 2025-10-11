@@ -1,6 +1,6 @@
 export const config = {
   nodeEnv: process.env.NODE_ENV || 'development',
-  port: process.env.PORT || 3000,
+  port: process.env.PORT || 8080,
   database: {
     url: process.env.DATABASE_URL
   },

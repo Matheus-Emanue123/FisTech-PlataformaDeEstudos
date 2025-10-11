@@ -8,6 +8,7 @@ import {
   IAppNotification,
 } from "../ui/layout/appNotificationStack/AppNotificationStack";
 import { MAX_NOTIFICATIONS } from "../typings/ConfigEnvironment";
+import { AppLoading } from "../ui/layout/appLoading/AppLoaging";
 import { ISysGeneralComponentsCommon } from "../typings/DefaultTypings";
 import {
   IShowDialogProps,
@@ -20,6 +21,7 @@ export const UseAppController: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [notifications, setNotifications] = useState<IAppNotification[]>([]);
+  const [loadingSystem, setLoadingSystem] = useState<boolean>(false);
   const [showDialog, setShowDialog] = useState<IShowDialogProps>(defaultState);
 
   const addNotification = useCallback((notif: Omit<IAppNotification, "id">) => {
@@ -66,6 +68,7 @@ export const UseAppController: React.FC = () => {
 
   const providerValue: IAppContext = {
     showNotification: addNotification,
+    showLoading: setLoadingSystem,
     showDialog: showDialogHandler,
     closeDialog: handleCloseDialog,
     isMobile: isMobile,
@@ -73,6 +76,7 @@ export const UseAppController: React.FC = () => {
 
   return (
     <Context.Provider value={providerValue}>
+      {loadingSystem && <AppLoading />}
       <AppLayout />
       <AppNotificationStack
         notifications={notifications}

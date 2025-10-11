@@ -15,10 +15,10 @@ const SysToggleFieldStyles: IStyles = {
       backgroundColor: theme.palette.common.black,
     },
     "& .MuiSwitch-switchBase.Mui-checked": {
-      color: theme.palette.primary.main,
+      color: theme.palette.secondary.main,
     },
     "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-      backgroundColor: theme.palette.primary.contrastText,
+      backgroundColor: theme.palette.secondary.main,
     },
     "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track + .MuiSwitch-switchBase.Mui-disabled":
       {

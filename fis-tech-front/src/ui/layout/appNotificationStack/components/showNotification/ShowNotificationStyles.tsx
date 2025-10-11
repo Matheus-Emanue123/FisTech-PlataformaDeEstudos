@@ -1,7 +1,4 @@
-import {
-  Box,
-  styled
-} from "@mui/material";
+import { Box, styled } from "@mui/material";
 import sysSizing from "../../../../sysMaterialUi/sizing/sysSizes";
 
 interface IContainer {
@@ -53,7 +50,7 @@ const ShowNotificationContainer = styled(Box)<IContainer>(
       },
     }),
     ...(type === "default" && {
-      backgroundColor: theme.palette.primary.light,
+      backgroundColor: theme.palette.info.light,
       color: theme.palette.text.primary,
       "& .MuiSvgIcon-root": {
         color: theme.palette.primary.dark,

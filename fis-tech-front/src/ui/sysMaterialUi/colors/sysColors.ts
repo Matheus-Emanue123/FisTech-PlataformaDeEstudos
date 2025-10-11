@@ -1,10 +1,16 @@
 import { PaletteOptions } from "@mui/material";
 
-const blueScale = {
-  escuro: "#090F17",
-  claro: "#c9d4df",
-  normal: "#003399",
-  fundo: "#bac3dd",
+const secondaryScale = {
+  escuro: "#01446E",
+  normal: "#026AB2",
+  claro: "#1976D2",
+  fundo: "#E6E8EB",
+};
+
+const primaryScale = {
+  escuro: "#05080C",
+  normal: "#090F17",
+  claro: "#2B3544",
 };
 
 const greenScale = {
@@ -15,7 +21,7 @@ const greenScale = {
 
 const grayScale = {
   escuro: "rgba(0, 0, 0, 0.72)",
-  claro: "#969696",
+  claro: "#d7e2ed",
   normal: "#666666",
   separator: "#0000001a",
   textPrimary: "#17171c",
@@ -48,10 +54,15 @@ const sysPalette: PaletteOptions = {
     white: sysBaseColors.white,
   },
   primary: {
-    light: blueScale.claro,
-    main: blueScale.normal,
-    dark: blueScale.escuro,
-    contrastText: blueScale.fundo,
+    light: primaryScale.claro,
+    main: primaryScale.normal,
+    dark: primaryScale.escuro,
+  },
+  secondary: {
+    light: secondaryScale.claro,
+    main: secondaryScale.normal,
+    dark: secondaryScale.escuro,
+    contrastText: secondaryScale.fundo,
   },
   success: {
     light: greenScale.claro,

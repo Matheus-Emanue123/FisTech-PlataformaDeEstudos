@@ -1,91 +1,92 @@
+import {
+  Box,
+  BoxProps,
+  styled,
+  Typography,
+  TypographyProps,
+} from "@mui/material";
 import { ElementType } from "react";
-import { SxProps, Theme } from "@mui/material";
-import Box, { BoxProps } from "@mui/material/Box";
-import { styled } from "@mui/material/styles";
 import sysSizing from "../../sysMaterialUi/sizing/sysSizes";
-import MenuIcon from "@mui/icons-material/Menu";
-import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
-
-const NotificationsIcon = styled(ShieldOutlinedIcon)(({ theme }) => ({
-  color: theme.palette.common.black,
-  width: sysSizing.componentsIconSize,
-  height: sysSizing.componentsIconSize,
-}));
-
-const MenuIconHeader = styled(MenuIcon)(({ theme }) => ({
-  color: theme.palette.common.black,
-  width: sysSizing.componentsIconSize,
-  height: sysSizing.componentsIconSize,
-  padding: 0,
-}));
 
 interface IStyles {
-  HeaderBody: ElementType<BoxProps>;
-  HeaderTitle: ElementType<BoxProps>;
-  HeaderRoutes: ElementType<BoxProps>;
-  HeaderOptions: ElementType<BoxProps>;
-  ContainerMenuIconHeader: ElementType<BoxProps>;
-  MenuIconHeader: typeof MenuIconHeader;
-  NotificationsIcon: typeof NotificationsIcon;
+  HeaderContainer: ElementType<BoxProps & { isExpanded?: string }>;
+  LogoContainer: ElementType<BoxProps>;
+  MenuContainer: ElementType<BoxProps>;
+  MenuItem: ElementType<BoxProps & { isCollapsed?: string }>;
+  MenuText: ElementType<TypographyProps>;
+  LogoutContainer: ElementType<BoxProps>;
+  LogoutIconCircle: ElementType<BoxProps>;
 }
 
 const AppHeaderStyles: IStyles = {
-  HeaderBody: styled(Box)(({ theme }) => ({
-    width: "100%",
-    height: sysSizing.contentPb,
-    padding: `${sysSizing.spacingRemMd} 0px`,
+  HeaderContainer: styled(Box, {
+    shouldForwardProp: (prop) => prop !== "isExpanded",
+  })<{ isExpanded?: string }>(({ theme, isExpanded = "false" }) => ({
+    backgroundColor: theme.palette.primary.dark,
+    height: "100%",
+    width: isExpanded === "true" ? "240px" : "72px",
     display: "flex",
-    justifyContent: "space-between",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    padding: `0 ${sysSizing.spacingFixedSm}`,
+    justifyContent: "center",
+    transition: "width .2s linear",
+  })),
+  LogoContainer: styled(Box)(() => ({
+    display: "flex",
     alignItems: "center",
-    boxShadow: `0px -1px 0px 0px ${theme.palette.divider} inset`,
-    zIndex: 5,
+    justifyContent: "space-between",
     position: "relative",
-  })),
-  HeaderTitle: styled(Box)(({ theme }) => ({
-    display: "flex",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    flexGrow: 4,
-  })),
-  HeaderRoutes: styled(Box)(({ theme }) => ({
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    gap: sysSizing.spacingFixedXl,
-    flexGrow: 6,
-  })),
-  HeaderOptions: styled(Box)(({ theme }) => ({
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    gap: sysSizing.spacingFixedMd,
-  })),
-  ContainerMenuIconHeader: styled(Box)(({ theme }) => ({
-    marginRight: sysSizing.spacingFixedXs,
-    marginLeft: sysSizing.spacingFixedSm,
-  })),
-  MenuIconHeader,
-  NotificationsIcon,
-};
-
-const appHeaderStyles = {
-  imgLogo: (isMobile: boolean): SxProps<Theme> => ({
+    gap: sysSizing.spacingRemSm,
+    transition: "all 0.2s linear",
+    padding: `${sysSizing.spacingFixedLg} ${sysSizing.spacingFixedMd}`,
     width: "100%",
-    height: "auto",
-    objectFit: "contain",
-    marginLeft: isMobile ? "0px" : sysSizing.spacingRemLg,
-    maxWidth: isMobile ? "130px" : "160px",
-  }),
-  imgAvatar: (isMobile: boolean): SxProps<Theme> => ({
-    width: "40px",
-    height: "40px",
-    borderRadius: sysSizing.radiusInfinite,
-    marginRight: isMobile ? sysSizing.spacingRemMd : sysSizing.spacingRemLg,
-  }),
+  })),
+  MenuContainer: styled(Box)(() => ({
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    gap: sysSizing.spacingFixedSm,
+    width: "100%",
+  })),
+  MenuItem: styled(Box, {
+    shouldForwardProp: (prop) => prop !== "isCollapsed",
+  })<{ isCollapsed?: string }>(({ theme, isCollapsed = "false" }) => ({
+    display: "flex",
+    color: "#84878b",
+    alignItems: "center",
+    justifyContent: isCollapsed === "true" ? "center" : "flex-start",
+    cursor: "pointer",
+    transition: "all 0.2s linear",
+    gap: sysSizing.base.baseFixed125,
+    padding: `${sysSizing.spacingFixedMd} ${sysSizing.spacingFixedMd}`,
+    borderRadius: sysSizing.radiusSm,
+    "&:hover": {
+      color: theme.palette.common.white,
+      background: "#353535",
+    },
+  })),
+  MenuText: styled(Typography)(() => ({
+    fontFamily: "Montserrat, sans-serif",
+    fontSize: "13px",
+    letterSpacing: "0.15px",
+    fontWeight: 700,
+    transition: "color 0.2s linear",
+    userSelect: "none",
+  })),
+  LogoutContainer: styled(Box)(() => ({
+    display: "flex",
+    alignItems: "center",
+    cursor: "pointer",
+    transition: "all 0.2s linear",
+  })),
+  LogoutIconCircle: styled(Box)(({ theme }) => ({
+    marginBottom: sysSizing.spacingFixedXl,
+    marginLeft: sysSizing.spacingFixedMd,
+    color: theme.palette.common.white,
+    padding: `${sysSizing.spacingFixedSm} ${sysSizing.spacingFixedSm} 0px 0px`,
+  })),
 };
 
 export default AppHeaderStyles;
-
-export { appHeaderStyles };

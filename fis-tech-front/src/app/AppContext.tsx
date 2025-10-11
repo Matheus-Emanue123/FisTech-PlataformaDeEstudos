@@ -4,6 +4,7 @@ import { IShowDialogProps } from "../ui/sysComponents/showDialog/ShowDialog";
 
 interface IAppContext {
   showNotification: (options: Omit<IShowNotificationProps, "position">) => void;
+  showLoading: (status: boolean) => void;
   showDialog: (options?: IShowDialogProps) => void;
   closeDialog: (
     event?: object,
