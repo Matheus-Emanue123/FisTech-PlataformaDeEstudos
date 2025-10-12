@@ -37,7 +37,7 @@ export enum ErrorCode {
   INVALID_TOKEN = 401,
   TOKEN_EXPIRED = 401,
 
-  // --- NOVOS CÓDIGOS ADICIONADOS ---
+  
   /** O assunto com o ID especificado não foi encontrado. */
   ASSUNTO_NOT_FOUND = 404, // Not Found
   /** Já existe um assunto com o nome fornecido. */
@@ -53,6 +53,11 @@ export enum ErrorCode {
   NIVEL_DIFICULDADE_NOT_FOUND = 404, // Not Found
   /** Já existe um nível de dificuldade com o nome fornecido. */
   NIVEL_DIFICULDADE_NAME_EXISTS = 409, // Conflict
+
+  /** A anotação com o ID especificado não foi encontrada. */
+  ANOTACAO_NOT_FOUND = 404, // Not Found
+  /** Já existe uma anotação idêntica para o mesmo usuário e tópico. */
+  ANOTACAO_EXISTS = 409, // Conflict
 }
 
 export interface ErrorContext {
