@@ -48,6 +48,11 @@ export enum ErrorCode {
   TOPICO_NOT_FOUND = 404, // Not Found
   /** Já existe um tópico com o nome fornecido dentro do mesmo assunto. */
   TOPICO_NAME_EXISTS = 409, // Conflict
+
+  /** O nível de dificuldade com o ID especificado não foi encontrado. */
+  NIVEL_DIFICULDADE_NOT_FOUND = 404, // Not Found
+  /** Já existe um nível de dificuldade com o nome fornecido. */
+  NIVEL_DIFICULDADE_NAME_EXISTS = 409, // Conflict
 }
 
 export interface ErrorContext {
