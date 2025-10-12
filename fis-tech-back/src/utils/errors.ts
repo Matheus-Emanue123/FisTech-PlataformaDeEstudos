@@ -42,6 +42,12 @@ export enum ErrorCode {
   ASSUNTO_NOT_FOUND = 404, // Not Found
   /** Já existe um assunto com o nome fornecido. */
   ASSUNTO_NAME_EXISTS = 409, // Conflict
+
+  
+  /** O tópico com o ID especificado não foi encontrado. */
+  TOPICO_NOT_FOUND = 404, // Not Found
+  /** Já existe um tópico com o nome fornecido dentro do mesmo assunto. */
+  TOPICO_NAME_EXISTS = 409, // Conflict
 }
 
 export interface ErrorContext {

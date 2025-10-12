@@ -10,13 +10,13 @@ import { authenticateToken, requireManageUsers } from '../middlewares/auth.middl
 
 const router = Router();
 
-// Assumindo que apenas usuários com permissão podem gerenciar assuntos
-router.use(authenticateToken, requireManageUsers); // Adapte a permissão conforme necessário
 
-router.post('/', authenticateToken, requireManageUsers, createAssunto);
-router.get('/', authenticateToken, requireManageUsers, getAllAssuntos);
-router.get('/:id', authenticateToken, requireManageUsers, getAssuntoById);
-router.put('/:id', authenticateToken, requireManageUsers, updateAssunto);
-router.delete('/:id', authenticateToken, requireManageUsers, deleteAssunto);
+
+router.post('/createAssunto', authenticateToken, requireManageUsers, createAssunto);
+router.get('/getAllAssuntos', authenticateToken, requireManageUsers, getAllAssuntos);
+router.get('/getAssuntoById/:id', authenticateToken, requireManageUsers, getAssuntoById);
+//router.get('/getAssuntoByNome/:nome', authenticateToken, requireManageUsers, getAssuntoByNome);
+router.put('/updateAssunto/:id', authenticateToken, requireManageUsers, updateAssunto);
+router.delete('/deleteAssunto/:id', authenticateToken, requireManageUsers, deleteAssunto);
 
 export default router;
