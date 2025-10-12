@@ -8,7 +8,7 @@ import {
 const router = Router();
 
 // Rotas protegidas com permissões (inclui ownership automaticamente)
-router.post('/', authenticateToken, requireManageUsers, createUser);
+router.post('/', createUser);
 router.get('/', authenticateToken, requireManageUsers, getUsers);
 router.get('/:id', authenticateToken, requireManageUsers, getUserById);
 router.put('/:id', authenticateToken, requireManageUsers, updateUser);

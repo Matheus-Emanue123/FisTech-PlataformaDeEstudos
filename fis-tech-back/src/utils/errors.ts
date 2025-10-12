@@ -27,15 +27,21 @@ export enum ErrorCode {
   SERVICE_UNAVAILABLE = 503,
   
   // Custom business error codes (still using numbers for consistency)
-  EMAIL_ALREADY_EXISTS = 409,
-  USER_NOT_FOUND = 404,
+  EMAIL_ALREADY_EXISTS = 409, // Conflict
+  USER_NOT_FOUND = 404, // Not Found
   INVALID_OPERATION = 400,
   DATABASE_CONNECTION_ERROR = 503,
   DATABASE_QUERY_ERROR = 500,
   INVALID_CREDENTIALS = 401,
   ACCOUNT_LOCKED = 423,
   INVALID_TOKEN = 401,
-  TOKEN_EXPIRED = 401
+  TOKEN_EXPIRED = 401,
+
+  // --- NOVOS CÓDIGOS ADICIONADOS ---
+  /** O assunto com o ID especificado não foi encontrado. */
+  ASSUNTO_NOT_FOUND = 404, // Not Found
+  /** Já existe um assunto com o nome fornecido. */
+  ASSUNTO_NAME_EXISTS = 409, // Conflict
 }
 
 export interface ErrorContext {
@@ -84,6 +90,8 @@ export class AppError extends Error {
   }
 }
 
+// ... (Restante das classes de erro: ValidationError, BusinessLogicError, etc. permanecem iguais)
+
 export class ValidationError extends AppError {
   constructor(message: string, errorCode: number = ErrorCode.BAD_REQUEST, context?: ErrorContext) {
     super(400, message, ErrorType.VALIDATION, errorCode, true, context);
@@ -92,6 +100,7 @@ export class ValidationError extends AppError {
 
 export class BusinessLogicError extends AppError {
   constructor(message: string, errorCode: number, context?: ErrorContext) {
+    // O statusCode é o próprio errorCode para erros de negócio
     super(errorCode, message, ErrorType.BUSINESS_LOGIC, errorCode, true, context);
   }
 }
