@@ -24,7 +24,7 @@ const NotPermissionPageStyles = {
         marginTop: sysSizing.spacingFixedLg,
         '& button': {
             minWidth: '200px',
-            borderRadius: '8px',
+            borderRadius: sysSizing.radiusSm,
         },
     })),
 

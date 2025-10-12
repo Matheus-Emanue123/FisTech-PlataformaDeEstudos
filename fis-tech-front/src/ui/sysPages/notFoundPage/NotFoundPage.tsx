@@ -3,30 +3,26 @@ import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Styles from "./NotFoundPageStyles";
 import ReplyAllIcon from '@mui/icons-material/ReplyAll';
+import { Typography } from '@mui/material';
 
 export const NotFoundPage: React.FC = () => {
     const navigate = useNavigate();
 
     return (
         <Styles.MainContainer>
-           <Styles.NotFoundImage
+            <Styles.NotFoundImage
                 src="/assets/svgs/logoEscura.svg"
                 alt="Página não encontrada"
             />
-            {/* <Styles.MainTitle>
-                Oops! Esta página entrou em um buraco negro!
-            </Styles.MainTitle>
-            <Styles.SubTitle>
-                Parece que essa página violou as leis da física e desapareceu no espaço-tempo!
-            </Styles.SubTitle> */}
-            <Styles.MainTitle>
+            <Typography variant="h3" >
                 Página não encontrada
-            </Styles.MainTitle>
-            <Styles.SubTitle>
-               A página que você está tentando acessar não existe ou está indisponível no momento.
-            </Styles.SubTitle>
+            </Typography>
+            <Typography variant="body1">
+                A página que você está tentando acessar não existe ou se encontra indisponível.
+            </Typography>
+
             <Styles.ButtonContainer>
-                <Button variant="contained" startIcon={<ReplyAllIcon />}  onClick={() => navigate('/')}>
+                <Button variant="contained" startIcon={<ReplyAllIcon />} onClick={() => navigate('/')}>
                     Voltar para a página inicial
                 </Button>
             </Styles.ButtonContainer>
