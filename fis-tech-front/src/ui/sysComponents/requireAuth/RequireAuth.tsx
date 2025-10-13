@@ -2,7 +2,6 @@ import React, { ReactNode, useContext } from "react";
 import UseAuthContext from "../../../utils/hooks/useAuth/UseAuthContext";
 import { LoginPage } from "../../sysPages/loginPage/LoginPage";
 import { UserType } from "../../../modules/user/config/EnumUserType";
-import { Typography } from "@mui/material";
 import { NotPermissionPage } from "../../sysPages/notPermissionPage/NotPermissionPage";
 
 interface IRequireAuthProps {

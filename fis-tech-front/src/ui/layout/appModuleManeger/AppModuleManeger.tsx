@@ -12,7 +12,7 @@ export interface IAppHeaderButton {
 export const sysAppHeaderOptions: IAppHeaderButton[] = [
   {
     label: "Exemplo",
-    path: "/example",
+    path: "/",
     icon: HeaderSvgs["homeOutlined"],
     active: true,
     isProtected: false,

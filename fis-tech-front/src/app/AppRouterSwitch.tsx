@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { Example } from "../ui/sysPages/example/Example";
 import { Box, Typography } from "@mui/material";
 import { RequireAuth } from "../ui/sysComponents/requireAuth/RequireAuth";
@@ -19,7 +19,7 @@ export const AppRouterSwitch = () => {
 
   return (
     <Routes>
-      <Route path="/example" element={<Example />} />
+      <Route path="/" element={<Example />} />
       <Route
         path="/atividades/:screenState?/:id?"
         element={
