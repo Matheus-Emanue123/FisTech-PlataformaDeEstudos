@@ -16,9 +16,10 @@ export const RequireAuth: React.FC<IRequireAuthProps> = ({
   level = UserType.NORMAL,
 }) => {
   const { user, hasPermission } = useContext(UseAuthContext);
+  console.log("RequireAuth - user:", user);
 
   if (!user) {
-    return <LoginPage redirectionPath={path} />;
+    return <LoginPage />;
   }
 
   if (!hasPermission(level)) {

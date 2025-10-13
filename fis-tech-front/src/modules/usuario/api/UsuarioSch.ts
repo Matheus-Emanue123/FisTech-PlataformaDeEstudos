@@ -1,9 +1,8 @@
+import { UserType } from "../../user/config/EnumUserType";
+
 export interface UsuarioSch {
-  matricula: number | null;
-  cursoSigla: string | null;
-  nome: string | null;
+  id: number;
+  nome: string;
   email: string;
-  senha: string;
-  tipo: "ADM" | "NORMAL";
-  createdAt: string;
+  userType: UserType;
 }

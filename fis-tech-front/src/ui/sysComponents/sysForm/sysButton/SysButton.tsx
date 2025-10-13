@@ -5,7 +5,7 @@ import { SysButtonContainer } from "./sysButtonStyles";
 interface ISysButton extends ButtonProps {
   mode: "primary" | "secondary" | "link";
   label: string;
-  onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 export const SysButton: React.FC<ISysButton> = ({
@@ -18,5 +18,5 @@ export const SysButton: React.FC<ISysButton> = ({
     <SysButtonContainer mode={mode} onClick={onClick} {...props}>
       <Typography variant="body1">{label}</Typography>
     </SysButtonContainer>
-  );
+  ) ;
 };

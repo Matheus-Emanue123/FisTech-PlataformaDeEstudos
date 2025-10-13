@@ -1,13 +1,15 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import Context, { IUseAuthContext } from "./UseAuthContext";
-import { UserSch } from "../../../modules/user/config/UserSch";
+import { UsuarioSch } from "../../../modules/usuario/api/UsuarioSch";
 import { useAuthServerApi } from "./UseAuthServerApi";
 import { UserType } from "../../../modules/user/config/EnumUserType";
 import { ACCESS_LEVELS_USER } from "../../../modules/user/config/AccessLevelUser";
 
 const UseAuthController: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<UserSch | null>(null);
+  const [user, setUser] = useState<UsuarioSch | null>(null);
   const authServerApi = useAuthServerApi();
+
+  console.log("User state:", user);
 
   useEffect(() => {
     const validadeToken = async () => {
@@ -24,9 +26,11 @@ const UseAuthController: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const signIn = async (email: string, password: string) => {
     const data = await authServerApi.login(email, password);
-    if (data.user && data.token) {
+    console.log("Login response data:", data);
+    if (data.user && data.acessToken) {
       setUser(data.user);
-      setToken(data.token);
+      console.log("User state:", user);
+      setToken(data.acessToken);
       return true;
     }
     return false;
@@ -49,7 +53,7 @@ const UseAuthController: React.FC<{ children: ReactNode }> = ({ children }) => {
   const hasPermission = (requiredLevel: UserType): boolean => {
     if (!user) return false;
 
-    const userLevel = ACCESS_LEVELS_USER[user.typeUser];
+    const userLevel = ACCESS_LEVELS_USER[user.userType];
     const required = ACCESS_LEVELS_USER[requiredLevel];
 
     return userLevel >= required;

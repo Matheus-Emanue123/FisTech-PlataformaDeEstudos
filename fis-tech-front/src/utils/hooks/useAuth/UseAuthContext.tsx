@@ -1,9 +1,10 @@
 import { createContext } from "react";
-import { UserSch } from "../../../modules/user/config/UserSch";
+// import { UserSch } from "../../../modules/user/config/UserSch";
 import { UserType } from "../../../modules/user/config/EnumUserType";
+import { UsuarioSch } from "../../../modules/usuario/api/UsuarioSch";
 
 interface IUseAuthContext {
-  user: UserSch | null;
+  user: UsuarioSch | null;
   isLogged: boolean;
   signIn: (email: string, password: string) => Promise<boolean>;
   signOut: () => void;

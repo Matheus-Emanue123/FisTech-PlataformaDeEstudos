@@ -1,40 +1,36 @@
-//import axios from "axios";
+import axios from "axios";
 import { useMemo } from "react";
-import { UserType } from "../../../modules/user/config/EnumUserType";
+// import { UserType } from "../../../modules/user/config/EnumUserType";
+import { BACKEND_URL } from "../../../typings/ConfigEnvironment";
+import { UsuarioSch } from "../../../modules/usuario/api/UsuarioSch";
 
-// const api = axios.create({
-//   baseURL: process.env.REACT_APP_API,
-// });
+const api = axios.create({
+  baseURL: BACKEND_URL,
+});
+
+export type LoginResponse = {
+  user: UsuarioSch;
+  acessToken: string;
+  refreshToken: string;
+};
 
 export const useAuthServerApi = () =>
   useMemo(
     () => ({
       validadeToken: async (token: string) => {
-        return {
-          user: {
-            id: 1,
-            name: "João da Silva",
-            email: "joao.silva@email.com",
-            password: "senhaSegura123",
-            createdAt: new Date("2024-01-10T10:00:00Z"),
-            lastAccess: new Date("2025-06-29T15:00:00Z"),
-            typeUser: UserType.ADMINISTRATOR,
-          },
-        };
+        return { user: null }
       },
-      login: async (email: string, password: string) => {
-        return {
-          user: {
-            id: 1,
-            name: "João da Silva",
-            email: "joao.silva@email.com",
-            password: "senhaSegura123",
-            createdAt: new Date("2024-01-10T10:00:00Z"),
-            lastAccess: new Date("2025-06-29T15:00:00Z"),
-            typeUser: UserType.ADMINISTRATOR,
-          },
-          token: "123456789",
-        };
+      login: async (email: string, password: string) : Promise<LoginResponse> => {
+        console.log(email, password);
+        console.log("Backend URL:", BACKEND_URL);
+       const response = await api.post("/auth/login", { email, password });
+          const { data } = response.data;
+          console.log("Login response data:", data);
+          return {
+            user: data.user,
+            acessToken: data.accessToken,
+            refreshToken: data.refreshToken,
+          };
       },
       logout: async () => {
         return { status: true };

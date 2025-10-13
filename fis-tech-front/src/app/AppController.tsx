@@ -13,12 +13,19 @@ import {
   IShowDialogProps,
   ShowDialog,
 } from "../ui/sysComponents/showDialog/ShowDialog";
+import UseAuthContext from "../utils/hooks/useAuth/UseAuthContext";
+import { useContext } from "react";
+import { UserType } from "../modules/user/config/EnumUserType";
+import { RequireAuth } from "../ui/sysComponents/requireAuth/RequireAuth";
 
 const defaultState: ISysGeneralComponentsCommon = { open: false };
 
 export const UseAppController: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  const { isLogged, signOut } = useContext(UseAuthContext);
+
   const [notifications, setNotifications] = useState<IAppNotification[]>([]);
   const [showDialog, setShowDialog] = useState<IShowDialogProps>(defaultState);
 
@@ -73,12 +80,14 @@ export const UseAppController: React.FC = () => {
 
   return (
     <Context.Provider value={providerValue}>
-      <AppLayout />
-      <AppNotificationStack
-        notifications={notifications}
-        removeNotification={removeNotification}
-      />
-      <ShowDialog {...showDialog} />
+      <RequireAuth level={UserType.ADMINISTRATOR} path="/usuarios">
+        <AppLayout />
+        <AppNotificationStack
+          notifications={notifications}
+          removeNotification={removeNotification}
+        />
+        <ShowDialog {...showDialog} />
+      </RequireAuth>
     </Context.Provider>
   );
 };
