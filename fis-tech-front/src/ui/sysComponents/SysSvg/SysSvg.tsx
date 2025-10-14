@@ -8,8 +8,8 @@ export const SysSvg: React.FC<ISysSvgProps> = ({ paths, ...props }) => {
   return (
     <SvgIcon viewBox="0 0 27 27" {...props}>
       <g>
-        {paths.map((caminho) => (
-          <path d={caminho} />
+        {paths.map((caminho, index) => (
+          <path key={`SVG${caminho}${index}`} d={caminho} />
         ))}
       </g>
     </SvgIcon>

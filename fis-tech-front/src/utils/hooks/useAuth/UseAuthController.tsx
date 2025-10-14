@@ -22,7 +22,7 @@ const UseAuthController: React.FC<{ children: ReactNode }> = ({ children }) => {
       }
     };
     validadeToken();
-  }, [authServerApi]);
+  }, []);
 
   const signIn = async (email: string, password: string) => {
     const data = await authServerApi.login(email, password);

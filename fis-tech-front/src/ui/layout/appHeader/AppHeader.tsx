@@ -12,13 +12,13 @@ import { HeaderSvgs } from "../../../utils/svg/headerSvgs";
 interface IAppHeader {}
 
 export const AppHeader: React.FC<IAppHeader> = () => {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const theme = useTheme();
 
   return (
-    <Styles.HeaderContainer isExpanded={isExpanded}>
+    <Styles.HeaderContainer isExpanded={isExpanded.toString()}>
       <Styles.LogoContainer>
         {isExpanded && (
           <Box component="img" src="/assets/svgs/logo.svg" alt="FisTech Logo" />
@@ -28,15 +28,12 @@ export const AppHeader: React.FC<IAppHeader> = () => {
             color: theme.palette.common.white,
             cursor: "pointer",
           }}
+          onClick={() => setIsExpanded((prev) => !prev)}
         >
           {isExpanded ? (
-            <KeyboardArrowLeftOutlinedIcon
-              onClick={() => setIsExpanded(!isExpanded)}
-            />
+            <KeyboardArrowLeftOutlinedIcon />
           ) : (
-            <KeyboardArrowRightOutlinedIcon
-              onClick={() => setIsExpanded(!isExpanded)}
-            />
+            <KeyboardArrowRightOutlinedIcon />
           )}
         </Box>
       </Styles.LogoContainer>
@@ -48,7 +45,7 @@ export const AppHeader: React.FC<IAppHeader> = () => {
             <Styles.MenuItem
               key={`appHeaderOption${index}`}
               onClick={() => navigate(item.path)}
-              isCollapsed={!isExpanded}
+              isCollapsed={(!isExpanded).toString()}
               sx={isActive ? { background: "#1d1d1d" } : {}}
             >
               <SysSvg
@@ -68,9 +65,7 @@ export const AppHeader: React.FC<IAppHeader> = () => {
       </Styles.MenuContainer>
       <Styles.LogoutContainer onClick={() => console.log("Clicou no Logout")}>
         <Styles.LogoutIconCircle>
-          <SysSvg
-            paths={HeaderSvgs["userLogoutOutlined"]}
-          />
+          <SysSvg paths={HeaderSvgs["userLogoutOutlined"]} />
         </Styles.LogoutIconCircle>
       </Styles.LogoutContainer>
     </Styles.HeaderContainer>

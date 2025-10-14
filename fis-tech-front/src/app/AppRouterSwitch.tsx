@@ -1,11 +1,12 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { Example } from "../ui/sysPages/example/Example";
 import { Box, Typography } from "@mui/material";
+import { NotFoundPage } from "../ui/sysPages/notFoundPage/NotFoundPage";
 
 export const AppRouterSwitch = () => {
   return (
     <Routes>
-      <Route path="/example" element={<Example />} />
+      <Route path="/" element={<Example />} />
       <Route
         path="/atividades/:screenState?/:id?"
         element={
@@ -22,7 +23,7 @@ export const AppRouterSwitch = () => {
           </Box>
         }
       />
-      <Route path="*" element={<Navigate to="/example" />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 };

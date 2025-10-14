@@ -2,7 +2,7 @@ import React, { ReactNode, useContext } from "react";
 import UseAuthContext from "../../../utils/hooks/useAuth/UseAuthContext";
 import { LoginPage } from "../../sysPages/loginPage/LoginPage";
 import { UserType } from "../../../modules/user/config/EnumUserType";
-import { Typography } from "@mui/material";
+import { NotPermissionPage } from "../../sysPages/notPermissionPage/NotPermissionPage";
 
 interface IRequireAuthProps {
   path: string;
@@ -23,7 +23,7 @@ export const RequireAuth: React.FC<IRequireAuthProps> = ({
   }
 
   if (!hasPermission(level)) {
-    return <Typography variant="h1">Permissão NEGADA!!!</Typography>;
+    return <NotPermissionPage />;
   }
 
   return <> {children} </>;

@@ -180,6 +180,13 @@ export const refreshAccessToken = async (oldRefreshToken: string) => {
   });
 
   return {
+
+    user: {
+      id: payload.userId,
+      nome: payload.userId ? (await userModel.getUserById(payload.userId))?.nome : '',
+      email: payload.email,
+      userType: payload.userType
+    },
     accessToken: newAccessToken,
     refreshToken: newRefreshToken,
   };
