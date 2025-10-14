@@ -78,7 +78,6 @@ const AppHeaderStyles: IStyles = {
   LogoutContainer: styled(Box)(() => ({
     display: "flex",
     alignItems: "center",
-    cursor: "pointer",
     transition: "all 0.2s linear",
   })),
   LogoutIconCircle: styled(Box)(({ theme }) => ({
@@ -86,7 +85,22 @@ const AppHeaderStyles: IStyles = {
     marginLeft: sysSizing.spacingFixedMd,
     color: theme.palette.common.white,
     padding: `${sysSizing.spacingFixedSm} ${sysSizing.spacingFixedSm} 0px 0px`,
+    cursor: "pointer",
   })),
 };
 
+const TooltipLogoutStyles = {
+  bgcolor: "background.paper",
+  color: "text.primary",
+  border: "1px solid",
+  borderColor: "divider",
+  boxShadow: 1,
+  fontSize: 12,
+  borderRadius: 1,
+  px: 1.5,
+  py: 0.5,
+};
+
 export default AppHeaderStyles;
+
+export { TooltipLogoutStyles };

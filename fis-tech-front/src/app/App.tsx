@@ -11,7 +11,7 @@ export const App = () => {
       <CssBaseline enableColorScheme />
       <GlobalStyles styles={appStyles} />
       <UseAuthController>
-          <UseAppController />
+        <UseAppController />
       </UseAuthController>
     </ThemeProvider>
   );

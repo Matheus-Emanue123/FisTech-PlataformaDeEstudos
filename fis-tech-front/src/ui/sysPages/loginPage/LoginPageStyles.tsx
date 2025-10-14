@@ -6,6 +6,7 @@ import {
   TypographyProps,
 } from "@mui/material";
 import { ElementType, ImgHTMLAttributes } from "react";
+import sysSizing from "../../sysMaterialUi/sizing/sysSizes";
 
 const loginBG = "/assets/imgs/loginBG.png";
 
@@ -23,67 +24,68 @@ interface IStyles {
 const LoginPageStyles: IStyles = {
   PageContainer: styled(Box)({
     display: "flex",
-    width: "100vw",
-    height: "100vh",
+    width: "100%",
+    height: "100%",
   }),
-
-  LeftSide: styled(Box)({
+  LeftSide: styled(Box)(({ theme }) => ({
     flex: 1,
     backgroundImage: `url(${loginBG})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
-    "@media (max-width: 900px)": {
+    [theme.breakpoints.down("lg")]: {
       display: "none",
     },
-  }),
-
+  })),
   RightSide: styled(Box)(({ theme }) => ({
-    width: "600px",
-    backgroundColor: theme.palette.grey[200],
+    width: "500px",
+    height: "100%",
+    backgroundColor: theme.palette.background.paper,
     display: "flex",
+    flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center",
-    padding: "0 2%",
+    alignItems: "flex-start",
+    gap: sysSizing.spacingFixedMd,
+    padding: "40px",
     boxShadow: "-4px 0 20px rgba(0, 0, 0, 0.1)",
-    "@media (max-width: 900px)": {
+    [theme.breakpoints.down("lg")]: {
       width: "100%",
       boxShadow: "none",
     },
   })),
-
-  LoginFormContainer: styled(Box)(({ theme }) => ({
+  LoginFormContainer: styled(Box)(() => ({
     width: "100%",
-    maxWidth: "480px",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
   })),
-
   Logo: styled("img")({
     width: "50%",
-    marginBottom: "24px",
   }),
-
   WelcomeHeader: styled(Typography)(({ theme }) => ({
-    ...theme.typography.h2,
-    marginBottom: theme.spacing(0.5),
     textAlign: "left",
     whiteSpace: "nowrap",
+    letterSpacing: "1px",
   })),
-
   Subtitle: styled(Typography)(({ theme }) => ({
-    ...theme.typography.body1,
-    marginBottom: theme.spacing(1),
-    textAlign: "left",
+    color: theme.palette.text.secondary,
+    letterSpacing: "0.8px",
+    "& span": {
+      cursor: "pointer",
+      color: theme.palette.secondary.main,
+      fontWeight: 600,
+    },
+    "& span:hover": {
+      textDecoration: "underline",
+    },
   })),
-
   CallToAction: styled(Typography)(({ theme }) => ({
-    ...theme.typography.h4,
     color: theme.palette.text.secondary,
     textAlign: "center",
     fontSize: "20px",
-    marginTop: theme.spacing(3),
+    marginTop: "30px",
     alignSelf: "center",
+    maxWidth: "280px",
+    lineHeight: 1.35,
   })),
 };
 

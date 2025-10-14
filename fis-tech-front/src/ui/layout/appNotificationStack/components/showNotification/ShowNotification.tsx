@@ -57,50 +57,52 @@ export const ShowNotification: React.FC<IShowNotificationProps> = ({
 
   if (!open) return null;
 
-  return (
-    <MyTooltip disableFocusListener title={message} customWidth={360} arrow>
-      <Snackbar
-        open={open}
-        onClose={handleClose}
-        autoHideDuration={duration}
-        disableWindowBlurListener={true}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        sx={{
-          "&.MuiSnackbar-root": { bottom: `${88 * position}px` },
-        }}
-      >
-        <ShowNotificationContainer type={type}>
-          <ShowNotificationBody>
+  const snackbar = (
+    <Snackbar
+      open={open}
+      onClose={handleClose}
+      autoHideDuration={duration}
+      disableWindowBlurListener
+      anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      sx={{ "&.MuiSnackbar-root": { bottom: `${88 * position}px` } }}
+    >
+      <ShowNotificationContainer type={type}>
+        <ShowNotificationBody>
+          {
             {
-              {
-                success: <CheckRoundedIcon />,
-                error: <ErrorOutlineRoundedIcon />,
-                warning: <WarningAmberRoundedIcon />,
-                default: <NotificationsNoneRoundedIcon />,
-              }[type]
-            }
+              success: <CheckRoundedIcon />,
+              error: <ErrorOutlineRoundedIcon />,
+              warning: <WarningAmberRoundedIcon />,
+              default: <NotificationsNoneRoundedIcon />,
+            }[type]
+          }
 
-            <Typography
-              variant="body1"
-              color="textPrimary"
-              sx={{
-                flexGrow: 1,
-                ...ShowNotificationStyles.reticenciasDepoisDeUmaLinha,
-              }}
-            >
-              {message}
-            </Typography>
-            {!isMobile && (
-              <IconButton onClick={onClose}>
-                <CloseRoundedIcon />
-              </IconButton>
-            )}
-          </ShowNotificationBody>
-        </ShowNotificationContainer>
-      </Snackbar>
+          <Typography
+            variant="body1"
+            color="textPrimary"
+            sx={{
+              flexGrow: 1,
+              ...ShowNotificationStyles.reticenciasDepoisDeUmaLinha,
+            }}
+          >
+            {message}
+          </Typography>
+
+          {!isMobile && (
+            <IconButton onClick={onClose}>
+              <CloseRoundedIcon />
+            </IconButton>
+          )}
+        </ShowNotificationBody>
+      </ShowNotificationContainer>
+    </Snackbar>
+  );
+
+  return isMobile ? (
+    <MyTooltip disableFocusListener title={message} customWidth={360} arrow>
+      {snackbar}
     </MyTooltip>
+  ) : (
+    snackbar
   );
 };

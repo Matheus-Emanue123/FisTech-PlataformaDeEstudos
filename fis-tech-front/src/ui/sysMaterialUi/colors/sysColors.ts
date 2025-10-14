@@ -21,12 +21,13 @@ const greenScale = {
 
 const grayScale = {
   escuro: "rgba(0, 0, 0, 0.72)",
-  claro: "#d7e2ed",
+  claro: "#b7c2ccff",
   normal: "#666666",
   separator: "#0000001a",
   textPrimary: "#17171c",
   textSecondary: "#454554",
   disabled: "#a4a4b5",
+  background: "#eeeeee",
 };
 
 const redScale = {
@@ -90,7 +91,7 @@ const sysPalette: PaletteOptions = {
     disabled: grayScale.disabled,
   },
   background: {
-    paper: sysBaseColors.hoverForWhite,
+    paper: grayScale.background,
     default: sysBaseColors.white,
   },
   action: {

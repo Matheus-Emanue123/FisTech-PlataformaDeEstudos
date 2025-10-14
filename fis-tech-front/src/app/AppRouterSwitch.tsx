@@ -1,6 +1,9 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { Example } from "../ui/sysPages/example/Example";
 import { Box, Typography } from "@mui/material";
+import { RequireAuth } from "../ui/sysComponents/requireAuth/RequireAuth";
+
+import { UserType } from "../modules/usuario/config/EnumUserType";
 import { NotFoundPage } from "../ui/sysPages/notFoundPage/NotFoundPage";
 
 export const AppRouterSwitch = () => {
@@ -18,9 +21,11 @@ export const AppRouterSwitch = () => {
       <Route
         path="/usuarios/:screenState?/:id?"
         element={
-          <Box>
-            <Typography>Usuários</Typography>
-          </Box>
+          <RequireAuth level={UserType.ADMINISTRATOR}>
+            <Box>
+              <Typography>Usuarios</Typography>
+            </Box>
+          </RequireAuth>
         }
       />
       <Route path="*" element={<NotFoundPage />} />

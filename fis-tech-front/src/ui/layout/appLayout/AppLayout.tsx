@@ -13,7 +13,7 @@ export const AppLayout = React.memo(() => {
       <ScrollToTop />
       <Styles.AppScreen>
         <AppHeader />
-        <Styles.AppBody sx={{ flexDirection: !isMobile ? "row" : "column" }}>
+        <Styles.AppBody>
           <Styles.AppContainerRouterSwitch id={"routerSwitch"}>
             <AppRouterSwitch />
           </Styles.AppContainerRouterSwitch>

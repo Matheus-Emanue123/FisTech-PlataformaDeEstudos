@@ -13,16 +13,13 @@ const ShowNotificationContainer = styled(Box)<IContainer>(
     borderRadius: `${sysSizing.spacingFixedSm}`,
     overflow: "hidden",
     padding: `${sysSizing.spacingFixedMd}`,
-
     [theme.breakpoints.down("md")]: {
       maxWidth: "420px",
     },
-
     [theme.breakpoints.down("sm")]: {
       minWidth: "200px",
       maxWidth: "280px",
     },
-
     "& .MuiSvgIcon-root": {
       width: `${sysSizing.spacingFixedLg}`,
       height: `${sysSizing.spacingFixedLg}`,

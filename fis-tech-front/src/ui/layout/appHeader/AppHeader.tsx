@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Box } from "@mui/material";
-import Styles from "./AppHeaderStyles";
+import React, { useContext, useState } from "react";
+import { Box, Tooltip } from "@mui/material";
+import Styles, { TooltipLogoutStyles } from "./AppHeaderStyles";
 import { sysAppHeaderOptions } from "../appModuleManeger/AppModuleManeger";
 import KeyboardArrowLeftOutlinedIcon from "@mui/icons-material/KeyboardArrowLeftOutlined";
 import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRightOutlined";
@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import { SysSvg } from "../../sysComponents/SysSvg/SysSvg";
 import { HeaderSvgs } from "../../../utils/svg/headerSvgs";
+import UseAuthContext from "../../../utils/hooks/useAuth/UseAuthContext";
 
 interface IAppHeader {}
 
@@ -16,6 +17,7 @@ export const AppHeader: React.FC<IAppHeader> = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const theme = useTheme();
+  const { signOut } = useContext(UseAuthContext);
 
   return (
     <Styles.HeaderContainer isExpanded={isExpanded.toString()}>
@@ -63,10 +65,29 @@ export const AppHeader: React.FC<IAppHeader> = () => {
           );
         })}
       </Styles.MenuContainer>
-      <Styles.LogoutContainer onClick={() => console.log("Clicou no Logout")}>
-        <Styles.LogoutIconCircle>
-          <SysSvg paths={HeaderSvgs["userLogoutOutlined"]} />
-        </Styles.LogoutIconCircle>
+
+      <Styles.LogoutContainer>
+        <Tooltip
+          title="Sair"
+          placement="bottom-start"
+          slotProps={{
+            popper: {
+              modifiers: [
+                {
+                  name: "offset",
+                  options: {
+                    offset: [10, -10],
+                  },
+                },
+              ],
+            },
+            tooltip: { sx: TooltipLogoutStyles },
+          }}
+        >
+          <Styles.LogoutIconCircle onClick={() => signOut()}>
+            <SysSvg paths={HeaderSvgs["userLogoutOutlined"]} />
+          </Styles.LogoutIconCircle>
+        </Tooltip>
       </Styles.LogoutContainer>
     </Styles.HeaderContainer>
   );

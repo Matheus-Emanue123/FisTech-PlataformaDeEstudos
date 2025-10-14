@@ -1,53 +1,59 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useState } from "react";
 import Context, { IUseAuthContext } from "./UseAuthContext";
-import { UsuarioSch } from "../../../modules/usuario/api/UsuarioSch";
 import { useAuthServerApi } from "./UseAuthServerApi";
-import { UserType } from "../../../modules/user/config/EnumUserType";
-import { ACCESS_LEVELS_USER } from "../../../modules/user/config/AccessLevelUser";
+import {
+  ACCESS_LEVELS_USER,
+  UserType,
+} from "../../../modules/usuario/config/EnumUserType";
+import { UsuarioSch } from "../../../modules/usuario/api/UsuarioSch";
 
 const UseAuthController: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UsuarioSch | null>(null);
   const authServerApi = useAuthServerApi();
 
-  console.log("User state:", user);
-
-  useEffect(() => {
-    const validadeToken = async () => {
-      const isThereToken = getToken();
+  const checkToken = async () => {
+    try {
+      const isThereToken = localStorage.getItem("authToken");
       if (isThereToken) {
-        const data = await authServerApi.validadeToken(isThereToken);
+        const data = await authServerApi.validateToken(isThereToken);
         if (data.user) {
           setUser(data.user);
         }
       }
-    };
-    validadeToken();
-  }, []);
-
-  const signIn = async (email: string, password: string) => {
-    const data = await authServerApi.login(email, password);
-    console.log("Login response data:", data);
-    if (data.user && data.acessToken) {
-      setUser(data.user);
-      console.log("User state:", user);
-      setToken(data.acessToken);
-      return true;
+    } catch (err: any) {
+      localStorage.removeItem("authToken");
     }
-    return false;
+  };
+
+  const signIn = async (
+    email: string,
+    password: string,
+    callback?: (error: string | null, resp: boolean) => void
+  ) => {
+    try {
+      const data = await authServerApi.login(email, password);
+      if (data.user && data.accessToken && data.refreshToken) {
+        setUser(data.user);
+        localStorage.setItem("authToken", data.refreshToken);
+        console.log("Login efetuado com sucesso");
+        callback?.(null, true);
+      }
+    } catch (error: any) {
+      console.log(error);
+      callback?.(
+        error.response?.data?.error?.message || "Erro desconhecido",
+        false
+      );
+    }
   };
 
   const signOut = async () => {
-    await authServerApi.logout();
-    setUser(null);
-    sessionStorage.removeItem("authToken");
-  };
-
-  const getToken = (): string | null => {
-    return sessionStorage.getItem("authToken");
-  };
-
-  const setToken = (token: string) => {
-    sessionStorage.setItem("authToken", token);
+    const isThereToken = localStorage.getItem("authToken");
+    if (isThereToken) {
+      await authServerApi.logout(isThereToken);
+      setUser(null);
+      localStorage.removeItem("authToken");
+    }
   };
 
   const hasPermission = (requiredLevel: UserType): boolean => {
@@ -64,8 +70,7 @@ const UseAuthController: React.FC<{ children: ReactNode }> = ({ children }) => {
     isLogged: !!user,
     signIn,
     signOut,
-    getToken,
-    setToken,
+    checkToken,
     hasPermission,
   };
 

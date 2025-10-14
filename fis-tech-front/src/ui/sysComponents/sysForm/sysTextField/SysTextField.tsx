@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from "react";
-import { TextFieldProps, Typography } from "@mui/material";
+import { TextFieldProps, Typography, SxProps } from "@mui/material";
 import Styles from "./SysTextFieldStyles";
 import { SysSimpleLabel } from "../sysSimpleLabel/SysSimpleLabel";
 
@@ -13,6 +13,9 @@ type ISysTextField = {
   showNumberCaracters?: boolean;
   maxLength?: number;
   changeValue: (event: ChangeEvent<HTMLInputElement>) => void;
+  sx?: {
+    container?: SxProps;
+  };
 } & TextFieldProps;
 
 export const SysTextField: React.FC<ISysTextField> = ({
@@ -25,6 +28,7 @@ export const SysTextField: React.FC<ISysTextField> = ({
   showNumberCaracters = false,
   maxLength = 15,
   changeValue,
+  sx,
   ...props
 }) => {
   function onChange(event: ChangeEvent<HTMLInputElement>) {
@@ -40,7 +44,7 @@ export const SysTextField: React.FC<ISysTextField> = ({
   };
 
   return (
-    <Styles.Container>
+    <Styles.Container sx={sx?.container}>
       <SysSimpleLabel
         label={label ?? "Digite um texto"}
         disabled={props.disabled ?? false}

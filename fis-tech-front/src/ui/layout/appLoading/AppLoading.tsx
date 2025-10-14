@@ -1,5 +1,5 @@
 import React from "react";
-import Styles from "./AppLoadginStyles";
+import Styles from "./AppLoadingStyles";
 import { IconCarregando } from "./components/iconCarregando/IconCarregando";
 
 interface IAppLoadingProps {}
