@@ -7,12 +7,13 @@ const appStyles = {
   "*::-webkit-scrollbar": {
     width: "8px",
     height: "8px",
+    background: "#eeeeee",
   },
   "*::-webkit-scrollbar-track": {
     border: "none",
   },
   "*::-webkit-scrollbar-thumb": {
-    background: "#c1c1c1",
+    background: "#b1b0b0",
     borderRadius: "20px",
   },
 };

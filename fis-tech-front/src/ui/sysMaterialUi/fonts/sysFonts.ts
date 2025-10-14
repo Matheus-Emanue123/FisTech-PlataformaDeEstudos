@@ -1,7 +1,7 @@
 import { TypographyStyleOptions } from "@mui/material/styles/createTypography";
 
 class SysFonts {
-  public static readonly fontFamily = "Rawline, sans-serif";
+  public static readonly fontFamily = "montserrat, sans-serif";
 
   public static readonly h1 = (_fontScale: number = 1) => ({
     fontFamily: SysFonts.fontFamily,

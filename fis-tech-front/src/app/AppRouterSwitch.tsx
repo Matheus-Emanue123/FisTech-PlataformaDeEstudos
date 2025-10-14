@@ -1,22 +1,12 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { Example } from "../ui/sysPages/example/Example";
 import { Box, Typography } from "@mui/material";
 import { RequireAuth } from "../ui/sysComponents/requireAuth/RequireAuth";
-import { useContext } from "react";
-import UseAuthContext from "../utils/hooks/useAuth/UseAuthContext";
-import { SysButton } from "../ui/sysComponents/sysForm/sysButton/SysButton";
-import { UserType } from "../modules/user/config/EnumUserType";
+
+import { UserType } from "../modules/usuario/config/EnumUserType";
 import { NotFoundPage } from "../ui/sysPages/notFoundPage/NotFoundPage";
 
 export const AppRouterSwitch = () => {
-  const { isLogged, signOut } = useContext(UseAuthContext);
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    signOut();
-    navigate("/");
-  };
-
   return (
     <Routes>
       <Route path="/" element={<Example />} />
@@ -31,13 +21,10 @@ export const AppRouterSwitch = () => {
       <Route
         path="/usuarios/:screenState?/:id?"
         element={
-          <RequireAuth level={UserType.ADMINISTRATOR} path="/usuarios">
+          <RequireAuth level={UserType.ADMINISTRATOR}>
             <Box>
-              <Typography>usuarios</Typography>
+              <Typography>Usuarios</Typography>
             </Box>
-            {isLogged && (
-              <SysButton mode="primary" label="Sair" onClick={handleLogout} />
-            )}
           </RequireAuth>
         }
       />

@@ -1,14 +1,17 @@
 import { createContext } from "react";
-import { UserSch } from "../../../modules/user/config/UserSch";
-import { UserType } from "../../../modules/user/config/EnumUserType";
+import { UserType } from "../../../modules/usuario/config/EnumUserType";
+import { UsuarioSch } from "../../../modules/usuario/api/UsuarioSch";
 
 interface IUseAuthContext {
-  user: UserSch | null;
+  user: UsuarioSch | null;
   isLogged: boolean;
-  signIn: (email: string, password: string) => Promise<boolean>;
+  signIn: (
+    email: string,
+    password: string,
+    callback: (error: any, resp: boolean) => void
+  ) => Promise<void>;
   signOut: () => void;
-  getToken: () => string | null;
-  setToken: (token: string) => void;
+  checkToken: () => void;
   hasPermission: (requiredLevel: UserType) => boolean;
 }
 

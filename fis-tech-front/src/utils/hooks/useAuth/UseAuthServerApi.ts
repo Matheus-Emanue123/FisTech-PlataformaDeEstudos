@@ -1,44 +1,64 @@
-//import axios from "axios";
+import axios from "axios";
 import { useMemo } from "react";
-import { UserType } from "../../../modules/user/config/EnumUserType";
+import { BACKEND_URL } from "../../../typings/ConfigEnvironment";
+import { UsuarioSch } from "../../../modules/usuario/api/UsuarioSch";
 
-// const api = axios.create({
-//   baseURL: process.env.REACT_APP_API,
-// });
+type LoginResponse = {
+  user: UsuarioSch;
+  accessToken: string;
+  refreshToken: string;
+};
+
+const api = axios.create({
+  baseURL: BACKEND_URL + "/auth",
+});
+
+function throwAxiosError(error: unknown): never {
+  if (axios.isAxiosError(error)) {
+    const custom = {
+      isAxiosError: true,
+      message: error.response?.data?.error?.message || "Erro desconhecido",
+      response: error.response,
+    };
+    throw custom;
+  }
+  throw error instanceof Error ? error : new Error("Erro desconhecido");
+}
+
+async function login(email: string, password: string): Promise<LoginResponse> {
+  try {
+    const { data } = await api.post("/login", { email, password });
+    const { user, accessToken, refreshToken } = data.data;
+    return { user, accessToken, refreshToken };
+  } catch (error) {
+    throwAxiosError(error);
+  }
+}
+
+async function validateToken(token: string): Promise<LoginResponse> {
+  try {
+    const { data } = await api.post("/refresh", { refreshToken: token });
+    const { user, accessToken, refreshToken } = data.data;
+    return { user, accessToken, refreshToken };
+  } catch (error) {
+    throwAxiosError(error);
+  }
+}
+
+async function logout(refreshToken: string) {
+  try {
+    await api.post("/logout", { refreshToken });
+  } catch (error) {
+    throwAxiosError(error);
+  }
+}
 
 export const useAuthServerApi = () =>
   useMemo(
     () => ({
-      validadeToken: async (token: string) => {
-        return {
-          user: {
-            id: 1,
-            name: "João da Silva",
-            email: "joao.silva@email.com",
-            password: "senhaSegura123",
-            createdAt: new Date("2024-01-10T10:00:00Z"),
-            lastAccess: new Date("2025-06-29T15:00:00Z"),
-            typeUser: UserType.ADMINISTRATOR,
-          },
-        };
-      },
-      login: async (email: string, password: string) => {
-        return {
-          user: {
-            id: 1,
-            name: "João da Silva",
-            email: "joao.silva@email.com",
-            password: "senhaSegura123",
-            createdAt: new Date("2024-01-10T10:00:00Z"),
-            lastAccess: new Date("2025-06-29T15:00:00Z"),
-            typeUser: UserType.ADMINISTRATOR,
-          },
-          token: "123456789",
-        };
-      },
-      logout: async () => {
-        return { status: true };
-      },
+      validateToken,
+      login,
+      logout,
     }),
     []
   );
