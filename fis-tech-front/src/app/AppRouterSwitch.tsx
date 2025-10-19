@@ -1,34 +1,34 @@
-import { Routes, Route } from "react-router-dom";
-import { Example } from "../ui/sysPages/example/Example";
-import { Box, Typography } from "@mui/material";
+import React from "react";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { RequireAuth } from "../ui/sysComponents/requireAuth/RequireAuth";
+import sysRoutes from "../ui/layout/appModuleManeger/SysRoutes";
+import { IRoute } from "../typings/ModulesTypings";
 
-import { UserType } from "../modules/usuario/config/EnumUserType";
-import { NotFoundPage } from "../ui/sysPages/notFoundPage/NotFoundPage";
+const renderElement = (route: IRoute): React.ReactElement => {
+  const inner = React.isValidElement(route.component)
+    ? route.component
+    : React.createElement(route.component as React.ComponentType<any>);
+
+  return inner;
+};
 
 export const AppRouterSwitch = () => {
+  const location = useLocation();
+
   return (
     <Routes>
-      <Route path="/" element={<Example />} />
-      <Route
-        path="/atividades/:screenState?/:id?"
-        element={
-          <Box>
-            <Typography>Atividades</Typography>
-          </Box>
-        }
-      />
-      <Route
-        path="/usuarios/:screenState?/:id?"
-        element={
-          <RequireAuth level={UserType.ADMINISTRATOR}>
-            <Box>
-              <Typography>Usuarios</Typography>
-            </Box>
-          </RequireAuth>
-        }
-      />
-      <Route path="*" element={<NotFoundPage />} />
+      {sysRoutes.getRoutes().map((route: IRoute) => {
+        const element = route.permissionRequired ? (
+          <RequireAuth level={route.level}>{renderElement(route)}</RequireAuth>
+        ) : (
+          renderElement(route)
+        );
+
+        return <Route key={route.path} path={route.path} element={element} />;
+      })}
+      {!sysRoutes.checkIfRouteExists(location.pathname) && (
+        <Route path="*" element={<Navigate to="/not-found" replace />} />
+      )}
     </Routes>
   );
 };

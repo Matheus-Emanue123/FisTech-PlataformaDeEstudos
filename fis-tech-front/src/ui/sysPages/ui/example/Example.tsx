@@ -1,20 +1,21 @@
 import React, { useContext, useState } from "react";
 import { Box } from "@mui/material";
-import { IconTooltip } from "../../sysComponents/iconTooltip/IconTooltip";
+import { IconTooltip } from "../../../sysComponents/iconTooltip/IconTooltip";
 import TuneIcon from "@mui/icons-material/Tune";
 import {
   BasicMenu,
   IoptionsToBasicMenu,
-} from "../../sysComponents/basicMenu/BasicMenu";
-import { SysButton } from "../../sysComponents/sysForm/sysButton/SysButton";
-import { SysToggleField } from "../../sysComponents/sysForm/sysToggleField/SysToggleField";
-import { SysTextField } from "../../sysComponents/sysForm/sysTextField/SysTextField";
+} from "../../../sysComponents/basicMenu/BasicMenu";
+import { SysButton } from "../../../sysComponents/sysForm/sysButton/SysButton";
+import { SysToggleField } from "../../../sysComponents/sysForm/sysToggleField/SysToggleField";
+import { SysTextField } from "../../../sysComponents/sysForm/sysTextField/SysTextField";
 import {
   IOptionToSysRadioField,
   SysRadioField,
-} from "../../sysComponents/sysForm/sysRadioField/SysRadioField";
-import { SysDatePicker } from "../../sysComponents/sysForm/sysDatePicker/SysDatePicker";
-import SysAppContext from "../../../app/AppContext";
+} from "../../../sysComponents/sysForm/sysRadioField/SysRadioField";
+import { SysDatePicker } from "../../../sysComponents/sysForm/sysDatePicker/SysDatePicker";
+import SysAppContext from "../../../../app/AppContext";
+
 type Form = {
   toggleInput: boolean;
   textInput: string;
@@ -22,7 +23,9 @@ type Form = {
   dateInput: Date | null;
 };
 
-export const Example = () => {
+interface IExamplePageProps {}
+
+export const Example: React.FC<IExamplePageProps> = () => {
   const { showNotification } = useContext(SysAppContext);
 
   const [valueForm, setValueForm] = useState<Form>({

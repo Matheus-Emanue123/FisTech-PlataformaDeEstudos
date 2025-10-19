@@ -1,14 +1,12 @@
-// LoginPage.tsx
-
 import React, { useContext, useState } from "react";
 import Styles from "./LoginPageStyles";
-import StylesApp from "../../layout/appLayout/AppLayoutStyles";
-import { SysTextField } from "../../sysComponents/sysForm/sysTextField/SysTextField";
-import { SysButton } from "../../sysComponents/sysForm/sysButton/SysButton";
-import UseAuthContext from "../../../utils/hooks/useAuth/UseAuthContext";
-import UseAppContext from "../../../app/AppContext";
-import sysSizing from "../../sysMaterialUi/sizing/sysSizes";
+import StylesApp from "../../../layout/appLayout/AppLayoutStyles";
+import { SysTextField } from "../../../sysComponents/sysForm/sysTextField/SysTextField";
+import UseAuthContext from "../../../../utils/hooks/useAuth/UseAuthContext";
+import UseAppContext from "../../../../app/AppContext";
 import { Box } from "@mui/material";
+import { SysButton } from "../../../sysComponents/sysForm/sysButton/SysButton";
+import sysSizing from "../../../sysMaterialUi/sizing/sysSizes";
 
 interface ILoginPageProps {}
 
@@ -24,7 +22,7 @@ export const LoginPage: React.FC<ILoginPageProps> = () => {
   });
 
   const { signIn } = useContext(UseAuthContext);
-  const { showLoading, showNotification, isMobile } = useContext(UseAppContext);
+  const { showLoading, showNotification } = useContext(UseAppContext);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLoginForm({

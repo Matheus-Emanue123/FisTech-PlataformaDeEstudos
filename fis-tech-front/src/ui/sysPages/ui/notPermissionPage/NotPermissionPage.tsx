@@ -1,27 +1,27 @@
 import React from "react";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import Styles from "./NotFoundPageStyles";
+import Styles from "./NotPermissionPageStyles";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import { Typography } from "@mui/material";
-import sysSizing from "../../sysMaterialUi/sizing/sysSizes";
+import sysSizing from "../../../sysMaterialUi/sizing/sysSizes";
 
-export const NotFoundPage: React.FC = () => {
+export const NotPermissionPage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
     <Styles.MainContainer>
-      <Styles.NotFoundImage
+      <Styles.NotPermissionImage
         src="/assets/svgs/logoEscura.svg"
-        alt="Página não encontrada"
+        alt="Acesso Negado"
       />
-      <Typography variant="h3">Página não encontrada</Typography>
+      <Typography variant="h3">Acesso Negado</Typography>
       <Typography
         variant="body1"
         sx={{ margin: `${sysSizing.spacingFixedMd} 0px 40px 0px` }}
       >
-        A página que você está tentando acessar não existe ou se encontra
-        indisponível.
+        A página que você está tentando acessar é restrita e você não tem
+        permissão para visualizá-la.
       </Typography>
       <Styles.ButtonContainer>
         <Button

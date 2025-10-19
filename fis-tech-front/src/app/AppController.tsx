@@ -15,7 +15,7 @@ import {
   ShowDialog,
 } from "../ui/sysComponents/showDialog/ShowDialog";
 import UseAuthContext from "../utils/hooks/useAuth/UseAuthContext";
-import { LoginPage } from "../ui/sysPages/loginPage/LoginPage";
+import { LoginPage } from "../ui/sysPages/ui/loginPage/LoginPage";
 
 const defaultState: ISysGeneralComponentsCommon = { open: false };
 
@@ -23,8 +23,6 @@ export const UseAppController: React.FC = () => {
   const theme = useTheme();
   const { user, checkToken } = useContext(UseAuthContext);
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
-  const { isLogged, signOut } = useContext(UseAuthContext);
 
   const [notifications, setNotifications] = useState<IAppNotification[]>([]);
   const [loadingSystem, setLoadingSystem] = useState<boolean>(

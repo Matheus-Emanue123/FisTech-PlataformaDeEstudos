@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Box, Tooltip } from "@mui/material";
 import Styles, { TooltipLogoutStyles } from "./AppHeaderStyles";
-import { sysAppHeaderOptions } from "../appModuleManeger/AppModuleManeger";
 import KeyboardArrowLeftOutlinedIcon from "@mui/icons-material/KeyboardArrowLeftOutlined";
 import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRightOutlined";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -9,6 +8,8 @@ import { useTheme } from "@mui/material/styles";
 import { SysSvg } from "../../sysComponents/SysSvg/SysSvg";
 import { HeaderSvgs } from "../../../utils/svg/headerSvgs";
 import UseAuthContext from "../../../utils/hooks/useAuth/UseAuthContext";
+import sysRoutes from "../appModuleManeger/SysRoutes";
+import { IAppMenu } from "../../../typings/ModulesTypings";
 
 interface IAppHeader {}
 
@@ -41,7 +42,7 @@ export const AppHeader: React.FC<IAppHeader> = () => {
       </Styles.LogoContainer>
 
       <Styles.MenuContainer>
-        {sysAppHeaderOptions.map((item, index) => {
+        {sysRoutes.getMenuItens().map((item: IAppMenu, index) => {
           const isActive = pathname.startsWith(item.path);
           return (
             <Styles.MenuItem
@@ -58,7 +59,7 @@ export const AppHeader: React.FC<IAppHeader> = () => {
                 <Styles.MenuText
                   sx={isActive ? { color: theme.palette.common.white } : {}}
                 >
-                  {item.label}
+                  {item.name}
                 </Styles.MenuText>
               )}
             </Styles.MenuItem>

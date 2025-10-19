@@ -6,9 +6,7 @@ import {
   TypographyProps,
 } from "@mui/material";
 import { ElementType, ImgHTMLAttributes } from "react";
-import sysSizing from "../../sysMaterialUi/sizing/sysSizes";
-
-const loginBG = "/assets/imgs/loginBG.png";
+import sysSizing from "../../../sysMaterialUi/sizing/sysSizes";
 
 interface IStyles {
   PageContainer: ElementType<BoxProps>;
@@ -29,7 +27,7 @@ const LoginPageStyles: IStyles = {
   }),
   LeftSide: styled(Box)(({ theme }) => ({
     flex: 1,
-    backgroundImage: `url(${loginBG})`,
+    backgroundImage: `url(/assets/imgs/loginBG.png)`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     [theme.breakpoints.down("lg")]: {

@@ -4,6 +4,9 @@ const appStyles = {
     padding: 0,
     boxSizing: "border-box",
   },
+  body: {
+    background: "#eeeeee",
+  },
   "*::-webkit-scrollbar": {
     width: "8px",
     height: "8px",
