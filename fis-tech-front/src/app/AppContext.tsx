@@ -1,8 +1,10 @@
 import { createContext } from "react";
 import { IShowNotificationProps } from "../ui/layout/appNotificationStack/components/showNotification/ShowNotification";
 import { IShowDialogProps } from "../ui/sysComponents/showDialog/ShowDialog";
+import { PageState } from "../typings/ScreenTypes";
 
 interface IAppContext {
+  isMobile: boolean;
   showNotification: (options: Omit<IShowNotificationProps, "position">) => void;
   showLoading: (status: boolean) => void;
   showDialog: (options?: IShowDialogProps) => void;
@@ -14,7 +16,11 @@ interface IAppContext {
       reason?: "backdropClick" | "escapeKeyDown"
     ) => void
   ) => void;
-  isMobile: boolean;
+  openUsuarioDetail: (
+    callReload: () => void,
+    state?: PageState,
+    id?: string
+  ) => void;
 }
 
 const UseAppContext = createContext<IAppContext>({} as IAppContext);

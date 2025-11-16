@@ -16,6 +16,8 @@ import {
 } from "../ui/sysComponents/showDialog/ShowDialog";
 import UseAuthContext from "../utils/hooks/useAuth/UseAuthContext";
 import { LoginPage } from "../ui/sysPages/ui/loginPage/LoginPage";
+import { PageState } from "../typings/ScreenTypes";
+import { showCrudUsuarioModal } from "../modules/usuario/ui/usuarioDetail/usuarioDetailController";
 
 const defaultState: ISysGeneralComponentsCommon = { open: false };
 
@@ -26,7 +28,7 @@ export const UseAppController: React.FC = () => {
 
   const [notifications, setNotifications] = useState<IAppNotification[]>([]);
   const [loadingSystem, setLoadingSystem] = useState<boolean>(
-    !!localStorage.getItem("authToken")
+    !!localStorage.getItem("refreshToken")
   );
   const [showDialog, setShowDialog] = useState<IShowDialogProps>(defaultState);
 
@@ -80,12 +82,34 @@ export const UseAppController: React.FC = () => {
     []
   );
 
+  const openUsuarioDetail = useCallback(
+    (callReload: () => void, state?: PageState, id?: string) => {
+      showCrudUsuarioModal(
+        showDialogHandler,
+        { reloadList: callReload, id, type: state || "create" },
+        {
+          sx: {
+            width: "100%",
+            height: "100%",
+            maxWidth: "400px",
+            maxHeight: "392px",
+            overflowY: "hidden",
+            borderRadius: "16px",
+          },
+        }
+      );
+    },
+    [showDialogHandler, showCrudUsuarioModal]
+  );
+
   const providerValue: IAppContext = {
+    isMobile: isMobile,
+
     showNotification: addNotification,
     showLoading: setLoadingSystem,
     showDialog: showDialogHandler,
     closeDialog: handleCloseDialog,
-    isMobile: isMobile,
+    openUsuarioDetail: openUsuarioDetail,
   };
 
   return (

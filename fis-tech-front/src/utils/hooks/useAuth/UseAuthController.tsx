@@ -13,7 +13,7 @@ const UseAuthController: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const checkToken = async () => {
     try {
-      const isThereToken = localStorage.getItem("authToken");
+      const isThereToken = localStorage.getItem("refreshToken");
       if (isThereToken) {
         const data = await authServerApi.validateToken(isThereToken);
         if (data.user) {
@@ -21,6 +21,7 @@ const UseAuthController: React.FC<{ children: ReactNode }> = ({ children }) => {
         }
       }
     } catch (err: any) {
+      localStorage.removeItem("refreshToken");
       localStorage.removeItem("authToken");
     }
   };
@@ -34,7 +35,8 @@ const UseAuthController: React.FC<{ children: ReactNode }> = ({ children }) => {
       const data = await authServerApi.login(email, password);
       if (data.user && data.accessToken && data.refreshToken) {
         setUser(data.user);
-        localStorage.setItem("authToken", data.refreshToken);
+        localStorage.setItem("refreshToken", data.refreshToken);
+        localStorage.setItem("authToken", data.accessToken);
         console.log("Login efetuado com sucesso");
         callback?.(null, true);
       }
@@ -47,11 +49,31 @@ const UseAuthController: React.FC<{ children: ReactNode }> = ({ children }) => {
     }
   };
 
+  const register = async (
+    nome: string,
+    email: string,
+    password: string,
+    callback?: (error: string | null, resp: boolean) => void
+  ) => {
+    try {
+      const data = await authServerApi.registerUsuario(nome, email, password);
+      console.log("Usuário registrado com sucesso");
+      callback?.(null, true);
+    } catch (error: any) {
+      console.log(error);
+      callback?.(
+        error.response?.data?.error?.message || "Erro desconhecido",
+        false
+      );
+    }
+  };
+
   const signOut = async () => {
-    const isThereToken = localStorage.getItem("authToken");
+    const isThereToken = localStorage.getItem("refreshToken");
     if (isThereToken) {
       await authServerApi.logout(isThereToken);
       setUser(null);
+      localStorage.removeItem("refreshToken");
       localStorage.removeItem("authToken");
     }
   };
@@ -69,6 +91,7 @@ const UseAuthController: React.FC<{ children: ReactNode }> = ({ children }) => {
     user,
     isLogged: !!user,
     signIn,
+    register,
     signOut,
     checkToken,
     hasPermission,

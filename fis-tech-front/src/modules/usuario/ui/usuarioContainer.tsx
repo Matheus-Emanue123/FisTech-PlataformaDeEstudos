@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import React from "react";
 import { useParams } from "react-router-dom";
 import { NotFoundPage } from "../../../ui/sysPages/ui/notFoundPage/NotFoundPage";
+import UsuarioListController from "./usuarioList/usuarioListController";
 
 export interface IProjetoModuleContext {
   state?: string;
@@ -28,11 +29,7 @@ const UsuarioContainer = () => {
         </Box>
       );
     } else {
-      return (
-        <Box>
-          <Typography variant="h1">Usuário List</Typography>
-        </Box>
-      );
+      return <UsuarioListController />;
     }
   };
 

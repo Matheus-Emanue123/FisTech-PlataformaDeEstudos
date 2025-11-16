@@ -6,7 +6,7 @@ import { NotPermissionPage } from "../ui/notPermissionPage/NotPermissionPage";
 
 export const pagesRouterList: IRoute[] = [
   {
-    path: "/",
+    path: "/example",
     component: Example,
     isProtected: true,
     permissionRequired: false,

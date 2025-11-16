@@ -10,15 +10,28 @@ import { HeaderSvgs } from "../../../utils/svg/headerSvgs";
 import UseAuthContext from "../../../utils/hooks/useAuth/UseAuthContext";
 import sysRoutes from "../appModuleManeger/SysRoutes";
 import { IAppMenu } from "../../../typings/ModulesTypings";
+import { UserType } from "../../../modules/usuario/config/EnumUserType";
+import UseAppContext from "../../../app/AppContext";
 
 interface IAppHeader {}
 
 export const AppHeader: React.FC<IAppHeader> = () => {
+  const { user } = useContext(UseAuthContext);
   const [isExpanded, setIsExpanded] = useState(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const theme = useTheme();
   const { signOut } = useContext(UseAuthContext);
+  const { showLoading } = useContext(UseAppContext);
+
+  const handleSingOut = () => {
+    showLoading(true);
+    signOut();
+    navigate("/");
+    setTimeout(() => {
+      showLoading(false);
+    }, 1000);
+  };
 
   return (
     <Styles.HeaderContainer isExpanded={isExpanded.toString()}>
@@ -44,6 +57,11 @@ export const AppHeader: React.FC<IAppHeader> = () => {
       <Styles.MenuContainer>
         {sysRoutes.getMenuItens().map((item: IAppMenu, index) => {
           const isActive = pathname.startsWith(item.path);
+          if (
+            item.permissionRequired &&
+            user?.userType !== UserType.ADMINISTRATOR
+          )
+            return null;
           return (
             <Styles.MenuItem
               key={`appHeaderOption${index}`}
@@ -85,7 +103,11 @@ export const AppHeader: React.FC<IAppHeader> = () => {
             tooltip: { sx: TooltipLogoutStyles },
           }}
         >
-          <Styles.LogoutIconCircle onClick={() => signOut()}>
+          <Styles.LogoutIconCircle
+            onClick={() => {
+              handleSingOut();
+            }}
+          >
             <SysSvg paths={HeaderSvgs["userLogoutOutlined"]} />
           </Styles.LogoutIconCircle>
         </Tooltip>

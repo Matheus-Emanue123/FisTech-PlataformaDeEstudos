@@ -22,7 +22,8 @@ export const LoginPage: React.FC<ILoginPageProps> = () => {
   });
 
   const { signIn } = useContext(UseAuthContext);
-  const { showLoading, showNotification } = useContext(UseAppContext);
+  const { showLoading, showNotification, openUsuarioDetail } =
+    useContext(UseAppContext);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLoginForm({
@@ -73,7 +74,15 @@ export const LoginPage: React.FC<ILoginPageProps> = () => {
               </Styles.WelcomeHeader>
               <Styles.LoginFormContainer>
                 <Styles.Subtitle variant="body1">
-                  Novo usuário? <Box component="span">Cadastre-se</Box>
+                  Novo usuário?{" "}
+                  <Box
+                    component="span"
+                    onClick={() => {
+                      openUsuarioDetail(() => {}, "create");
+                    }}
+                  >
+                    Cadastre-se
+                  </Box>
                 </Styles.Subtitle>
                 <form>
                   <SysTextField

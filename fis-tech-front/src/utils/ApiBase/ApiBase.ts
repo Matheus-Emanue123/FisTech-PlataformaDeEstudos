@@ -6,6 +6,7 @@ import axios, {
 } from "axios";
 import qs from "qs";
 import { IParams } from "../../typings/ApiBaseTypings";
+import { BACKEND_URL } from "../../typings/ConfigEnvironment";
 
 type HttpMethod = "get" | "post" | "put" | "patch" | "delete";
 
@@ -37,11 +38,11 @@ export class ApiBase<T> {
   }
 
   private getBaseURL(): string {
-    return "http://localhost:8080";
+    return BACKEND_URL ?? "http://localhost:8080";
   }
 
   private getAuthToken(): string | null {
-    return "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1AdWVtZy5jb20iLCJpYXQiOjE3NTExMTg5MzUsImV4cCI6MTc1MTcyMzczNX0.8spzWPDQLUzkBiZZeCzChhxsFiETZyMQPOs6PAHVckU";
+    return localStorage.getItem("authToken");
   }
 
   public async request(
@@ -60,15 +61,27 @@ export class ApiBase<T> {
     });
   }
 
+  protected throwAxiosError(error: unknown): never {
+    if (axios.isAxiosError(error)) {
+      const custom = {
+        isAxiosError: true,
+        message: error.response?.data?.error?.message || "Erro desconhecido",
+        response: error.response,
+      };
+      throw custom;
+    }
+    throw error instanceof Error ? error : new Error("Erro desconhecido");
+  }
+  
   protected pesquisar(
     url: string,
     filtrosDto?: any,
     queryParams?: IParams
-  ): Promise<AxiosResponse<T>> {
+  ): Promise<AxiosResponse<any>> {
     const queryString = queryParams
       ? "?" + qs.stringify(queryParams, { arrayFormat: "repeat" })
       : "";
-    return this.request("post", `${url}${queryString}`, filtrosDto);
+    return this.request("get", `${url}`, filtrosDto); //${queryString}
   }
 
   protected getOne(id: string): Promise<AxiosResponse<T>> {

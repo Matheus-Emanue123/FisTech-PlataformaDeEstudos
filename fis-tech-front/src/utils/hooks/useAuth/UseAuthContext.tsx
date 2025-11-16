@@ -10,6 +10,12 @@ interface IUseAuthContext {
     password: string,
     callback: (error: any, resp: boolean) => void
   ) => Promise<void>;
+  register: (
+    nome: string,
+    email: string,
+    password: string,
+    callback: (error: any, resp: boolean) => void
+  ) => Promise<void>;
   signOut: () => void;
   checkToken: () => void;
   hasPermission: (requiredLevel: UserType) => boolean;

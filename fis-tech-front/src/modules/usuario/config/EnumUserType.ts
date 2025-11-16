@@ -9,3 +9,9 @@ export const ACCESS_LEVELS_USER = {
   [UserType.MODERATOR]: 1,
   [UserType.ADMINISTRATOR]: 2,
 };
+
+export function toUserType(value: string): UserType | null {
+  return Object.values(UserType).includes(value as UserType)
+    ? (value as UserType)
+    : null;
+}
