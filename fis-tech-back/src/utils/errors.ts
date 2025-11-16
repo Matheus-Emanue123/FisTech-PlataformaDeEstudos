@@ -58,6 +58,11 @@ export enum ErrorCode {
   ANOTACAO_NOT_FOUND = 404, // Not Found
   /** Já existe uma anotação idêntica para o mesmo usuário e tópico. */
   ANOTACAO_EXISTS = 409, // Conflict
+
+  /** O conteúdo com o ID especificado não foi encontrado. */
+  CONTEUDO_NOT_FOUND = 404, // Not Found
+  /** Já existe um conteúdo com o título fornecido. */
+  CONTEUDO_TITLE_EXISTS = 409, // Conflict
 }
 
 export interface ErrorContext {
