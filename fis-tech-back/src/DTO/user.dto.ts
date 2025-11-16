@@ -40,3 +40,14 @@ export const UserIdSchema = z.object({
 export type UserCreateData = z.infer<typeof UserCreateSchema>;
 export type UserUpdateData = z.infer<typeof UserUpdateSchema>;
 export type UserId = z.infer<typeof UserIdSchema>;
+
+export const UserQuerySchema = z.object({
+  page: z.preprocess(Number, z.number().int().positive().default(1)),
+  size: z.preprocess(Number, z.number().int().positive().default(10)),
+  sortBy: z.enum(['nome', 'createdAt']).default('createdAt'),
+  direction: z.enum(['asc', 'desc']).default('asc'),
+  nome: z.string().optional(),
+  userType: z.preprocess(Number, z.number().int().optional()),
+}).partial();
+
+export type UserQuery = z.infer<typeof UserQuerySchema>;

@@ -1,5 +1,5 @@
 import { PrismaClient } from '../generated/prisma/client.js';
-import { UserCreateData, UserUpdateData, UserId } from '../DTO/user.dto';
+import { UserCreateData, UserUpdateData, UserQuery } from '../DTO/user.dto';
 
 const prisma = new PrismaClient();
 
@@ -40,10 +40,43 @@ export const updateUser = async (id: number, userData: UserUpdateData) => {
   });
 };
 
-export const getUsers = async () => {
-  return prisma.usuario.findMany({
+export const getUsers = async (queryParams: UserQuery) => {
+  const { page = 1, size = 10, sortBy, direction, nome, userType } = queryParams;
+
+  const skip = (page - 1) * size;
+
+  const where: any = {
+    disabled: false, 
+  };
+  
+  if (nome) {
+    where.nome = {
+      contains: nome,
+      mode: 'insensitive',
+    };
+  }
+  if (userType) {
+    where.user_type_id = userType;
+  }
+
+  const orderBy: any = {};
+  if (sortBy === 'createdAt') {
+    orderBy.data_criacao = direction;
+  } else if (sortBy === 'nome') {
+    orderBy.nome = direction;
+  }
+
+  const users = await prisma.usuario.findMany({
+    skip,
+    take: size,
+    where,
+    orderBy,
     include: {
-      UserType: true
-    }
+      UserType: true,
+    },
   });
+
+  const total = await prisma.usuario.count({ where });
+
+  return { users, total };
 };

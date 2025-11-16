@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import * as userService from '../services/user.service';
 import { apiResponse } from '../utils/apiResponse';
-import { validateId } from '../utils/validation';
+import { validateData, validateId } from '../utils/validation';
 import { asyncHandler } from '../utils/asyncHandler';
+import { UserQuerySchema } from '../DTO/user.dto';
 
 export const createUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const user = await userService.createUser(req.body);
@@ -28,6 +29,7 @@ export const deleteUser = asyncHandler(async (req: Request, res: Response, next:
 });
 
 export const getUsers = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const users = await userService.getAllUsers();
-  apiResponse(res, 200, users, 'Users retrieved successfully');
+  const queryParams = validateData(UserQuerySchema, req.query);
+  const { users, page, totalPages, size, total } = await userService.getAllUsers(queryParams);
+  apiResponse(res, 200, { users, page, totalPages, size, total }, 'Users retrieved successfully');
 });
