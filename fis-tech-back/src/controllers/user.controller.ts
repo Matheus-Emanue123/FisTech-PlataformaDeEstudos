@@ -3,7 +3,7 @@ import * as userService from '../services/user.service';
 import { apiResponse } from '../utils/apiResponse';
 import { validateData, validateId } from '../utils/validation';
 import { asyncHandler } from '../utils/asyncHandler';
-import { UserQuerySchema } from '../DTO/user.dto';
+import { UserQuerySchema, UserQuery } from '../DTO/user.dto';
 
 export const createUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const user = await userService.createUser(req.body);
@@ -29,7 +29,7 @@ export const deleteUser = asyncHandler(async (req: Request, res: Response, next:
 });
 
 export const getUsers = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const queryParams = validateData(UserQuerySchema, req.query);
+  const queryParams = validateData(UserQuerySchema, req.query) as UserQuery;
   const { users, page, totalPages, size, total } = await userService.getAllUsers(queryParams);
   apiResponse(res, 200, { users, page, totalPages, size, total }, 'Users retrieved successfully');
 });

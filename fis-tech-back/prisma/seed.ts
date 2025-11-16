@@ -74,10 +74,10 @@ async function main() {
     console.log(`✅ Upserted NivelDificuldade: ${nivel.nome}`);
   }
 
-  // Create a dedicated administrator user for testing
+  // --- 1. Create a dedicated administrator user ---
   const adminEmail = 'admin-test@example.com';
-  const adminPassword = 'adminpassword'; // Use a strong password in production
-  const hashedPassword = await hashPassword(adminPassword);
+  const adminPassword = 'adminpassword';
+  const hashedAdminPassword = await hashPassword(adminPassword);
 
   const adminUserType = await prisma.userType.findUnique({
     where: { tipo: 'administrador' },
@@ -97,13 +97,56 @@ async function main() {
       data: {
         nome: 'Test Admin',
         email: adminEmail,
-        senha_hash: hashedPassword,
+        senha_hash: hashedAdminPassword,
         user_type_id: adminUserType.id,
       },
     });
     console.log(`✅ Created Test Administrator: ${adminEmail}`);
   } else {
     console.log(`🔄 Test Administrator already exists: ${adminEmail}`);
+  }
+
+  // --- 2. Create 15 additional users (1 Mod, 14 Standard) ---
+  console.log('🌱 Starting creation of 15 additional users...');
+
+  // Get UserType IDs for moderator and standard users
+  const moderatorUserType = await prisma.userType.findUnique({
+    where: { tipo: 'moderador' },
+  });
+  const standardUserType = await prisma.userType.findUnique({
+    where: { tipo: 'usuario_padrao' },
+  });
+
+  if (!moderatorUserType || !standardUserType) {
+    console.error('❌ Standard or Moderator UserType not found. Cannot create additional users.');
+    process.exit(1);
+  }
+
+  const commonPassword = 'password123'; // Common password for all test users
+  const hashedCommonPassword = await hashPassword(commonPassword);
+
+  for (let i = 1; i <= 15; i++) {
+    const isModerator = (i === 1); // Make the first user a moderator
+    const userEmail = `user${i}@example.com`;
+    
+    const userData = {
+      nome: isModerator ? 'Test Moderator' : `Test User ${i}`,
+      email: userEmail,
+      senha_hash: hashedCommonPassword,
+      user_type_id: isModerator ? moderatorUserType.id : standardUserType.id,
+    };
+
+    // Use upsert to prevent errors on re-seeding
+    await prisma.usuario.upsert({
+      where: { email: userEmail },
+      update: {
+        nome: userData.nome,
+        user_type_id: userData.user_type_id,
+      },
+      create: userData,
+    });
+
+    console.log(`✅ Upserted User: ${userEmail}`);
   }
 
   console.log('🎉 Database seeding completed!');
