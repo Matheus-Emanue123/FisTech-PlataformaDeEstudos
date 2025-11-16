@@ -30,6 +30,7 @@ export const UserUpdateSchema = z.object({
     .max(255, 'Password must be at most 255 characters')
     .optional(),
   user_type_id: z.number().int().positive('User type ID must be a positive integer').optional(),
+  disabled: z.boolean().optional(),
 });
 
 export const UserIdSchema = z.object({

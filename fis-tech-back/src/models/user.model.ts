@@ -40,12 +40,6 @@ export const updateUser = async (id: number, userData: UserUpdateData) => {
   });
 };
 
-export const deleteUser = async (id: number) => {
-  return prisma.usuario.delete({
-    where: { id },
-  });
-};
-
 export const getUsers = async () => {
   return prisma.usuario.findMany({
     include: {

@@ -62,20 +62,25 @@ export const getUserById = async (id: number) => {
     throw new NotFoundError('User not found', ErrorCode.USER_NOT_FOUND);
   }
   
+  if (user.disabled) {
+    return { ...user, nome: 'Deleted User', email: 'deleted@example.com' };
+  }
+
   return user;
 };
 
 export const deleteUser = async (id: number) => {
   const validatedId = validateData(UserIdSchema, { id });
   
-  const existingUser = await userModel.getUserById(validatedId.id);
-  if (!existingUser) {
-    throw new NotFoundError('User not found', ErrorCode.USER_NOT_FOUND);
-  }
-
-  return userModel.deleteUser(validatedId.id);
+  return userModel.updateUser(validatedId.id, { disabled: true });
 };
 
 export const getAllUsers = async () => {
-  return userModel.getUsers();
+  const users = await userModel.getUsers();
+  return users.map(user => {
+    if (user.disabled) {
+      return { ...user, nome: 'Deleted User', email: 'deleted@example.com' };
+    }
+    return user;
+  });
 };

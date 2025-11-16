@@ -1,4 +1,5 @@
 import { PrismaClient } from '../src/generated/prisma';
+import { hashPassword } from '../src/utils/jwt.utils'; // Import hashPassword
 
 const prisma = new PrismaClient();
 
@@ -71,6 +72,38 @@ async function main() {
       create: nivel
     });
     console.log(`✅ Upserted NivelDificuldade: ${nivel.nome}`);
+  }
+
+  // Create a dedicated administrator user for testing
+  const adminEmail = 'admin-test@example.com';
+  const adminPassword = 'adminpassword'; // Use a strong password in production
+  const hashedPassword = await hashPassword(adminPassword);
+
+  const adminUserType = await prisma.userType.findUnique({
+    where: { tipo: 'administrador' },
+  });
+
+  if (!adminUserType) {
+    console.error('❌ Administrator UserType not found. Cannot create admin user.');
+    process.exit(1);
+  }
+
+  const existingAdminUser = await prisma.usuario.findUnique({
+    where: { email: adminEmail },
+  });
+
+  if (!existingAdminUser) {
+    await prisma.usuario.create({
+      data: {
+        nome: 'Test Admin',
+        email: adminEmail,
+        senha_hash: hashedPassword,
+        user_type_id: adminUserType.id,
+      },
+    });
+    console.log(`✅ Created Test Administrator: ${adminEmail}`);
+  } else {
+    console.log(`🔄 Test Administrator already exists: ${adminEmail}`);
   }
 
   console.log('🎉 Database seeding completed!');

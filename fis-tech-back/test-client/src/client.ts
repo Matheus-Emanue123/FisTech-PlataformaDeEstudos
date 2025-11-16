@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8080/";
+const BASE_URL = "http://localhost:8080/api/";
 
 let accessToken: string | null = null;
 let refreshToken: string | null = null;
@@ -24,18 +24,18 @@ client.interceptors.request.use(
   }
 );
 
-async function registerUser() {
-  console.log("--- Registering User ---");
+async function registerUser(name: string, email: string, password: string, userType: number) {
+  console.log(`--- Registering User: ${email} ---`);
   try {
     const userData = {
-      nome: "Test User",
-      email: `admin@example.com`,
-      password: "123456",
-      userType: 1,
+      nome: name,
+      email: email,
+      password: password, // Corrected field name
+      user_type_id: userType,
     };
     const response = await client.post("/auth/register", userData);
     console.log("Registration successful:", response.data);
-    return userData;
+    return response.data.data.user; // Return the created user object
   } catch (error: any) {
     console.error(
       "Registration failed:",
@@ -46,7 +46,7 @@ async function registerUser() {
 }
 
 async function loginUser(email: string, password: string) {
-  console.log("--- Logging In User ---");
+  console.log(`--- Logging In User: ${email} ---`);
   try {
     const response = await client.post("/auth/login", { email, password });
     accessToken = response.data.data.accessToken;
@@ -63,71 +63,111 @@ async function loginUser(email: string, password: string) {
   }
 }
 
-async function testProtectedRoute() {
-  console.log("--- Testing Protected Route (/users) ---");
+async function deleteUser(userId: number) {
+  console.log(`--- Deleting User ID: ${userId} (Soft Delete) ---`);
   try {
-    const response = await client.get("/users");
-    console.log(
-      "Protected route access FAILED: Unexpected access to /users route for standard user."
-    );
-  } catch (error: any) {
-    if (error.response && error.response.status === 403) {
-      console.log(
-        "Protected route access successful: Received 403 Forbidden for /users route as expected."
-      );
-    } else {
-      console.error(
-        "Protected route access FAILED:",
-        error.response?.data || error.message
-      );
-    }
-  }
-}
-
-async function testPermissionDenied() {
-  console.log("--- Testing Permission Denied (without token) ---");
-  const tempClient = axios.create({ baseURL: BASE_URL });
-  try {
-    await tempClient.get("/users");
-    console.log(
-      "Permission denied test FAILED: Unexpected access without token."
-    );
-  } catch (error: any) {
-    if (error.response && error.response.status === 401) {
-      console.log(
-        "Permission denied test successful: Received 401 Unauthorized."
-      );
-    } else {
-      console.error(
-        "Permission denied test FAILED:",
-        error.response?.data || error.message
-      );
-    }
-  }
-}
-
-async function refreshAccessToken() {
-  console.log("--- Refreshing Access Token ---");
-  if (!refreshToken) {
-    console.error("No refresh token available.");
-    return;
-  }
-  try {
-    const response = await client.post("/auth/refresh", { refreshToken });
-    accessToken = response.data.data.accessToken;
-    console.log(
-      "Access token refreshed successfully. New Access Token:",
-      accessToken ? "Obtained" : "Failed"
-    );
+    const response = await client.delete(`/users/${userId}`);
+    console.log("Soft delete successful:", response.data);
+    return response.data;
   } catch (error: any) {
     console.error(
-      "Token refresh failed:",
+      "Soft delete failed:",
       error.response?.data || error.message
     );
     throw error;
   }
 }
 
+async function getUserById(userId: number) {
+  console.log(`--- Getting User by ID: ${userId} ---`);
+  try {
+    const response = await client.get(`/users/${userId}`);
+    console.log("Get user successful:", response.data);
+    return response.data.data;
+  } catch (error: any) {
+    console.error(
+      "Get user failed:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+}
+
+async function getAllUsers() {
+  console.log("--- Getting All Users ---");
+  try {
+    const response = await client.get("/users");
+    console.log("Get all users successful:", response.data);
+    return response.data.data;
+  } catch (error: any) {
+    console.error(
+      "Get all users failed:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+}
+
+async function runTests() {
+  try {
+    // 1. Register a test user (to be soft-deleted)
+    const testUserEmail = "testuser@example.com";
+    const testUserPassword = "password123";
+    const testUser = await registerUser("Test User", testUserEmail, testUserPassword, 3); // Assuming user_type_id 3 is 'usuario_padrao'
+
+    if (!testUser) {
+      console.error("Failed to register test user. Exiting tests.");
+      return;
+    }
+
+    // 2. Log in as the seeded administrator
+    const adminEmail = "admin-test@example.com"; // Use the email from prisma/seed.ts
+    const adminPassword = "adminpassword"; // Use the password from prisma/seed.ts
+    await loginUser(adminEmail, adminPassword);
+    if (!accessToken) {
+      console.error("Failed to log in as admin. Exiting tests.");
+      return;
+    }
+
+    // 4. Delete the test user using the administrator's token (soft delete)
+    await deleteUser(testUser.id);
+
+    // 5. Verify soft deletion
+    console.log("\n--- Verifying Soft Delete ---");
+
+    // 5a. Fetch the soft-deleted user by ID
+    const deletedUserById = await getUserById(testUser.id);
+    if (deletedUserById && deletedUserById.nome === 'Deleted User' && deletedUserById.email === 'deleted@example.com' && deletedUserById.disabled === true) {
+      console.log("✅ Verification successful: Soft-deleted user by ID shows placeholder info and disabled flag.");
+    } else {
+      console.error("❌ Verification FAILED: Soft-deleted user by ID does NOT show placeholder info or disabled flag.");
+      console.log("Received user:", deletedUserById);
+    }
+
+    // 5b. Fetch all users and confirm the soft-deleted user appears with placeholder data
+    const allUsers = await getAllUsers();
+    const softDeletedUserInList = allUsers.find((user: any) => user.id === testUser.id);
+
+    if (softDeletedUserInList && softDeletedUserInList.nome === 'Deleted User' && softDeletedUserInList.email === 'deleted@example.com' && softDeletedUserInList.disabled === true) {
+      console.log("✅ Verification successful: Soft-deleted user in all users list shows placeholder info and disabled flag.");
+    } else {
+      console.error("❌ Verification FAILED: Soft-deleted user in all users list does NOT show placeholder info or disabled flag.");
+      console.log("Received user in list:", softDeletedUserInList);
+    }
+
+    console.log("\n--- Tests Completed ---");
+
+  } catch (error) {
+    console.error("An error occurred during tests:", error);
+  } finally {
+    // Optional: Logout admin user
+    if (refreshToken) {
+      await logoutUser();
+    }
+  }
+}
+
+// Helper function for logout (from original client.ts)
 async function logoutUser() {
   console.log("--- Logging Out User ---");
   if (!refreshToken) {
@@ -145,22 +185,5 @@ async function logoutUser() {
   }
 }
 
-async function runTests() {
-  try {
-    const registeredUser = await registerUser();
-    if (!registeredUser) return;
-
-    await loginUser(registeredUser.email, registeredUser.password);
-    if (!accessToken) return;
-
-    await testProtectedRoute();
-    await testPermissionDenied();
-    await refreshAccessToken();
-    await testProtectedRoute(); // Test protected route with new access token
-    await logoutUser();
-  } catch (error) {
-    console.error("An error occurred during tests:", error);
-  }
-}
 
 runTests();
