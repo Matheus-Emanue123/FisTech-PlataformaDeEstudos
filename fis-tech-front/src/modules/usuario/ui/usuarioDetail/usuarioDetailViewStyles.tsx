@@ -6,33 +6,37 @@ import sysSizing from "../../../../ui/sysMaterialUi/sizing/sysSizes";
 import { sysShadows } from "../../../../ui/sysMaterialUi/shadows/sysShadows";
 
 interface IStyles {
-  formContainer: ElementType<BoxProps>;
-  informativeContainer: ElementType<StackProps>;
-  optionsContainer: ElementType<StackProps>;
+  PageContainer: ElementType<BoxProps>;
+  FormContainer: ElementType<BoxProps>;
+  InformativeContainer: ElementType<StackProps>;
+  OptionsContainer: ElementType<BoxProps>;
 }
 
 const UsuarioDetailViewStyles: IStyles = {
-  formContainer: styled(Box)(() => ({
-    padding: `0px ${sysSizing.spacingFixedLg}`,
-    overflowY: "auto",
-    "&::-webkit-scrollbar": {
-      display: "none",
-    },
+  PageContainer: styled(Box)(() => ({
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
   })),
-  informativeContainer: styled(Stack)(({ theme }) => ({
+  FormContainer: styled(Box)(() => ({
+    padding: `0px ${sysSizing.spacingFixedLg}`,
+    display: "flex",
+    flexDirection: "column",
+  })),
+  InformativeContainer: styled(Stack)(({ theme }) => ({
     padding: `${sysSizing.spacingFixedMd} ${sysSizing.spacingFixedLg}`,
-    borderTop: `1px solid ${theme.palette.divider}`,
+    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   })),
-  optionsContainer: styled(Stack)(({ theme }) => ({
+  OptionsContainer: styled(Box)(({}) => ({
     padding: sysSizing.spacingFixedMd,
-    borderTop: `1px solid ${theme.palette.divider}`,
-    boxShadow: sysShadows.shadow1,
     flexDirection: "row",
     justifyContent: "end",
     gap: sysSizing.spacingFixedMd,
+    marginLeft: "auto",
   })),
 };
 

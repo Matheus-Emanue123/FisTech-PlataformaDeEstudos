@@ -8,10 +8,11 @@ import { hasValue } from "../../../../utils/libs/hasValue";
 import UseAuthContext from "../../../../utils/hooks/useAuth/UseAuthContext";
 import SysAppContext from "../../../../app/AppContext";
 import { IShowDialogProps } from "../../../../ui/sysComponents/showDialog/ShowDialog";
+import { usuarioApi } from "../../api/UsuarioApi";
 
 interface IUsuarioDetailController {
   reloadList: () => void;
-  id?: string;
+  id?: number;
   type: PageState;
 }
 
@@ -21,25 +22,30 @@ const UsuarioDetailController: React.FC<IUsuarioDetailController> = ({
   type,
 }) => {
   const { user } = useContext(UseAuthContext);
-  const { showDialog, closeDialog } = useContext(SysAppContext);
+  const { showDialog, closeDialog, showNotification, showLoading } =
+    useContext(SysAppContext);
   const [usuarioDoc, setUsuarioDoc] = useState<UsuarioSch>();
-  const [loading, setLoading] = useState<boolean>(false);
   const [pageType, setPageType] = useState<PageState>(type);
 
-  //   useEffect(() => {
-  //     if (pageType === "create") return;
-  //     if (!hasValue(id)) console.error("ID não informado");
-  //     setLoading(true);
-  //     userApi.recuperarPerfilUsuario(id!).then((doc) => {
-  //       const imageFile: IFile = {
-  //         alt: doc?.name?.[0],
-  //         type: "image",
-  //       };
-
-  //       setUserDoc({ ...doc, photoURL: imageFile });
-  //       setLoading(false);
-  //     });
-  //   }, [id, type, pageType]);
+  useEffect(() => {
+    if (pageType === "create") return;
+    if (!hasValue(id)) console.error("ID não informado");
+    showLoading(true);
+    usuarioApi.getById(id!, (error, data) => {
+      if (error) {
+        console.error("Erro ao buscar usuário:", error);
+        showNotification({
+          open: true,
+          type: "error",
+          duration: 6000,
+          message: error,
+        });
+        return;
+      }
+      setUsuarioDoc(data);
+      showLoading(false);
+    });
+  }, [id, type, pageType]);
 
   function createUserDoc(obj: UsuarioSch) {
     // signUp(obj).then(() => {

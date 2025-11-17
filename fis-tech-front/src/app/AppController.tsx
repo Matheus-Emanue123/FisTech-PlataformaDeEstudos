@@ -83,7 +83,7 @@ export const UseAppController: React.FC = () => {
   );
 
   const openUsuarioDetail = useCallback(
-    (callReload: () => void, state?: PageState, id?: string) => {
+    (callReload: () => void, state?: PageState, id?: number) => {
       showCrudUsuarioModal(
         showDialogHandler,
         { reloadList: callReload, id, type: state || "create" },

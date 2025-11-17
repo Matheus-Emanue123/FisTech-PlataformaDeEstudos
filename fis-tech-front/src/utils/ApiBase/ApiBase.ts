@@ -72,19 +72,16 @@ export class ApiBase<T> {
     }
     throw error instanceof Error ? error : new Error("Erro desconhecido");
   }
-  
+
   protected pesquisar(
     url: string,
     filtrosDto?: any,
     queryParams?: IParams
   ): Promise<AxiosResponse<any>> {
-    const queryString = queryParams
-      ? "?" + qs.stringify(queryParams, { arrayFormat: "repeat" })
-      : "";
     return this.request("get", `${url}`, filtrosDto); //${queryString}
   }
 
-  protected getOne(id: string): Promise<AxiosResponse<T>> {
+  protected getOne(id: string): Promise<AxiosResponse<any>> {
     return this.request("get", `/${id}`);
   }
 

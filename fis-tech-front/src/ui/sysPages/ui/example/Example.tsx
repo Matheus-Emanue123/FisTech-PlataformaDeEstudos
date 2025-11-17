@@ -15,12 +15,14 @@ import {
 } from "../../../sysComponents/sysForm/sysRadioField/SysRadioField";
 import { SysDatePicker } from "../../../sysComponents/sysForm/sysDatePicker/SysDatePicker";
 import SysAppContext from "../../../../app/AppContext";
+import { SysSelectField } from "../../../sysComponents/sysForm/sysSelectField/SysSelectField";
 
 type Form = {
   toggleInput: boolean;
   textInput: string;
   radioInput: string;
   dateInput: Date | null;
+  selectInput: string;
 };
 
 interface IExamplePageProps {}
@@ -33,6 +35,7 @@ export const Example: React.FC<IExamplePageProps> = () => {
     textInput: "",
     radioInput: "",
     dateInput: null,
+    selectInput: "",
   });
 
   const handleChange = (event: any) => {
@@ -90,6 +93,21 @@ export const Example: React.FC<IExamplePageProps> = () => {
   ];
 
   const optionsToRadioField: IOptionToSysRadioField[] = [
+    {
+      label: "Opção 1",
+      value: "option1",
+    },
+    {
+      label: "Opção 2",
+      value: "option2",
+    },
+    {
+      label: "Opção 3",
+      value: "option3",
+    },
+  ];
+
+  const optionsToSelectField: IOptionToSysRadioField[] = [
     {
       label: "Opção 1",
       value: "option1",
@@ -360,6 +378,46 @@ export const Example: React.FC<IExamplePageProps> = () => {
               value={valueForm.dateInput}
               changeValue={handleDateChange}
               maxWidth="300px"
+              disabled
+            />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+              width: "300px",
+            }}
+          >
+            <SysSelectField
+              name="selectInput"
+              nameField="selectInput"
+              label="Select input"
+              value={valueForm.selectInput}
+              changeValue={handleChange}
+              maxWidth="300px"
+              options={optionsToSelectField}
+              placeholder="Selecione uma data"
+            />
+            <SysSelectField
+              name="selectInput"
+              nameField="selectInput"
+              label="Select input com erro"
+              value={valueForm.selectInput}
+              changeValue={handleChange}
+              maxWidth="300px"
+              error
+              msgError="É necessário selecionar uma opção válida"
+              options={optionsToSelectField}
+            />
+            <SysSelectField
+              name="selectInput"
+              nameField="selectInput"
+              label="Select input desabilitada"
+              value={valueForm.selectInput}
+              changeValue={handleChange}
+              maxWidth="300px"
+              options={optionsToSelectField}
               disabled
             />
           </Box>

@@ -26,7 +26,7 @@ const EmptyListStyles: IStyles = {
     width: "100%",
     gap: sysSizing.spacingFixedXs,
   })),
-  Img: styled(Box)(({}) => ({
+  Img: styled(Box)(() => ({
     height: "150px",
     width: "150px",
     objectFit: "fill",

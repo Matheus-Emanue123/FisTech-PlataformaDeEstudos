@@ -11,10 +11,11 @@ import UseAuthContext from "../../../../utils/hooks/useAuth/UseAuthContext";
 import { UserType } from "../../config/EnumUserType";
 import UserCard from "./components/usuarioCard/usuarioCard";
 import EmptyList from "../../../../ui/sysComponents/emptyPage/EmptyPage";
+import UseAppContext from "../../../../app/AppContext";
 
 const UsuarioLisView = () => {
   const context = useContext<IUsuarioListContext>(Context);
-  const { user } = useContext(UseAuthContext);
+  const { openUsuarioDetail } = useContext(UseAppContext);
 
   const [scrolled, setScrolled] = useState(false);
   const [textFieldValue, setTextFieldValue] = useState<string>("");
@@ -22,7 +23,9 @@ const UsuarioLisView = () => {
   const [switchValue, setSwitchValue] = useState<boolean>(false);
   const containerRef = useRef<HTMLElement | null>(null);
 
-  console.log("context.usuarioList = ", context.usuarioList);
+  const handleOpenDetails = (type: boolean, id: number) => {
+    openUsuarioDetail(() => {}, type ? "edit" : "view", id);
+  };
 
   const onChangeTextField = (value?: string) => {
     setTextFieldValue(value || "");
@@ -122,8 +125,8 @@ const UsuarioLisView = () => {
             context.usuarioList.map((user) => (
               <UserCard
                 key={user!.id}
-                onEditClick={() => console.log("opa")}
-                onViewClick={() => console.log("opa")}
+                onEditClick={() => handleOpenDetails(true, user.id!)}
+                onViewClick={() => handleOpenDetails(false, user.id!)}
                 onDesableClick={() => console.log("opa")}
                 onEnableClick={() => console.log("opa")}
                 nome={user!.nome}

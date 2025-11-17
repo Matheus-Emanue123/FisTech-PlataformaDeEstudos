@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import { createContext } from "react";
 import { UsuarioSch } from "../../api/UsuarioSch";
 import { PageState } from "../../../../typings/ScreenTypes";
 import { UserType } from "../../config/EnumUserType";

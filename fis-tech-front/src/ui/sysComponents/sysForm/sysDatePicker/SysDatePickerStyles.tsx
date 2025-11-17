@@ -25,6 +25,7 @@ const SysDatePickerStyles: IStyles = {
     padding: sysSizing.base.baseFixed075,
   })),
   MyDatePicker: styled(DatePicker)(({ theme }) => ({
+    borderRadius: sysSizing.radiusXs,
     width: "100%",
     background: theme.palette.common.white,
   })),

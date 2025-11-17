@@ -56,7 +56,7 @@ const UseAuthController: React.FC<{ children: ReactNode }> = ({ children }) => {
     callback?: (error: string | null, resp: boolean) => void
   ) => {
     try {
-      const data = await authServerApi.registerUsuario(nome, email, password);
+      await authServerApi.registerUsuario(nome, email, password);
       console.log("Usuário registrado com sucesso");
       callback?.(null, true);
     } catch (error: any) {

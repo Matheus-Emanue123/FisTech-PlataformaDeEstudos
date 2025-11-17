@@ -44,8 +44,36 @@ class UsuarioApi extends ApiBase<UsuarioSch> {
     }
   }
 
-  public getById(id: string) {
-    return this.getOne(id);
+  public async getById(
+    id: number,
+    callback?: (error: string | null, data?: UsuarioSch) => void
+  ) {
+    try {
+      const response = (await this.getOne(id.toString())).data;
+      const usuarioBruto = {
+        id: response.data.id,
+        nome: response.data.nome,
+        email: response.data.email,
+        userType: response.data.UserType.tipo,
+      };
+
+      callback?.(null, usuarioBruto);
+      return usuarioBruto;
+    } catch (err: unknown) {
+      let customError: any;
+
+      try {
+        this.throwAxiosError(err);
+      } catch (capturado: any) {
+        customError = capturado;
+      }
+
+      const mensagem =
+        customError?.message || "Erro desconhecido ao listar usuários";
+
+      callback?.(mensagem);
+      throw customError;
+    }
   }
 
   public criar(dto: UsuarioSch) {

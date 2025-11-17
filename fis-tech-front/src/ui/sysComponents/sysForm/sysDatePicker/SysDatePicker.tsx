@@ -7,6 +7,7 @@ import Styles, {
   datePickerPopperSx,
 } from "./SysDatePickerStyles";
 import { SysSimpleLabel } from "../sysSimpleLabel/SysSimpleLabel";
+import { SysViewField } from "../sysViewField/SysViewField";
 
 type ISysDatePicker = {
   label: string;
@@ -15,6 +16,7 @@ type ISysDatePicker = {
   maxWidth?: string;
   error?: boolean;
   msgError?: string;
+  readOnly?: boolean;
   format?: string;
   disabled?: boolean;
   changeValue: (date: Date | null) => void;
@@ -27,6 +29,7 @@ export const SysDatePicker: React.FC<ISysDatePicker> = ({
   maxWidth = "1000px",
   error = false,
   msgError = "Algo deu errado, por favor, tente novamente.",
+  readOnly,
   format = "dd/MM/yyyy",
   disabled = false,
   changeValue,
@@ -34,6 +37,23 @@ export const SysDatePicker: React.FC<ISysDatePicker> = ({
   const handleChange = (date: Date | null) => {
     changeValue(date);
   };
+
+  if (readOnly)
+    return (
+      <Styles.Container>
+        <SysViewField
+          label={label}
+          placeholder={
+            value?.toLocaleDateString("pt-BR", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "2-digit",
+            }) ?? "-"
+          }
+          sxMap={{ container: { maxWidth: maxWidth } }}
+        />
+      </Styles.Container>
+    );
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ptBR}>

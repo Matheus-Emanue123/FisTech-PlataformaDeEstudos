@@ -19,7 +19,7 @@ interface IAppContext {
   openUsuarioDetail: (
     callReload: () => void,
     state?: PageState,
-    id?: string
+    id?: number
   ) => void;
 }
 

@@ -10,6 +10,12 @@ export const ACCESS_LEVELS_USER = {
   [UserType.ADMINISTRATOR]: 2,
 };
 
+export const USER_TYPE_LABELS: Record<UserType, string> = {
+  [UserType.ADMINISTRATOR]: "Administrador",
+  [UserType.MODERATOR]: "Moderador",
+  [UserType.NORMAL]: "Usuário padrão",
+};
+
 export function toUserType(value: string): UserType | null {
   return Object.values(UserType).includes(value as UserType)
     ? (value as UserType)

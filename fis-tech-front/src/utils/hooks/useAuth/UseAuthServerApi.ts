@@ -42,7 +42,6 @@ async function registerUsuario(
 ): Promise<void> {
   try {
     const { data } = await api.post("/register", { email, password, nome });
-    console.log("response = ", data.data);
   } catch (error) {
     throwAxiosError(error);
   }
