@@ -168,10 +168,11 @@ model UserXP {
 model Usuario {
   id               Int                @id @default(autoincrement())
   nome             String             @db.VarChar(100)
-  email            String             @db.VarChar(100)
+  email            String             @unique @db.VarChar(100)
   senha_hash       String             @db.VarChar(255)
   data_criacao     DateTime?          @default(now())
   ultimo_login     DateTime?
+  disabled         Boolean   @default(false)
   user_type_id     Int
   Anotacao         Anotacao[]
   Comentario       Comentario[]
