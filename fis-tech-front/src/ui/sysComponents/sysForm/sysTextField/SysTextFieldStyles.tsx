@@ -28,8 +28,9 @@ const SysTextFieldStyles: IStyles = {
   MyTextField: styled(TextField)(({ theme }) => ({
     width: "100%",
     background: theme.palette.common.white,
+    borderRadius: sysSizing.radiusXs,
+
     "& .MuiInputBase-root": {
-      borderRadius: sysSizing.radiusXs,
       maxHeight: "40px",
       border: "none",
     },

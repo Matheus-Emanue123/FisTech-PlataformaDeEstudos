@@ -6,6 +6,7 @@ import sysSizing from "../../../sysMaterialUi/sizing/sysSizes";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import CheckIcon from "@mui/icons-material/Check";
+import { SysViewField } from "../sysViewField/SysViewField";
 
 export type IOptionToSysRadioField = {
   value: string;
@@ -15,6 +16,7 @@ export type IOptionToSysRadioField = {
 interface ISysRadioField extends RadioProps {
   label: string;
   value: string;
+  readOnly?: boolean;
   options: IOptionToSysRadioField[];
   maxWidth?: string;
   useCheckedIcon?: boolean;
@@ -24,6 +26,7 @@ interface ISysRadioField extends RadioProps {
 export const SysRadioField: React.FC<ISysRadioField> = ({
   label,
   value,
+  readOnly = false,
   options,
   maxWidth = "1000px",
   useCheckedIcon = false,
@@ -32,6 +35,16 @@ export const SysRadioField: React.FC<ISysRadioField> = ({
 }) => {
   function onChange(event: ChangeEvent<HTMLInputElement>) {
     changeValue(event);
+  }
+
+  if (readOnly) {
+    const viewValue =
+      options && options.find((option) => option.value === value);
+    return (
+      <Styles.Container>
+        <SysViewField label={label} placeholder={viewValue?.label || "-"} />
+      </Styles.Container>
+    );
   }
 
   return (

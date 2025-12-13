@@ -3,7 +3,7 @@ import { HeaderSvgs } from "../../../utils/svg/headerSvgs";
 
 export const pagesMenuItemList: IAppMenu[] = [
   {
-    path: "/",
+    path: "/example",
     name: "Exemplo",
     icon: HeaderSvgs["homeOutlined"],
     permissionRequired: false,
