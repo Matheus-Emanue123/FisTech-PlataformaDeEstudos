@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import UseAuthContext from "../../../utils/hooks/useAuth/UseAuthContext";
 import Styles from "./PerfilContainerStyles";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
@@ -7,6 +8,7 @@ import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 
 const PerfilContainer: React.FC = () => {
   const { signOut } = useContext(UseAuthContext);
+  const navigate = useNavigate();
 
   // Dados mockados
   const userData = {
@@ -38,7 +40,7 @@ const PerfilContainer: React.FC = () => {
 
         {/* Seção de Conquistas */}
         <Styles.Section>
-          <Styles.SectionHeader>
+          <Styles.SectionHeader onClick={() => navigate("/conquistas")}>
             <EmojiEventsOutlinedIcon sx={{ mr: 1, fontSize: 20 }} />
             <Typography variant="body1" sx={{ fontWeight: 500 }}>
               Conquistas
