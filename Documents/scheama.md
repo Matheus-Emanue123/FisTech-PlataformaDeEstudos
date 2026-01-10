@@ -88,6 +88,36 @@ O registro de usuários é feito pela rota: https://localhost:8080/auth/register
 - Consome: `Json`
 - Produz: `Json`
 
+Formato do Json de requisição:
+
+``` Markdown
+{
+    "nome": "Novo Usuário",
+    "email": "novo.usuario@example.com",
+    "password": "minhasenha123"
+}
+```
+
+Exemplo de resposta: 
+
+``` Markdown
+{
+    "success": true,
+    "message": "Login successful",
+    "timestamp": "...",
+    "data": {
+        "user": {
+            "id": 4,
+            "nome": "Getulio",
+            "email": "getulio@gmail.com",
+            "userType": "administrador"
+        },
+        "accessToken": "...",
+        "refreshToken": "..."
+    }
+}
+```
+
 ### Refresh Token
 
 Para fazer o refresh da seção, será necessário acessar a rota: https://localhost:8080/auth/refresh.
@@ -198,34 +228,76 @@ Bearer + token
 
 - Produz: `JSON`
 
-O Json de resposta é na forma:
+Esta rota aceita `Query Parameters` (parâmetros na URL) para paginação, filtro e ordenação.
+
+| Parâmetro | Tipo | Descrição | Default |
+| :--- | :--- | :--- | :--- |
+| `page` | `Int` | O número da página que se deseja buscar. | `1` |
+| `size` | `Int` | O número de itens por página. | `10` |
+| `sortBy` | `String` | O campo pelo qual os resultados serão ordenados. <br>Valores permitidos: `nome`, `createdAt`. | `createdAt` |
+| `direction` | `String` | A direção da ordenação. <br>Valores permitidos: `asc` (Ascendente), `desc` (Descendente). | `asc` |
+| `nome` | `String` | (Opcional) Filtra usuários cujo nome contenha o texto. | *N/A* |
+| `userType` | `Int` | (Opcional) Filtra usuários por ID do tipo (ex: `3` para `usuario_padrao`). | *N/A* |
+
+Exemplo de rota com paginação: 
+
+https://localhost:8080/users?page=2&size=5&sortBy=nome&direction=desc
+
+O uso dos parâmetros é opcional.
+
+O Json de resposta agora inclui os metadados da paginação (`page`, `totalPages`, `size`, `total`) e move a lista de usuários para dentro de um array users:
 
 ```markdown
 {
-"success": true,
-"message": "Users retrieved successfully",
-"timestamp": "2025-09-28T19:47:13.769Z",
-"data": [
-{
-"id": 2,
-"nome": "Test User",
-"email": "testuser1759082110467@example.com",
-"senha_hash": "$2b$12$SxGpjmysOdiSA0.zJTSi..1jWaZ3OIhqgZpgU6Va0WAx89flFWys6",
-"data_criacao": "2025-09-28T17:55:10.944Z",
-"ultimo_login": null,
-"user_type_id": 3,
-"UserType": {
-"id": 3,
-"tipo": "usuario_padrao",
-"permissoes": {
-"canManageUsers": false,
-"canManageContent": false,
-"canViewAnalytics": false,
-"canManageComments": false
-}
-}
-},
-]
+    "success": true,
+    "message": "Users retrieved successfully",
+    "timestamp": "2025-09-28T19:47:13.769Z",
+    "data": {
+        "users": [
+            {
+                "id": 1,
+                "nome": "Test Admin",
+                "email": "admin-test@example.com",
+                "senha_hash": "$2b$12$...",
+                "data_criacao": "2025-09-28T17:55:10.944Z",
+                "ultimo_login": null,
+                "user_type_id": 1,
+                "UserType": {
+                    "id": 1,
+                    "tipo": "administrador",
+                    "permissoes": {
+                        "canManageUsers": true,
+                        "canManageContent": true,
+                        "canViewAnalytics": true,
+                        "canManageComments": true
+                    }
+                }
+            },
+            {
+                "id": 2,
+                "nome": "Test Moderator",
+                "email": "user1@example.com",
+                "senha_hash": "$2b$12$...",
+                "data_criacao": "2025-09-28T17:55:10.944Z",
+                "ultimo_login": null,
+                "user_type_id": 2,
+                "UserType": {
+                    "id": 2,
+                    "tipo": "moderador",
+                    "permissoes": {
+                        "canManageUsers": false,
+                        "canManageContent": false,
+                        "canViewAnalytics": false,
+                        "canManageComments": true
+                    }
+                }
+            }
+        ],
+        "page": 1,
+        "totalPages": 2,
+        "size": 10,
+        "total": 16
+    }
 }
 ```
 

@@ -24,13 +24,14 @@ client.interceptors.request.use(
   }
 );
 
-async function registerUser(name: string, email: string, password: string, userType: number) {
+async function registerUser(name: string, emailPrefix: string, password: string, userType: number) {
+  const email = `${emailPrefix}-${Date.now()}@example.com`;
   console.log(`--- Registering User: ${email} ---`);
   try {
     const userData = {
       nome: name,
       email: email,
-      password: password, // Corrected field name
+      password: password,
       user_type_id: userType,
     };
     const response = await client.post("/auth/register", userData);
@@ -108,66 +109,116 @@ async function getAllUsers() {
   }
 }
 
+async function getUsersWithParams(params: { page?: number, size?: number, sortBy?: string, direction?: string, nome?: string, userType?: number }) {
+  const queryString = new URLSearchParams(params as any).toString();
+  console.log(`--- Getting Users with Params: ${queryString} ---`);
+  try {
+    const response = await client.get(`/users?${queryString}`);
+    console.log("Get users with params successful:", response.data);
+    return response.data.data;
+  } catch (error: any) {
+    console.error(
+      "Get users with params failed:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+}
+
+async function testUserLifecycle() {
+  console.log("\n--- Testing User Lifecycle (Register, Login, Soft Delete) ---");
+
+  const testUserPassword = "password123";
+  const testUser = await registerUser("Test User", "testuser", testUserPassword, 3);
+  assert(!!testUser, "User registration successful");
+
+  const adminEmail = "admin-test@example.com"; 
+  const adminPassword = "adminpassword"; 
+  await loginUser(adminEmail, adminPassword);
+  assert(!!accessToken, "Admin login successful");
+
+  await deleteUser(testUser.id);
+
+  const deletedUserById = await getUserById(testUser.id);
+  assert(deletedUserById && deletedUserById.nome === 'Deleted User' && deletedUserById.email === 'deleted@example.com' && deletedUserById.disabled === true, "Soft-deleted user by ID shows placeholder info and disabled flag.");
+
+  const allUsersAfterDelete = await getAllUsers();
+  const softDeletedUserInList = allUsersAfterDelete.users.find((user: any) => user.id === testUser.id);
+  assert(!softDeletedUserInList, "Soft-deleted user is NOT in the list of active users.");
+
+  return { testUser, adminEmail, adminPassword };
+}
+
+async function createAdditionalUsers() {
+  console.log("\n--- Creating additional users for pagination/sorting tests ---");
+  const user1 = await registerUser("Alice Smith", "alice", "password123", 3);
+  const user2 = await registerUser("Bob Johnson", "bob", "password123", 3);
+  const user3 = await registerUser("Charlie Brown", "charlie", "password123", 3);
+  const user4 = await registerUser("David Lee", "david", "password123", 3);
+
+  assert(!!user1 && !!user2 && !!user3 && !!user4, "Additional users registered successfully");
+  return [user1, user2, user3, user4];
+}
+
+async function testPaginationAndFilters(additionalUsers: any[]) {
+  console.log("\n--- Testing Pagination and Filters ---");
+
+  // Test 1: Pagination - page 1, size 2
+  const page1Users = await getUsersWithParams({ page: 1, size: 2 });
+  assert(page1Users.users.length === 2 && page1Users.page === 1 && page1Users.size === 2, `Pagination Test 1 (page 1, size 2) - Received: ${JSON.stringify(page1Users)}`);
+
+  // Test 2: Pagination - page 2, size 2
+  const page2Users = await getUsersWithParams({ page: 2, size: 2 });
+  assert(page2Users.users.length === 2 && page2Users.page === 2 && page2Users.size === 2, `Pagination Test 2 (page 2, size 2) - Received: ${JSON.stringify(page2Users)}`);
+
+  // Test 3: Sorting by name descending
+  const sortedByNameDesc = await getUsersWithParams({ sortBy: 'nome', direction: 'desc' });
+  const expectedOrder = ["Test Admin", "David Lee", "Charlie Brown", "Bob Johnson", "Alice Smith"];
+  const actualOrder = sortedByNameDesc.users.map((u: any) => u.nome);
+  const isSorted = actualOrder.length === expectedOrder.length && actualOrder.every((name: string, i: number) => name === expectedOrder[i]);
+  assert(isSorted, `Sorting Test 3 (by name descending) - Expected: ${expectedOrder}, Received: ${actualOrder}`);
+
+  // Test 4: Filter by name (like) - "admin"
+  const filteredByNameAdmin = await getUsersWithParams({ nome: 'admin' });
+  const allMatchAdmin = filteredByNameAdmin.users.every((user: any) => user.nome.toLowerCase().includes('admin'));
+  assert(allMatchAdmin && filteredByNameAdmin.users.length > 0, `Filter Test 4 (by name 'admin') - Received: ${filteredByNameAdmin.users.map((u: any) => u.nome)}`);
+
+  // Test 5: Filter by userType (assuming userType 1 exists for admin)
+  const filteredByUserType1 = await getUsersWithParams({ userType: 1 });
+  const allMatchUserType1 = filteredByUserType1.users.every((user: any) => user.UserType.id === 1);
+  assert(allMatchUserType1 && filteredByUserType1.users.length > 0, `Filter Test 5 (by userType 1) - Received: ${filteredByUserType1.users.map((u: any) => u.nome)}`);
+
+  // Test 6: Combined filters - page 1, size 1, sort by name asc, filter by name 'test', userType 3
+  const combinedFilter = await getUsersWithParams({ page: 1, size: 1, sortBy: 'nome', direction: 'asc', nome: 'test', userType: 3 });
+  assert(combinedFilter.users.length === 0 && combinedFilter.total === 0, `Combined Filter Test 6 (expect no users) - Received: ${JSON.stringify(combinedFilter)}`);
+}
+
+async function cleanupAdditionalUsers(usersToCleanup: any[]) {
+  console.log("\n--- Cleaning up additional users ---");
+  for (const user of usersToCleanup) {
+    await deleteUser(user.id);
+  }
+  console.log("Additional users cleaned up.");
+}
+
 async function runTests() {
   try {
-    // 1. Register a test user (to be soft-deleted)
-    const testUserEmail = "testuser@example.com";
-    const testUserPassword = "password123";
-    const testUser = await registerUser("Test User", testUserEmail, testUserPassword, 3); // Assuming user_type_id 3 is 'usuario_padrao'
+    const { testUser, adminEmail, adminPassword } = await testUserLifecycle();
+    const additionalUsers = await createAdditionalUsers();
+    await testPaginationAndFilters(additionalUsers);
+    await cleanupAdditionalUsers(additionalUsers);
 
-    if (!testUser) {
-      console.error("Failed to register test user. Exiting tests.");
-      return;
-    }
+    console.log("\n--- All Tests Completed Successfully ---");
 
-    // 2. Log in as the seeded administrator
-    const adminEmail = "admin-test@example.com"; // Use the email from prisma/seed.ts
-    const adminPassword = "adminpassword"; // Use the password from prisma/seed.ts
-    await loginUser(adminEmail, adminPassword);
-    if (!accessToken) {
-      console.error("Failed to log in as admin. Exiting tests.");
-      return;
-    }
-
-    // 4. Delete the test user using the administrator's token (soft delete)
-    await deleteUser(testUser.id);
-
-    // 5. Verify soft deletion
-    console.log("\n--- Verifying Soft Delete ---");
-
-    // 5a. Fetch the soft-deleted user by ID
-    const deletedUserById = await getUserById(testUser.id);
-    if (deletedUserById && deletedUserById.nome === 'Deleted User' && deletedUserById.email === 'deleted@example.com' && deletedUserById.disabled === true) {
-      console.log("✅ Verification successful: Soft-deleted user by ID shows placeholder info and disabled flag.");
-    } else {
-      console.error("❌ Verification FAILED: Soft-deleted user by ID does NOT show placeholder info or disabled flag.");
-      console.log("Received user:", deletedUserById);
-    }
-
-    // 5b. Fetch all users and confirm the soft-deleted user appears with placeholder data
-    const allUsers = await getAllUsers();
-    const softDeletedUserInList = allUsers.find((user: any) => user.id === testUser.id);
-
-    if (softDeletedUserInList && softDeletedUserInList.nome === 'Deleted User' && softDeletedUserInList.email === 'deleted@example.com' && softDeletedUserInList.disabled === true) {
-      console.log("✅ Verification successful: Soft-deleted user in all users list shows placeholder info and disabled flag.");
-    } else {
-      console.error("❌ Verification FAILED: Soft-deleted user in all users list does NOT show placeholder info or disabled flag.");
-      console.log("Received user in list:", softDeletedUserInList);
-    }
-
-    console.log("\n--- Tests Completed ---");
-
-  } catch (error) {
-    console.error("An error occurred during tests:", error);
+  } catch (error: any) {
+    console.error("❌ An error occurred during tests:", error.message);
   } finally {
-    // Optional: Logout admin user
     if (refreshToken) {
       await logoutUser();
     }
   }
 }
 
-// Helper function for logout (from original client.ts)
 async function logoutUser() {
   console.log("--- Logging Out User ---");
   if (!refreshToken) {
@@ -185,5 +236,14 @@ async function logoutUser() {
   }
 }
 
+
+function assert(condition: boolean, message: string) {
+  if (condition) {
+    console.log(`✅ ${message}`);
+  } else {
+    console.error(`❌ ${message}`);
+    throw new Error(message); 
+  }
+}
 
 runTests();

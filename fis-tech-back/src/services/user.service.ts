@@ -1,8 +1,8 @@
 import * as userModel from '../models/user.model';
 import { validateData } from '../utils/validation';
-import { BusinessLogicError, NotFoundError, ValidationError, ErrorCode } from '../utils/errors';
+import { BusinessLogicError, NotFoundError, ErrorCode } from '../utils/errors';
 import { hashPassword } from '../utils/jwt.utils';
-import { UserCreateSchema, UserUpdateSchema, UserIdSchema } from '../DTO/user.dto';
+import { UserCreateSchema, UserUpdateSchema, UserIdSchema, UserQuery } from '../DTO/user.dto';
 
 export const createUser = async (userData: unknown) => {
   const validatedData = validateData(UserCreateSchema, userData);
@@ -75,12 +75,32 @@ export const deleteUser = async (id: number) => {
   return userModel.updateUser(validatedId.id, { disabled: true });
 };
 
-export const getAllUsers = async () => {
-  const users = await userModel.getUsers();
-  return users.map(user => {
+export const getAllUsers = async (queryParams: UserQuery) => {
+  const { page = 1, size = 10, sortBy = 'createdAt', direction = 'asc', nome, userType } = queryParams;
+
+  const { users, total } = await userModel.getUsers({
+    page,
+    size,
+    sortBy,
+    direction,
+    nome,
+    userType,
+  });
+
+  const totalPages = Math.ceil(total / size);
+
+  const formattedUsers = users.map((user: any) => {
     if (user.disabled) {
       return { ...user, nome: 'Deleted User', email: 'deleted@example.com' };
     }
     return user;
   });
+
+  return {
+    users: formattedUsers,
+    total,
+    page,
+    size,
+    totalPages,
+  };
 };

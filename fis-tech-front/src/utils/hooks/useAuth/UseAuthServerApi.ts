@@ -35,6 +35,18 @@ async function login(email: string, password: string): Promise<LoginResponse> {
   }
 }
 
+async function registerUsuario(
+  nome: string,
+  email: string,
+  password: string
+): Promise<void> {
+  try {
+    const { data } = await api.post("/register", { email, password, nome });
+  } catch (error) {
+    throwAxiosError(error);
+  }
+}
+
 async function validateToken(token: string): Promise<LoginResponse> {
   try {
     const { data } = await api.post("/refresh", { refreshToken: token });
@@ -58,6 +70,7 @@ export const useAuthServerApi = () =>
     () => ({
       validateToken,
       login,
+      registerUsuario,
       logout,
     }),
     []
